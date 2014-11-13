@@ -1,0 +1,5 @@
+	Pour que le serveur puisse traiter les fichiers avec du code php, il faut ajouter ".php" ,
+ici j'ai ajouté ".inc.php" ce qui n'a en pratique aucun impact sur comment le fichier va être
+traité, par contre, c'est une convention de programmation d'ajouter ".inc.php" pour les fichiers
+qui ne vont que être utilisé avec des "include" ( voir le fichier index.php). En gros, ça permet
+de mieux visualiser comment on va utiliser un fichier.
