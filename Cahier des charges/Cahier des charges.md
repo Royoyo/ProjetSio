@@ -13,6 +13,9 @@ Lorsque la planification d'une semaine de cours est finalisée, alors des export
 
 ## Définitions
 
+* mailing: envoi automatique de messages électroniques individuels ou en masse.
+* template: fichier modèle, le plus souvent en HTML, contenant une mise en forme avec des variables permettant d'affecter un contenu destiné à l'affichage.
+
 ### Acteurs
 
 Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'intervenir dans le déroulement du projet :
@@ -55,7 +58,7 @@ Pour les autres rôles, la contrainte est moins forte et l'environnement cible _
 
 ### Environnement de test
 
-Le prestataire libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
+Le prestataire est libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
 
 Voici quelques détails techniques concernant cette plateforme :
 
@@ -90,6 +93,12 @@ L'environnement de test ne permettant pas à ce jour l'utilisation de cette API 
 La directive de configuration est à positionner au moment de l'installation, en fonction de la version de PHP dans l'environnement d'installation. Une fois cette configuration établie, seul l'administrateur du serveur pourra la modifier. En effet, il faut prendre soin qu'une mise à jour de version ne vienne pas invalider tous les mots de passe stockés. Le client demandera en temps utiles, s'il le juge nécessaire, une procédure de migration d'une méthode à l'autre.
 
 L'utilisation de la nouvelle API se fera à partir de la version en espace utilisateur ou du coeur de PHP par détection de présence de fonction et sera transparente pour les utilisateurs.
+
+### Mailings
+
+L'application est succeptible d'envoyer des mailings. Pour chaque type de mailing, le prestataire développera un template sous la forme d'un fichier [Markdown](http://fr.wikipedia.org/wiki/Markdown) pouvant inclure du HTML. Des champs sous forme de mots-clés seront utilisés pour personnaliser et contextualiser les messages envoyés.Le prestataire est libre d'utiliser la syntaxe de son choix pour ces mots-clés, mais ceux-ci devront être documentés dans la documentation Administrateur.
+
+Le prestataire aura recours à la méthode de son choix pour la conversion de Markdown vers HTML. Pour l'envoi des mails, une solution utilisant la librairie [SwiftMailer](http://swiftmailer.org/) est recommandée.
 
 ## Documentation
 
