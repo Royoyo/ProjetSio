@@ -29,27 +29,29 @@ L'application prévoit aujourd'hui trois rôles :
 * `plannificateur`
 * `enseignant`
 
-## Environnement de développement
+## Environnements
+
+### Environnement de développement
 
 Le prestataire est libre d'utiliser l'environnement de développement qu'il lui semble le plus approprié, ainsi que les outils associés.
 
 Toutefois, le code source produit devra être versionné et pouvoir être consulté par le client à tout moment. Pour ce faire, un projet est créé sur le site GitHub auquel le prestataire et le client ont accès en lecture comme en écriture. Si le client estime que le code produit est confidentiel, le projet GitHub pourra devenir privé pour un coût qui sera à la charge du client.
 
-## Environnement de production
+### Environnement de production
 
-### Serveur
+#### Serveur
 
 L'environnement de production n'est pas établi à l'avance et pourra de toute façon évoluer au cours de la vie de l'application. Toutefois, le client ayant tout de même la maîtrise de cet environnement, pourra veiller à suivre les prérequis que le prestataire jugera nécessaires, dans la mesure où ses propres contraintes lui permettent.
 
 Le prestataire veillera tout de même à minimiser les contraintes imposées au client, ainsi que les présupposés quant à l'environnement de production. En particulier, le prestataire veillera à développer une application multi-plateforme fonctionnant sans modification notable, c'est-à-dire autre que de configuration, tant sur un serveur fonctionnant avec Windows que sous Linux, tant avec Apache qu'un autre serveur web.
 
-### Client
+#### Client
 
 Le client n'ayant pas la maîtrise des terminaux utilisés par nombre des utilisateurs de l'application, le développement de l'interface devra être utilisable par tout type de terminaux supportant les protocoles habituels du web, avec n'importe quel navigateur. Ce point est particulièrement important en ce qui concerne le rôle `enseignant` puisqu'il s'agit de personnes travaillant au moins pour partie avec leur propre matériel.
 
 Pour les autres rôles, la contrainte est moins forte et l'environnement cible _privilégié_ est Firefox sur PC. On s'attend tout de même à ce que l'application soit exploitable avec d'autres navigateurs, même si l'ergonomie est moins agréable.
 
-## Environnement de test
+### Environnement de test
 
 Le prestataire libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
 
@@ -57,7 +59,7 @@ Version de MySQL ?
 
 ## Sécurité
 
-## Cryptage des communications
+### Cryptage des communications
 
 L'environnement de production n'étant pas entièrement défini au moment de la rédaction de ce cahier des charges, l'application devra pouvoir fonctionner indifférement avec ou sans cryptage des communications, c'est-à-dire en utilisant les protocoles `http` ou `https`.
 
