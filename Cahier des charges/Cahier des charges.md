@@ -37,6 +37,8 @@ Le prestataire est libre d'utiliser l'environnement de développement qu'il lui 
 
 Toutefois, le code source produit devra être versionné et pouvoir être consulté par le client à tout moment. Pour ce faire, un projet est créé sur le site GitHub auquel le prestataire et le client ont accès en lecture comme en écriture. Si le client estime que le code produit est confidentiel, le projet GitHub pourra devenir privé pour un coût qui sera à la charge du client.
 
+L'application devra fonctionner avec une base de données MySQL 5 en utilisant la librairie [MySQLi](http://fr2.php.net/manual/fr/book.mysqli.php) et en aucun cas la librairie [MySQL](http://fr2.php.net/manual/fr/book.mysql.php) qui est dépréciée.
+
 ### Environnement de production
 
 #### Serveur
@@ -55,7 +57,13 @@ Pour les autres rôles, la contrainte est moins forte et l'environnement cible _
 
 Le prestataire libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
 
-Version de MySQL ?
+Voici quelques détails techniques concernant cette plateforme :
+
+* OS: Linux Ubuntu
+* Serveur web : Apache 2.2.17
+* PHP 5.3.5
+* extensions à PHP : mysqli
+
 
 ## Sécurité
 
@@ -72,6 +80,16 @@ Lorsque l'administrateur créer un nouvel utilisateur, un champ `mail` destiné 
 ### Stockage du mot de passe
 
 Le mot de passe ne doit pas être stocké en clair dans la base de donnée, mais crypté selon un algorithme irréversible. Il est fortement recommandé d'utiliser la [nouvelle API destinée à cette tâche présente dans PHP 5.6](http://fr2.php.net/manual/fr/book.password.php).
+
+L'environnement de test ne permettant pas à ce jour l'utilisation de cette API (voir [ticket #8](https://github.com/Royoyo/ProjetSio/issues/8), le prestataire aura soin de prévoir des solutions de remplacements:
+
+* possibilité de définir dans la configuration l'utilisation d'une méthode dépréciée aujourd'hui de hachage de mots de passe (SHA1 ou MD5 par exemple), avec grain de sel dans la configuration,
+* si PHP est en version inférieure à 5.5 mais supérieure à 5.3.7, alors la nouvelle API est utilisée en [version "espace utilisateur"](https://github.com/ircmaxell/password_compat), sauf si la directive de configuration indiquée au point précédent est active,
+* si PHP est en version 5.5 ou supérieure et que la directive de configuration du premier point n'est pas active, alors on utilisera la version de l'API du noyau de PHP.
+
+La directive de configuration est à positionner au moment de l'installation, en fonction de la version de PHP dans l'environnement d'installation. Une fois cette configuration établie, seul l'administrateur du serveur pourra la modifier. En effet, il faut prendre soin qu'une mise à jour de version ne vienne pas invalider tous les mots de passe stockés. Le client demandera en temps utiles, s'il le juge nécessaire, une procédure de migration d'une méthode à l'autre.
+
+L'utilisation de la nouvelle API se fera à partir de la version en espace utilisateur ou du coeur de PHP par détection de présence de fonction et sera transparente pour les utilisateurs.
 
 ## Documentation
 
