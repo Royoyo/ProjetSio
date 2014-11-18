@@ -4,16 +4,80 @@
 
 Le but est de réaliser une application web en PHP permettant de faciliter la réalisation de planning de cours.
 
-À cette fin, les enseignants se voient proposer une page web permettant d'indiquer au moyen de cases à cocher, leurs demi-journées d'indisponibilité.
-Les plannificateurs accèdent à une page web par semaine et pour chaque demi-journée dispose d'une liste déroulante permettant de choisir quel enseignant affecté à ce cours.
-Les administrateurs ont la possibilité d'ouvrir et fermer les périodes de cours année scolaire par année scolaire.
+À cette fin :
+* les enseignants se voient proposer une page web permettant d'indiquer au moyen de cases à cocher, leurs demi-journées d'indisponibilité,
+* les plannificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leur disponibilité,
+* les administrateurs ont la possibilité d'ouvrir et fermer les périodes de cours année scolaire par année scolaire, de définir les semaines de cours, les jours fériés, de créer/modifier/supprimer les utilisateurs et de leur attribuer des rôles.
+
+Lorsque la planification d'une semaine de cours est finalisée, alors des exports vers plusieurs formats sont à prévoir : Excel, CSV, iCal.
 
 ## Définitions
+
+### Acteurs
+
+Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'intervenir dans le déroulement du projet :
+
+* le client ou le commanditaire : à l'origine de la demande, il écrit le cahier des charges et valide le projet par étapes ; puis, lorsque le projet arrive à son terme, reçoit livraison de l'application,
+* le prestataire ou le développeur : effectue le codage de l'application en fonction du cahier des charge, rend compte au client, communique avec lui au besoin,
+* les utilisateurs : les personnes amenées à utiliser l'application au terme du projet ; elles sont impliquées dans la réalisation du projet de façon à préciser leurs attentes, à identifier d'éventuels problèmes ainsi qu'à valider par étapes le projet ; il s'agit autant d'administrateurs que de plannificateurs ou d'enseignants.
 
 ### Rôles
 
 L'application prévoit aujourd'hui trois rôles :
 
-* administrateur
-* plannificateur
-* enseignant
+* `administrateur`
+* `plannificateur`
+* `enseignant`
+
+## Environnement de développement
+
+Le prestataire est libre d'utiliser l'environnement de développement qu'il lui semble le plus approprié, ainsi que les outils associés.
+
+Toutefois, le code source produit devra être versionné et pouvoir être consulté par le client à tout moment. Pour ce faire, un projet est créé sur le site GitHub auquel le prestataire et le client ont accès en lecture comme en écriture. Si le client estime que le code produit est confidentiel, le projet GitHub pourra devenir privé pour un coût qui sera à la charge du client.
+
+## Environnement de production
+
+### Serveur
+
+L'environnement de production n'est pas établi à l'avance et pourra de toute façon évoluer au cours de la vie de l'application. Toutefois, le client ayant tout de même la maîtrise de cet environnement, pourra veiller à suivre les prérequis que le prestataire jugera nécessaires, dans la mesure où ses propres contraintes lui permettent.
+
+Le prestataire veillera tout de même à minimiser les contraintes imposées au client, ainsi que les présupposés quant à l'environnement de production. En particulier, le prestataire veillera à développer une application multi-plateforme fonctionnant sans modification notable, c'est-à-dire autre que de configuration, tant sur un serveur fonctionnant avec Windows que sous Linux, tant avec Apache qu'un autre serveur web.
+
+### Client
+
+Le client n'ayant pas la maîtrise des terminaux utilisés par nombre des utilisateurs de l'application, le développement de l'interface devra être utilisable par tout type de terminaux supportant les protocoles habituels du web, avec n'importe quel navigateur. Ce point est particulièrement important en ce qui concerne le rôle `enseignant` puisqu'il s'agit de personnes travaillant au moins pour partie avec leur propre matériel.
+
+Pour les autres rôles, la contrainte est moins forte et l'environnement cible _privilégié_ est Firefox sur PC. On s'attend tout de même à ce que l'application soit exploitable avec d'autres navigateurs, même si l'ergonomie est moins agréable.
+
+## Environnement de test
+
+Le prestataire libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
+
+Version de MySQL ?
+
+## Sécurité
+
+## Cryptage des communications
+
+L'environnement de production n'étant pas entièrement défini au moment de la rédaction de ce cahier des charges, l'application devra pouvoir fonctionner indifférement avec ou sans cryptage des communications, c'est-à-dire en utilisant les protocoles `http` ou `https`.
+
+Une option de la configuration devra permettre, si elle est activée, de détecter si les communications ont lieu selon le protocole `http` et dans ce cas de forcer un basculement vers `https`.
+
+### Processus d'initialisation de compte
+
+Lorsque l'administrateur créer un nouvel utilisateur, un champ `mail` destiné à recueillir l'adresse électronique est obligatoire. Lorsque l'utilisateur est créé, l'application envoie immédiatement un message à cette adresse indiquant à l'utilisateur que son compte vient d'être créer, mais qu'il doit être activé. Pour cela, le message contient un lien ayant une validité limitée à 24 heures, permettant à l'utilisateur d'activer son compte. Le lien permet d'accéder à une page où l'utilisateur est invité à indiquer son mot de passe à fin d'enregistrement. Le compte n'est actif que lorsque le mot de passe a été correctement enregistré dans la base de donnée.
+
+### Stockage du mot de passe
+
+Le mot de passe ne doit pas être stocké en clair dans la base de donnée, mais crypté selon un algorithme irréversible. Il est fortement recommandé d'utiliser la [nouvelle API destinée à cette tâche présente dans PHP 5.6](http://fr2.php.net/manual/fr/book.password.php).
+
+## Documentation
+
+Le prestataire devra produire une documentation complète comportant plusieurs volets :
+
+* un volet à destination du client, décrivant les prérequis de l'application concernant l'environnement de déploiement et la proccédure d'installation de l'application,
+* un volet à destination des administrateurs décrivant les procédures à suivre pour réaliser les tâches qui sont dévolues à leur rôle,
+* idem pour les planificateur,
+* idem pour les enseignants.
+
+Cette documentation devra être rédigée en HTML et des liens jusdicieusement placés dans l'application permettront de la consulter ponctuellement en fonction du contexte dans une fenêtre externe à l'application, mais en ouvrant une nouvelle fenêtre que si plus aucune fenêtre destinée à consulter la documentation n'est ouverte.
