@@ -24,6 +24,14 @@ Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'in
 * le prestataire ou le développeur : effectue le codage de l'application en fonction du cahier des charge, rend compte au client, communique avec lui au besoin,
 * les utilisateurs : les personnes amenées à utiliser l'application au terme du projet ; elles sont impliquées dans la réalisation du projet de façon à préciser leurs attentes, à identifier d'éventuels problèmes ainsi qu'à valider par étapes le projet ; il s'agit autant d'administrateurs que de plannificateurs ou d'enseignants.
 
+### Organisation et communication
+
+GitHub est utilisé pour ses fonctions de versionnage de code, de gestion de tickets et, éventuellement, de documentation (Wiki) si cette solution était retenue par les développeurs.
+Toute tâche doit faire l'objet d'un ticket qui en documente la réalisation.
+Tout bug doit faire l'objet d'un ticket qui en documente la nature et la solution.
+Toute question au client doit faire l'objet d'un ticket.
+Si, au cours d'un ticket une question à poser au client se révèle, celle-ci doit faire l'objet d'un ticket __séparé__ auquel le client sera affecté, de façon à ce que le client ne reçoive pas tous les commentaires liés au ticket originel et qui ne le concerne pas forcément.
+
 ### Rôles
 
 L'application prévoit aujourd'hui trois rôles :
