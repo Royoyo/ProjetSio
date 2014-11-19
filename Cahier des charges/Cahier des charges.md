@@ -15,6 +15,7 @@ Lorsque la planification d'une semaine de cours est finalisée, alors des export
 
 * mailing: envoi automatique de messages électroniques individuels ou en masse.
 * template: fichier modèle, le plus souvent en HTML, contenant une mise en forme avec des variables permettant d'affecter un contenu destiné à l'affichage.
+* zone de travail de la page: partie principale de la page web qui correspond aux tâches que l'utilisateurs souhaite réaliser, ce qui exlu les éléments se trouvant sur toutes les pages (en-têtes et pieds de page, menu de navigation...).
 
 ### Acteurs
 
@@ -39,6 +40,8 @@ L'application prévoit aujourd'hui trois rôles :
 * `administrateur`
 * `plannificateur`
 * `enseignant`
+ 
+Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
 
 ## Environnements
 
@@ -118,3 +121,60 @@ Le prestataire devra produire une documentation complète comportant plusieurs v
 * idem pour les enseignants.
 
 Cette documentation devra être rédigée en HTML et des liens jusdicieusement placés dans l'application permettront de la consulter ponctuellement en fonction du contexte dans une fenêtre externe à l'application, mais en ouvrant une nouvelle fenêtre que si plus aucune fenêtre destinée à consulter la documentation n'est ouverte.
+
+## Fonctionnalités de l'application
+
+### Fonctionnalités communes à chaque rôle
+
+Les fonctionnalités communes sont celles qui sont liées à la gestion de son compte pas l'utilisateur.
+
+#### Activation du compte
+
+#### Identification lors de l'accès à l'application
+
+#### Réinitialisation du mot de passe
+
+#### Changement de mot de passe
+
+#### Mise à jour du profil
+
+
+### Fonctionnalités du rôle Administrateur
+
+#### Listage d'utilisateurs
+
+#### Création d'utilisateur(s)
+La création d'un utilisateur s'effectue à l'aide d'un formulaire comprenant les champs suivants :
+* Nom d'utilisateur
+* Adresse email
+* Prénom
+* Nom
+* Rôle
+Si un problème survient lors de la création de l'utilisateur, le même formulaire est réaffiché avec les valeurs remplis par l'utilisateur, le tout accompagné par une message d'erreur expliquant le problème au dessus du formulaire.
+Une case à cocher supplémentaire permet, si elle est cochée et que la création de l'utilisateur réussie, de réafficher le même formulaire à nouveau vierge pour créer un autre utilisateur. Dans ce cas là, la case est à nouveau cochée, ce qui permet d'enchaîner la création d'utilisateurs.
+Si la case n'est pas cochée, alors la page listant les utilisateurs s'affiche.
+Dans les deux cas, un message indiquant le succès de l'opération s'affiche en haut de la zone de travail de la page.
+
+#### Consultation d'un utilisateur
+
+#### Suspension d'utilisateur(s)
+
+#### Suppression d'utilisateur(s)
+
+#### Renvoi de mails d'initialisation de compte d'utilisateur(s)
+
+#### Modification d'un utilisateur
+
+#### Actions en masse
+
+#### Fonctionnalité par défaut
+
+
+
+### Fonctionnalités du rôle Plannificateur
+
+#### 
+
+#### Fonctionnalité par défaut
+
+### Fonctionnalités du rôle Enseignant
