@@ -69,7 +69,7 @@ Pour les autres rôles, la contrainte est moins forte et l'environnement cible _
 
 ### Environnement de test
 
-Le prestataire est libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. Une mise à jour de PHP restant à l'intérieur de ce numéro de version majeur (5) peut être envisagée si cela se révèle nécessaire.
+Le prestataire est libre d'effectuer les tests comme bon lui semble. Toutefois, il s'engage à valider son développement pour l'environnement de production _actuel_ du client, à savoir un serveur tournant sous Linux avec PHP 5. L'application doit pouvoir fonctionner __sans mise à jour du serveur__.
 
 Voici quelques détails techniques concernant cette plateforme :
 
@@ -101,7 +101,7 @@ L'environnement de test ne permettant pas à ce jour l'utilisation de cette API 
 * si PHP est en version inférieure à 5.5 mais supérieure à 5.3.7, alors la nouvelle API est utilisée en [version "espace utilisateur"](https://github.com/ircmaxell/password_compat), sauf si la directive de configuration indiquée au point précédent est active,
 * si PHP est en version 5.5 ou supérieure et que la directive de configuration du premier point n'est pas active, alors on utilisera la version de l'API du noyau de PHP.
 
-La directive de configuration est à positionner au moment de l'installation, en fonction de la version de PHP dans l'environnement d'installation. Une fois cette configuration établie, seul l'administrateur du serveur pourra la modifier. En effet, il faut prendre soin qu'une mise à jour de version ne vienne pas invalider tous les mots de passe stockés. Le client demandera en temps utiles, s'il le juge nécessaire, une procédure de migration d'une méthode à l'autre.
+La directive de configuration est à positionner au moment de l'installation, en fonction de la version de PHP dans l'environnement d'installation. Une fois cette configuration établie, seul l'administrateur du serveur pourra la modifier. En effet, il faut prendre soin qu'une mise à jour de version ne vienne pas invalider tous les mots de passe stockés. Une procédure de migration de la méthode dépréciée vers la méthode recommandée devra être fournie.
 
 L'utilisation de la nouvelle API se fera à partir de la version en espace utilisateur ou du coeur de PHP par détection de présence de fonction et sera transparente pour les utilisateurs.
 
@@ -121,6 +121,9 @@ Le prestataire devra produire une documentation complète comportant plusieurs v
 * idem pour les enseignants.
 
 Cette documentation devra être rédigée en HTML et des liens jusdicieusement placés dans l'application permettront de la consulter ponctuellement en fonction du contexte dans une fenêtre externe à l'application, mais en ouvrant une nouvelle fenêtre que si plus aucune fenêtre destinée à consulter la documentation n'est ouverte.
+
+### Documentation Administrateur
+Cette documentation comprendra une procédure décrivant la migration permettant de passer de la méthode de cryptage de mots de passe dépréciée à la méthode recommandée.
 
 ## Fonctionnalités de l'application
 
