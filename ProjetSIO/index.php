@@ -5,9 +5,9 @@
 // include 'machinsite.com/SIO/projet/theme/header.php';
 define('__ROOT__',dirname(dirname(__FILE__)));
 
-require __ROOT__ . '/theme/head.php';
+include __ROOT__ . '/theme/head.php';
 include __ROOT__ . '/theme/header.php';
 include 'content.php';
 include __ROOT__ . '/theme/footer.php';
-require __ROOT__ . '/theme/footerfinal.php';
+include __ROOT__ . '/theme/footerfinal.php';
 ?>
