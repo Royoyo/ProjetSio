@@ -7,7 +7,7 @@ session_start(); // -> ouvre une session pour l'utilisateur qui se connecte.
 				 // Cela va permettre de stocker des variables qui ne vont exister
 				 // que pour la session en cours
 				 
-require_once (__ROOT__ .'fonctions/Db_connect.inc.php'); // la connexion pour la DB/ 
+require_once 'fonctions/Db_connect.inc.php'; // la connexion pour la DB/ 
 //require_once() permet d'être sûr qu'on ne lance la connexion vers la DB qu'une fois.
 ?>
 <!doctype html>
