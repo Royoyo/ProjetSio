@@ -43,6 +43,9 @@ L'application prévoit aujourd'hui trois rôles :
  
 Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
 
+## Encodage de caractères
+Le code source comme le HTML produit par l'application devront utiliser l'encodage de caractères UTF-8.
+
 ## Environnements
 
 ### Environnement de développement
