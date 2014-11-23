@@ -6,7 +6,7 @@ Le but est de réaliser une application web en PHP permettant de faciliter la r�
 
 À cette fin :
 * les enseignants se voient proposer une page web permettant d'indiquer au moyen de cases à cocher, leurs demi-journées d'indisponibilité,
-* les plannificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leur disponibilité,
+* les planificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leur disponibilité,
 * les administrateurs ont la possibilité d'ouvrir et fermer les périodes de cours année scolaire par année scolaire, de définir les semaines de cours, les jours fériés, de créer/modifier/supprimer les utilisateurs et de leur attribuer des rôles.
 
 Lorsque la planification d'une semaine de cours est finalisée, alors des exports vers plusieurs formats sont à prévoir : Excel, CSV, iCal.
@@ -23,7 +23,7 @@ Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'in
 
 * le client ou le commanditaire : à l'origine de la demande, il écrit le cahier des charges et valide le projet par étapes ; puis, lorsque le projet arrive à son terme, reçoit livraison de l'application,
 * le prestataire ou le développeur : effectue le codage de l'application en fonction du cahier des charge, rend compte au client, communique avec lui au besoin,
-* les utilisateurs : les personnes amenées à utiliser l'application au terme du projet ; elles sont impliquées dans la réalisation du projet de façon à préciser leurs attentes, à identifier d'éventuels problèmes ainsi qu'à valider par étapes le projet ; il s'agit autant d'administrateurs que de plannificateurs ou d'enseignants.
+* les utilisateurs : les personnes amenées à utiliser l'application au terme du projet ; elles sont impliquées dans la réalisation du projet de façon à préciser leurs attentes, à identifier d'éventuels problèmes ainsi qu'à valider par étapes le projet ; il s'agit autant d'administrateurs que de planificateurs ou d'enseignants.
 
 ### Organisation et communication
 
@@ -38,7 +38,7 @@ Si, au cours d'un ticket une question à poser au client se révèle, celle-ci d
 L'application prévoit aujourd'hui trois rôles :
 
 * `administrateur`
-* `plannificateur`
+* `planificateur`
 * `enseignant`
  
 Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
@@ -174,7 +174,7 @@ Dans les deux cas, un message indiquant le succès de l'opération s'affiche en 
 
 
 
-### Fonctionnalités du rôle Plannificateur
+### Fonctionnalités du rôle Planificateur
 
 #### 
 
