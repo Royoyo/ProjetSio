@@ -25,13 +25,22 @@ Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'in
 * le prestataire ou le développeur : effectue le codage de l'application en fonction du cahier des charge, rend compte au client, communique avec lui au besoin,
 * les utilisateurs : les personnes amenées à utiliser l'application au terme du projet ; elles sont impliquées dans la réalisation du projet de façon à préciser leurs attentes, à identifier d'éventuels problèmes ainsi qu'à valider par étapes le projet ; il s'agit autant d'administrateurs que de planificateurs ou d'enseignants.
 
-### Organisation et communication
+### Objets métier
 
-GitHub est utilisé pour ses fonctions de versionnage de code, de gestion de tickets et, éventuellement, de documentation (Wiki) si cette solution était retenue par les développeurs.
-Toute tâche doit faire l'objet d'un ticket qui en documente la réalisation.
-Tout bug doit faire l'objet d'un ticket qui en documente la nature et la solution.
-Toute question au client doit faire l'objet d'un ticket.
-Si, au cours d'un ticket une question à poser au client se révèle, celle-ci doit faire l'objet d'un ticket __séparé__ auquel le client sera affecté, de façon à ce que le client ne reçoive pas tous les commentaires liés au ticket originel et qui ne le concerne pas forcément.
+L'application est destinée à permettre aux différents acteurs de manipuler un certain nombre d'[objets métier](http://fr.wikipedia.org/wiki/Objet_m%C3%A9tier) (à ne pas confondre avec l'[objet algorithmique](http://fr.wikipedia.org/wiki/Objet_%28informatique%29)) selon leurs rôles.
+
+Ces objets sont :
+
+* des classes d'élèves
+* des enseignants
+* des années scolaires
+* des semaines d'enseignement
+* des demi-journées de cours
+* des jours de fermeture (jours fériés par exemple)
+* des disponibilités ou indisponibilités d'enseignant
+* des affectations d'enseignant à une classe sur une demi-journée
+
+À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
 
 ### Rôles
 
@@ -45,6 +54,14 @@ Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
 
 ## Encodage de caractères
 Le code source comme le HTML produit par l'application devront utiliser l'encodage de caractères UTF-8.
+
+## Organisation et communication
+
+GitHub est utilisé pour ses fonctions de versionnage de code, de gestion de tickets et, éventuellement, de documentation (Wiki) si cette solution était retenue par les développeurs.
+Toute tâche doit faire l'objet d'un ticket qui en documente la réalisation.
+Tout bug doit faire l'objet d'un ticket qui en documente la nature et la solution.
+Toute question au client doit faire l'objet d'un ticket.
+Si, au cours d'un ticket une question à poser au client se révèle, celle-ci doit faire l'objet d'un ticket __séparé__ auquel le client sera affecté, de façon à ce que le client ne reçoive pas tous les commentaires liés au ticket originel et qui ne le concerne pas forcément.
 
 ## Environnements
 
@@ -127,23 +144,6 @@ Cette documentation devra être rédigée en HTML et des liens jusdicieusement p
 
 ### Documentation Administrateur
 Cette documentation comprendra une procédure décrivant la migration permettant de passer de la méthode de cryptage de mots de passe dépréciée à la méthode recommandée.
-
-## Objets métier
-
-L'application est destinée à permettre aux différents acteurs de manipuler un certain nombre d'[objets métier](http://fr.wikipedia.org/wiki/Objet_m%C3%A9tier) (à ne pas confondre avec l'[objet algorithmique](http://fr.wikipedia.org/wiki/Objet_%28informatique%29)) selon leurs rôles.
-
-Ces objets sont :
-
-* des classes d'élèves
-* des enseignants
-* des années scolaires
-* des semaines d'enseignement
-* des demi-journées de cours
-* des jours de fermeture (jours fériés par exemple)
-* des disponibilités ou indisponibilités d'enseignant
-* des affectations d'enseignant à une classe sur une demi-journée
-
-À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
 
 ## Fonctionnalités de l'application
 
