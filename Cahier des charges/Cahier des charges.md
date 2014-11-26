@@ -33,16 +33,17 @@ L'application est destinée à permettre aux différents acteurs de manipuler un
 
 Ces objets sont :
 
-* des classes d'élèves
-* des enseignants
-* des années scolaires
-* des semaines d'enseignement
-* des demi-journées
-* des demi-journées de cours
-* des jours de fermeture (jours fériés par exemple)
-* des demi-journées d'indisponibilités d'enseignants
-* des affectations d'enseignant à une classe
-* des affectations d'enseignant à une classe sur une demi-journée de cours
+* des [classes d'élèves](#classes-délèves)
+* des [enseignants](#enseignants)
+* des [matières enseignées](#matières-enseignées)
+* des [années scolaires](#années-scolaires)
+* des [semaines d'enseignement](#semaines-denseignement)
+* des [demi-journées](#demi-journées)
+* des [demi-journées de cours](#demi-journées-de-cours)
+* des [jours de fermeture](#jours-de-fermeture) (jours fériés par exemple)
+* des [demi-journées d'indisponibilités d'enseignants](#demi-journées-dindisponibilité-denseignants)
+* des [affectations d'enseignant à une classe](#affectation-denseignant-à-une-classe)
+* des [affectations d'enseignant à une classe sur une demi-journée de cours](#affectations-denseignant-à-une-classe-sur-une-demi-journée-de-cours)
 
 À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
 
@@ -53,6 +54,10 @@ Pour notre application, une classe d'élève reçoit un nom, une date de début 
 #### Enseignants
 
 Les enseignants sont des utilisateurs de l'application ayant le rôle "Enseignant". Ils héritent donc des caractéristiques de l'utilisateur. Pour la production des plannings, il faut ajouter : nom abrégé, matière, matière abrégée, couleur.
+
+#### Matières enseignées
+
+Pour notre application, une matière enseignée reçoit un nom.
 
 #### Années scolaires
 
@@ -84,9 +89,17 @@ Une indisponibilité d'enseignant est une demi-journée sur laquelle un enseigna
 
 Une affectation d'un enseignant à une classe associe un enseignant à une classe à laquelle il enseigne.
 
-#### Affectation des enseignants à une classe sur une demi-journée
+#### Affectations d'enseignants à des matières
 
-L'affectation d'un enseignant à une classe sur une demi-journée correspond la plannification d'une demi-journée de cours donné par cet enseignant à cette classe.
+Une affectation d'un enseignant à une matière associe un enseignant à une matière exprimant ainsi qu'il est succeptible d'enseigner cette matière.
+
+#### Affectations de matières à une classe
+
+Une affectation d'une matière à une classe associe une classe à une matière exprimant ainsi que la classe doit recevoir un enseignement dans cette matière.
+
+#### Affectations des enseignants à une classe sur une demi-journée
+
+L'affectation d'un enseignant à une classe sur une demi-journée correspond la plannification d'une demi-journée de cours donné par cet enseignant à cette classe. Cette affectation _peut_ inclure une affectation de matière.
 
 #### Objets métier introduit par l'application
 
