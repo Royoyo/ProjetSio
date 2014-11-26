@@ -128,6 +128,23 @@ Cette documentation devra être rédigée en HTML et des liens jusdicieusement p
 ### Documentation Administrateur
 Cette documentation comprendra une procédure décrivant la migration permettant de passer de la méthode de cryptage de mots de passe dépréciée à la méthode recommandée.
 
+## Objets métier
+
+L'application est destinée à permettre aux différents acteurs de manipuler un certain nombre d'[objets métier](http://fr.wikipedia.org/wiki/Objet_m%C3%A9tier) (à ne pas confondre avec l'[objet algorithmique](http://fr.wikipedia.org/wiki/Objet_%28informatique%29)) selon leurs rôles.
+
+Ces objets sont :
+
+* des classes d'élèves
+* des enseignants
+* des années scolaires
+* des semaines d'enseignement
+* des demi-journées de cours
+* des jours de fermeture (jours fériés par exemple)
+* des disponibilités ou indisponibilités d'enseignant
+* des affectations d'enseignant à une classe sur une demi-journée
+
+À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
+
 ## Fonctionnalités de l'application
 
 ### Fonctionnalités communes à chaque rôle
