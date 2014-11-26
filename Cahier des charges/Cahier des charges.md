@@ -6,7 +6,7 @@ Le but est de réaliser une application web en PHP permettant de faciliter la r�
 
 À cette fin :
 * les enseignants se voient proposer une page web permettant d'indiquer au moyen de cases à cocher, leurs demi-journées d'indisponibilité,
-* les planificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leur disponibilité,
+* les planificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leurs indisponibilités,
 * les administrateurs ont la possibilité d'ouvrir et fermer les périodes de cours année scolaire par année scolaire, de définir les semaines de cours, les jours fériés, de créer/modifier/supprimer les utilisateurs et de leur attribuer des rôles.
 
 Lorsque la planification d'une semaine de cours est finalisée, alors des exports vers plusieurs formats sont à prévoir : Excel, CSV, iCal.
@@ -37,7 +37,7 @@ Ces objets sont :
 * des semaines d'enseignement
 * des demi-journées de cours
 * des jours de fermeture (jours fériés par exemple)
-* des disponibilités d'enseignants
+* des indisponibilités d'enseignants
 * des affectations d'enseignant à une classe
 * des affectations d'enseignant à une classe sur une demi-journée
 
@@ -67,9 +67,9 @@ Une demi-journée de cours est définie par une date et une indication précisan
 
 #### Jours de fermeture
 
-Un jour de fermeture est défini par une date. Aucune disponibilité d'enseignant ne peut être indiquée à cette date, et donc aucune affectation d'enseignant ne peut être faite sur les demi-journées à cette date.
+Un jour de fermeture est défini par une date. Aucune indisponibilité d'enseignant ne peut être indiquée à cette date, et donc aucune affectation d'enseignant ne peut être faite sur les demi-journées à cette date.
 
-#### Disponibilités de enseignants
+#### Indisponibilités de enseignants
 
 #### Affectations des enseignants à une classe
 
@@ -81,7 +81,7 @@ L'application prévoit aujourd'hui trois rôles :
 
 * `administrateur` : créer, modifier, suspend, supprimer les utilisateurs,
 * `planificateur` : créer, modifie, supprime, met à jour, lie les classes d'élèves, les enseignants, les années scolaires, les semaines d'enseignement, les demi-journée de cours, les deux types d'affectations,
-* `enseignant` : crée et supprime ses disponibilités.
+* `enseignant` : crée et supprime ses indisponibilités.
  
 Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
 
