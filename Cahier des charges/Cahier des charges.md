@@ -37,18 +37,51 @@ Ces objets sont :
 * des semaines d'enseignement
 * des demi-journées de cours
 * des jours de fermeture (jours fériés par exemple)
-* des disponibilités ou indisponibilités d'enseignant
+* des disponibilités d'enseignants
+* des affectations d'enseignant à une classe
 * des affectations d'enseignant à une classe sur une demi-journée
 
 À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
+
+#### Classes d'élèves
+
+Pour notre application, une classe d'élève reçoit un nom, une date de début et une date de fin. Ces dates servent à borner toute période de planification possible pour cette classe.
+
+#### Enseignants
+
+Les enseignants sont des utilisateurs de l'application ayant le rôle "Enseignant". Ils héritent donc des caractéristiques de l'utilisateur. Pour la production des plannings, il faut ajouter : nom abrégé, matière, matière abrégée, couleur.
+
+#### Années scolaires
+
+Une année scolaire est définie par une date de début et une date de fin, ainsi qu'un nom, en général l'année de début suivie d'un tiret puis l'année de fin abrégée.
+
+Ainsi pour une année scolaire allant du 15 août 2013 au 15 juillet 2014, l'année scolaire aurait pour nom 2013-14.
+
+#### Semaines d'enseignement
+
+Une semaine d'enseignement est définie par une date de début, une date de fin et un numéro correspondant à l'ordre de la semaine dans l'année civile à laquelle elle appartient.
+
+#### Demi-journées de cours
+
+Une demi-journée de cours est définie par une date et une indication précisant s'il s'agit d'une matinée ou d'un après-midi. Elle appartient à une semaine de cours.
+
+#### Jours de fermeture
+
+Un jour de fermeture est défini par une date. Aucune disponibilité d'enseignant ne peut être indiquée à cette date, et donc aucune affectation d'enseignant ne peut être faite sur les demi-journées à cette date.
+
+#### Disponibilités de enseignants
+
+#### Affectations des enseignants à une classe
+
+#### Affectation des enseignants à une classe sur une demi-journée
 
 ### Rôles
 
 L'application prévoit aujourd'hui trois rôles :
 
-* `administrateur`
-* `planificateur`
-* `enseignant`
+* `administrateur` : créer, modifier, suspend, supprimer les utilisateurs,
+* `planificateur` : créer, modifie, supprime, met à jour, lie les classes d'élèves, les enseignants, les années scolaires, les semaines d'enseignement, les demi-journée de cours, les deux types d'affectations,
+* `enseignant` : crée et supprime ses disponibilités.
  
 Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
 
@@ -203,8 +236,6 @@ Dans les deux cas, un message indiquant le succès de l'opération s'affiche en 
 
 
 ### Fonctionnalités du rôle Planificateur
-
-#### 
 
 #### Fonctionnalité par défaut
 
