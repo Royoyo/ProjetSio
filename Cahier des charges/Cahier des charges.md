@@ -209,7 +209,11 @@ Un lien est présent permettant d'accéder à la fonctionnalité de réinitialis
 
 #### Réinitialisation du mot de passe
 
+Une page affiche un champ dans lequel l'utilisateur est invité à saisir son email. Une fois le formulaire validé, le compte est réinitialisé et doit être à nouveau activé. Voir [Sécurité/Procédure d'activation du compte](#processus-dinitialisation-de-compte). Bien que la procédure soit fonctionnellement identique, le mail envoyé à l'utilisateur et les pages affichées doivent être adaptés.
+
 #### Changement de mot de passe
+
+Le mot de passe peut être modifié à tout moment par l'utilisateur à l'aide d'un formulaire de trois champs dont le contenu ne doit pas être lisible. Le premier champ reçoit le mot de passe actuel de l'utilisateur, et il doit être valide pour que le mot de passe puisse être changé. Le second et le troisième champs sont destinés à contenir le nouveau mot de passe. Celui-ci ne sera pris en compte que si les valeurs saisies dans les deuxième et troisième champs sont identitiques.
 
 #### Mise à jour du profil
 
