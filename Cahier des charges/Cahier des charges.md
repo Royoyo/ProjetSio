@@ -153,7 +153,15 @@ Les fonctionnalités communes sont celles qui sont liées à la gestion de son c
 
 #### Activation du compte
 
+Voir [Sécurité/Procédure d'activation du compte](#processus-dinitialisation-de-compte).
+
 #### Identification lors de l'accès à l'application
+
+L'accès à l'application est sécurisé par un formulaire d'identification. L'utilisateur y indique son identifiant ainsi que son mot de passe, connu de lui seul. Le champ destiné à recevoir le mot de passe ne doit pas avoir de contenu visuellement lisible.
+
+Deux textes HTML, un en dessus et un dessous du formulaire sont affichés. Leurs contenus contenus ne sont pas encore définis, mais doivent pouvoir être aisément modifié éventuellement en modifiant un fichier HTML de [template](http://fr.wikipedia.org/wiki/Gabarit_%28mise_en_page%29#Utilisation_dans_les_syst.C3.A8mes_de_gestion_de_contenu_web) ou une directive de configuration.
+
+Un lien est présent permettant d'accéder à la fonctionnalité de réinitialisation du mot de passe.
 
 #### Réinitialisation du mot de passe
 
