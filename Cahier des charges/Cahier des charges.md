@@ -35,11 +35,12 @@ Ces objets sont :
 * des enseignants
 * des années scolaires
 * des semaines d'enseignement
+* des demi-journées
 * des demi-journées de cours
 * des jours de fermeture (jours fériés par exemple)
-* des indisponibilités d'enseignants
+* des demi-journées d'indisponibilités d'enseignants
 * des affectations d'enseignant à une classe
-* des affectations d'enseignant à une classe sur une demi-journée
+* des affectations d'enseignant à une classe sur une demi-journée de cours
 
 À noter que certains objets-métier sont également des utilisateurs de l'application. Tout est question de point de vue : un enseignant est un utilisateur de l'application pour lui-même et pour l'administrateur, mais il est un objet-métier pour le planificateur.
 
@@ -61,19 +62,29 @@ Ainsi pour une année scolaire allant du 15 août 2013 au 15 juillet 2014, l'ann
 
 Une semaine d'enseignement est définie par une date de début, une date de fin et un numéro correspondant à l'ordre de la semaine dans l'année civile à laquelle elle appartient.
 
+#### Demi-journée
+
+Une demi-journée est un date comprise entre les dates bornes d'une année scolaire, hors dimanche, samedi et jours fériés, avec une précision indiquant s'il s'agit d'une matinnée ou d'un après-midi.
+
 #### Demi-journées de cours
 
-Une demi-journée de cours est définie par une date et une indication précisant s'il s'agit d'une matinée ou d'un après-midi. Elle appartient à une semaine de cours.
+Une demi-journée de cours est une demi-journée appartenant à une semaine de cours.
 
 #### Jours de fermeture
 
 Un jour de fermeture est défini par une date. Aucune indisponibilité d'enseignant ne peut être indiquée à cette date, et donc aucune affectation d'enseignant ne peut être faite sur les demi-journées à cette date.
 
-#### Indisponibilités de enseignants
+#### Indisponibilités d'enseignants
+
+Une indisponibilité d'enseignant est une demi-journée sur laquelle un enseignant ne peut être affecté à aucune classe.
 
 #### Affectations des enseignants à une classe
 
+Une affectation d'un enseignant à une classe associe un enseignant à une classe à laquelle il enseigne.
+
 #### Affectation des enseignants à une classe sur une demi-journée
+
+L'affectation d'un enseignant à une classe sur une demi-journée correspond la plannification d'une demi-journée de cours donné par cet enseignant à cette classe.
 
 ### Rôles
 
