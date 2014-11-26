@@ -27,6 +27,8 @@ Dans ce document, il est fait référence à plusieurs acteurs susceptibles d'in
 
 ### Objets métier
 
+#### Objets métier inhérent à l'application
+
 L'application est destinée à permettre aux différents acteurs de manipuler un certain nombre d'[objets métier](http://fr.wikipedia.org/wiki/Objet_m%C3%A9tier) (à ne pas confondre avec l'[objet algorithmique](http://fr.wikipedia.org/wiki/Objet_%28informatique%29)) selon leurs rôles.
 
 Ces objets sont :
@@ -85,6 +87,15 @@ Une affectation d'un enseignant à une classe associe un enseignant à une class
 #### Affectation des enseignants à une classe sur une demi-journée
 
 L'affectation d'un enseignant à une classe sur une demi-journée correspond la plannification d'une demi-journée de cours donné par cet enseignant à cette classe.
+
+#### Objets métier introduit par l'application
+
+Il s'agit des objets métier du client qui ne préexistaient pas à l'application et sont donc introduits par elle. (L'application ne devant pas avoir recours à la programmation objet, il n'en reste pas moins que des objets abstraits s'y définissent tout de même dans l'esprit des développeurs et des utilisateurs, ce qui nous contraint à les définir comme des objets métier, même si ce n'est pas de cela qu'il s'agit en réalité).
+
+Ces objets sont:
+
+* les utilisateurs
+* les rôles
 
 ### Rôles
 
