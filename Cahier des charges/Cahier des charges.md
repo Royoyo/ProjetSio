@@ -38,7 +38,7 @@ Ces objets sont :
 * des [matières enseignées](#matières-enseignées)
 * des [années scolaires](#années-scolaires)
 * des [semaines d'enseignement](#semaines-denseignement)
-* des [demi-journées](#demi-journées)
+* des [demi-journée](#demi-journée)
 * des [demi-journées de cours](#demi-journées-de-cours)
 * des [jours de fermeture](#jours-de-fermeture) (jours fériés par exemple)
 * des [demi-journées d'indisponibilités d'enseignants](#demi-journées-dindisponibilité-denseignants)
@@ -71,7 +71,7 @@ Une semaine d'enseignement est définie par une date de début, une date de fin 
 
 #### Demi-journée
 
-Une demi-journée est un date comprise entre les dates bornes d'une année scolaire, hors dimanche, samedi et jours fériés, avec une précision indiquant s'il s'agit d'une matinnée ou d'un après-midi.
+Une demi-journée est une date comprise entre les dates bornes d'une année scolaire, hors dimanche, samedi et jours fériés, avec une précision indiquant s'il s'agit d'une matinnée ou d'un après-midi.
 
 #### Demi-journées de cours
 
@@ -99,7 +99,7 @@ Une affectation d'une matière à une classe associe une classe à une matière 
 
 #### Affectations des enseignants à une classe sur une demi-journée
 
-L'affectation d'un enseignant à une classe sur une demi-journée correspond la plannification d'une demi-journée de cours donné par cet enseignant à cette classe. Cette affectation _peut_ inclure une affectation de matière.
+L'affectation d'un enseignant à une classe sur une demi-journée correspond la planification d'une demi-journée de cours donné par cet enseignant à cette classe. Cette affectation _peut_ inclure une affectation de matière.
 
 #### Objets métier introduit par l'application
 
@@ -241,10 +241,15 @@ Le mot de passe peut être modifié à tout moment par l'utilisateur à l'aide d
 
 #### Mise à jour du profil
 
+L'utilisateur doit pouvoir changer son adresse email.
 
 ### Fonctionnalités du rôle Administrateur
 
 #### Listage d'utilisateurs
+
+L'administrateur a accès à la liste de tous les utilisateurs de l'application. La page affichant cette liste doit permettre de créer, consulter, modifier, suspendre et supprimer ces utilisateurs.
+
+Il s'agit de la page par défaut d'un administrateur une fois qu'il est connecté.
 
 #### Création d'utilisateur(s)
 La création d'un utilisateur s'effectue à l'aide d'un formulaire comprenant les champs suivants :
@@ -252,30 +257,112 @@ La création d'un utilisateur s'effectue à l'aide d'un formulaire comprenant le
 * Adresse email
 * Prénom
 * Nom
-* Rôle
-Si un problème survient lors de la création de l'utilisateur, le même formulaire est réaffiché avec les valeurs remplis par l'utilisateur, le tout accompagné par une message d'erreur expliquant le problème au dessus du formulaire.
+* Rôle_(s)_
+
+Si un problème survient lors de la création de l'utilisateur, le même formulaire est réaffiché avec les valeurs remplise par l'utilisateur, le tout accompagné par une message d'erreur expliquant le problème au dessus du formulaire.
+
 Une case à cocher supplémentaire permet, si elle est cochée et que la création de l'utilisateur réussie, de réafficher le même formulaire à nouveau vierge pour créer un autre utilisateur. Dans ce cas là, la case est à nouveau cochée, ce qui permet d'enchaîner la création d'utilisateurs.
+
 Si la case n'est pas cochée, alors la page listant les utilisateurs s'affiche.
+
 Dans les deux cas, un message indiquant le succès de l'opération s'affiche en haut de la zone de travail de la page.
 
 #### Consultation d'un utilisateur
 
+Affiche les informations saisies lors de la création de l'utilisateur.
+
 #### Suspension d'utilisateur(s)
+
+La suspension d'un utilisateur permet d'interdire l'accès à l'application à cet utilisateur sans pour autant supprimer son compte. Naturellement, une fonction de réactivation doit également être prévue.
 
 #### Suppression d'utilisateur(s)
 
+Permet de supprimer un utilisateur de l'application. En base de données, il ne doit pas y avoir de suppression de l'enregistrement correspondant, un champ devant être utilisé pour indiquer que l'utilisateur a été supprimé.
+
+Une confirmation est demandée à l'utilisateur avant que la suppression soit effective.
+
 #### Renvoi de mails d'initialisation de compte d'utilisateur(s)
+
+L'administrateur doit pouvoir envoyer un mail de réinitialisation de mot de passe à l'utilisateur.
 
 #### Modification d'un utilisateur
 
+Accès en mode édition des renseignements indiqués lors de la création de l'utilisateur.
+
 #### Actions en masse
 
-#### Fonctionnalité par défaut
-
-
+La liste des utilisateurs doit permettre d'exécuter une même action sur plusieurs utilisateurs rapidement lorque cela est approprié, c'est-à-dire lorsque l'action peut être achevée d'un seul clic (suspension, création, réinitialisation...)
 
 ### Fonctionnalités du rôle Planificateur
 
-#### Fonctionnalité par défaut
+Lorsqu'un utilisateur est à la fois Admnistrateur et Planificateur, le prestataire veillera à ce que des fonctionnalités proches soient regroupées sur la même page.
+
+Le Planificateur gère l'ensemble des tâches relatives à la planification :
+* gestion des classes d'élèves
+* gestion des matières enseignées
+* gestion des enseignants
+* gestion des périodes (années scolaires, jours de fermeture, demi-journées)
+
+Par gestion, il faut entendre création, suppression, consultation, mise à jour, et mise en relation des différents types d'éléments.
+
+#### Gestion de classes d'élèves
+
+Le Planificateur a la possibilité de créer, modifier et supprimer une classe d'élèves. Celle-ci doit pourvoir avoir un nom, des matières enseignées, des enseignants affectés, ainsi que des années scolaire. Lors de la création, seul le nom est obligatoire.
+
+#### Gestion des matières enseignées
+
+Le Planificateur a la possibilité de créer, modifier et supprimer une matière enseignée. Celle doit pouvoir avoir un nom et des enseignants affectés. Seul le nom est obligatoire.
+
+#### Gestion des enseignants
+
+Le Planificateur a la possibilité de modifier, créer, supprimer les affectations d'un enseignant à des classes et à des matières.
+
+#### Gestion des années scolaires
+
+Le Planificateur a la possibilité de créer, modifier, supprimer une années scolaire. Lors de la création, un nom est obligatoire, ainsi qu'une date de début et une date de fin, ainsi que de sélectionner des classes d'élèves affectées à cette années scolaire. Les champs en modification sont les mêmes.
+
+Une année scolaire peut être rendue inactive, ce qui permet de ne plus la faire apparaître dans le reste de l'application et simplifier les saisies.
+
+Une fois l'année scolaire créée, le Planificateur doit pouvoir accéder une représentation de l'année sous la forme d'un tableau dans lequel il pourra indiquer des jours de fermeture (une case cochées indiquant un jour de fermeture), les samedis et les dimanches apparaissant grisés et non-modifiables.
+
+#### Gestion de la relation année scolaire - classe d'élèves
+
+Lorsqu'une classe d'élèves est affectée sur une année scolaire, par défaut, il devient possible d'effectuer la planification des cours de cette classe pour les dates de début et de fin indiquées dans l'années scolaire. Toutefois, les dates pour lesquelles la planification d'une classe est possible ne pas correspondre exactement aux dates de l'année scolaire, bien qu'elles doivent y être incluses (les deuxièmes années commencent plus tôt, et finissent plus tôt que les premières années de BTS par exemple).
+
+Il faut donc que le planificateur puisse éditer les dates extrêmes de la planification pour une classe, mais en restant dans les dates de l'année scolaire.
+
+#### Gestion des semaines d'enseignements
+
+Pour chaque classe d'élèves, le Plannificateur doit pouvoir accéder à un tableau par semaine (uniquement en consultation pour les semaines passées).
+
+Cet accès s'effectue par une liste des semaines (par défaut, on ne verra que les semaines à venir et la semaine en cours, mais il doit être possible d'afficher les semaines passées, par un système de pagination ?). Ces semaines regroupent toutes les années actives auxquelles la classe est affecté et sont triées dans l'ordre chronologique.
+
+Lorsque le Planificateur clique sur une semaine, il accède à un tableau permettant d'affecter professeurs et matières pour chaque demi-journée en excluant les journées de fermeture. Pour chaque demi-journée, le Planificateur déroule une liste indiquant l'ensemble des enseignants _disponibles_ (c'est-à-dire ayant indiqué dans leur partie de l'application qu'ils sont disponibles à cette date et _n'étant pas affecter à un autre cours_) dans laquelle il choisit celui qui sera alors affecté.
+
+Un bouton, appeler "Enregistrer" permet d'enregistrer les modifications sans autre action. Un autre bouton appelé "Finaliser" permet d'enregistrer les modifications, d'envoyer un mail de notification aux enseignants concernés et de rendre cette semaine de planifcation consultable par les enseignants.
+
+**Une semaine de planification n'est _pas consultable_ par les enseignants tant qu'elle n'a pas été finalisée !**
 
 ### Fonctionnalités du rôle Enseignant
+
+#### Indication des indisponibilités
+
+Pour chaque année scolaire active, un enseignant peut accéder à un tableau similaire [à celui auquel accès le Planificateur](#Gestion-des-années-scolaires) dans lequel il a la possiblité d'[indiquer ses indisponibilités](https://github.com/Royoyo/ProjetSio/issues/12) : une case cochée correspondant à une **demi**-journée d'indiponibilité.
+
+Si l'enseignant indiquait une indisponibilité de cours sur une date pour laquelle il a déjà un cours de planifié, un avertissement sera affiché et un mail envoyé aux planificateurs ainsi qu'à l'enseignant pour prévenir du conflit.
+
+**Un tel conflit devra être mise en évidence sur les écrans pertinents de façon à ce que les utilisateurs de l'application ne puissent l'ignorer.**
+
+#### Consultation de sa planification
+
+L'enseignant a la possibilité de prendre connaissance de sa planification (par défaut, uniquement la semaine en cours et les semaines à venir) des cours pour lesquels il est planifié à travers un tableau récapitulatif :
+* une ligne par semaine
+* colone 1: numéro de la semaine
+* colone 2: date de début et de fin de la semaine
+* colone 3: premier cours (jour, heures de début et de fin, classe, matière)
+* colone 4: deuxième cours (idem)
+* colone 5: et ainsi de suite tant qu'il y en a
+ 
+#### Consultation des semaines planifiées
+
+Pour chaque semaine finalisée d'une classe à laquelle l'enseignant est affecté, l'enseignant a la possibilité de consulter la planification de la classe.
