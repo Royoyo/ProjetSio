@@ -8,20 +8,16 @@ body {
     font-weight:normal;
     color:#000;
     outline:none;
+	background:#bbb;
+    text-align:center;
+    width:900px;
+    margin:10px auto;
 }
  
 body, html {
     width:100%;
     height:100%;
 }
- 
-body {
-    background:#bbb;
-    text-align:center;
-    width:900px;
-    margin:10px auto;
-}
- 
 header {
     height:50px;
     margin:10px auto;
