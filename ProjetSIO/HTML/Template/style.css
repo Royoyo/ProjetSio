@@ -66,6 +66,7 @@ footer {
     position:relative;
     right:5px;
 }
+
 table {		
 	border:1px solid black;		
  	width:100%;		
@@ -92,4 +93,4 @@ ul.role_list label
     display: block;		
     width: 80px;		
     float: left;		
- }	
+ }
