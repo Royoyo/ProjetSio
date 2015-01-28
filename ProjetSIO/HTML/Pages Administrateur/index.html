@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="style.css" rel="stylesheet" />
+	<title>Administration</title>
+</head>
+<body>
+	<header>
+		header / navigation menu
+	</header>
+	<div id="content">
+		<table id="user_list">
+			<thead>
+				<tr>
+					<td>Nom d'utilisateur</td>
+					<td>Nom</td>
+					<td>Prénom</td>
+					<td>Adresse e-mail</td>
+					<td>Matière</td>
+					<td>Rôle</td>
+					<td>Statut</td>
+					<td>Actions</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="consult.html">smourey</a></td>
+					<td>MOUREY</td>
+					<td>Stéphane</td>
+					<td>smourey@qqch.fr</td>
+					<td>Développement</td>
+					<td>Enseignant</td>
+					<td>Actif</td>
+					<td>
+						<select onchange="window.location.href=this.value;">
+							<option>------------</option>
+							<option value="consult.html">Consulter</option>
+							<option value="modifier.html">Modifier</option>
+							<option value="activate.html">Activer</option>
+							<option value="delete.html">Supprimer</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><a href="consult.html">rspielmann</a></td>
+					<td>SPIELMANN</td>
+					<td>Romain</td>
+					<td>rspielmann@qqch.fr</td>
+					<td>Aucune</td>
+					<td>Aucun</td>
+					<td>Suspendu</td>
+					<td>
+						<select onchange="window.location.href=this.value;">
+							<option>------------</option>
+							<option value="consult.html">Consulter</option>
+							<option value="modifier.html">Modifier</option>
+							<option value="activate.html">Activer</option>
+							<option value="delete.html">Supprimer</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><a href="consult.html">ghaag</a></td>
+					<td>HAAG</td>
+					<td>Guillaume</td>
+					<td>ghaag@qqch.fr</td>
+					<td>GitHub</td>
+					<td>Enseignant</td>
+					<td>Actif</td>
+					<td>
+						<select onchange="window.location.href=this.value;">
+							<option>------------</option>
+							<option value="consult.html">Consulter</option>
+							<option value="modifier.html">Modifier</option>
+							<option value="activate.html">Activer</option>
+							<option value="delete.html">Supprimer</option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<a href="create.html" style="float:right">Créer un nouvel utilisateur</a>
+		</div>
+	</div>
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
