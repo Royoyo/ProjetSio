@@ -10,7 +10,62 @@
 	header / navigation menu
 	</header>
 	<div id="content">
-		<p>Page de base</p>
+		<div id="errorbox">
+        
+		</div>
+		<div id="centered">
+			<form action="mailto:d.raimon@saga-systemes.com" name="methodepost"
+				  method="post"
+				  onsubmit="javascript:
+						var errors='';
+						var nbErr=0;
+						if(document.getElementById('mail').value != document.getElementById('mailverif').value)
+						{
+						   errors+='<li>Les deux adresses entree sont differentes</li>';
+						   nbErr++;
+						};
+						if (document.getElementById('password').value != document.getElementById('passwordverif').value)
+						{
+						   errors+='<li>Mot de passe invalide</li>';
+						   nbErr++;
+						};
+						if (document.getElementById('mail').value.indexOf('@')== -1)
+						{
+						   errors+='<li>Il manque le @ dans votre adresse mail</li>';
+						   nbErr++;
+						};
+						if(document.getElementById('name').value == '')
+						{
+						   errors+='<li>Vous devez indiquer votre nom</li>';
+						   nbErr++;
+						};
+						if(document.getElementById('surname').value == '')
+						{
+						   errors+='<li>Vous devez indiquer votre prenom</li>';
+						   nbErr++;
+						};
+						if(errors!='')
+						{
+							errors='<ul><h1>Veuillez corriger les erreurs suivantes :</h1>'+errors+'</ul>';
+							errorbox=document.getElementById('errorbox');
+							errorbox.innerHTML=errors;
+							
+							errorbox.style.borderColor='rgb(255,0,0)';
+							errorbox.style.borderWidth='2px';
+							errorbox.style.borderStyle='solid';
+							
+							return false;
+						}
+						return true;">   
+					<p><label for="Nom">Votre Nom</label> : <input id="name" type="text" name="Nom" </input></p>
+					<p><label for="Prénom">Votre Prénom</label> : <input id="surname" type="text" name="Prénom" </input></p>
+					<p><label for="Mail">Votre E-mail</label> : <input id="mail" type="email" name="Mail" placeholder="Ex : xxx@xxx.fr" </input></p>
+					<p><label for="Mailverif">Confirmez votre E-mail</label> : <input id="mailverif" type="email" name="Mailverif" placeholder="Ex : xxx@xxx.fr" </input></p>
+					<p><label for="Mdp">Votre Mot de Passe</label> : <input id="password" type="password" name="mdp"</input></p>
+					<p><label for="Mdpverif">Confirmez votre Mot de Passe</label> : <input id="passwordverif" type="password" name="mdpverif"</input></p>
+					<input type="submit" value="envoie"></input>
+			</form>
+		</div>
 	</div>
 	<footer>
 		<div id="footerGauche">
@@ -20,64 +75,5 @@
 			<p><?php echo date("Y") ?> - Groupe SIO</p>
 		</div>
 	</footer>
-   
-    <div id="errorbox">
-        
-    </div>
-    <form action="mailto:d.raimon@saga-systemes.com" name="methodepost"
-          method="post"
-          onsubmit="javascript:
-                var errors='';
-                var nbErr=0;
-                if(document.getElementById('mail').value != document.getElementById('mailverif').value)
-                {
-                   errors+='<li>Les deux adresses entree sont differentes</li>';
-                   nbErr++;
-                };
-                if (document.getElementById('password').value != document.getElementById('passwordverif').value)
-                {
-                   errors+='<li>Mot de passe invalide</li>';
-                   nbErr++;
-                };
-                if (document.getElementById('mail').value.indexOf('@')== -1)
-                {
-                   errors+='<li>Il manque le @ dans votre adresse mail</li>';
-                   nbErr++;
-                };
-                if(document.getElementById('name').value == '')
-                {
-                   errors+='<li>Vous devez indiquer votre nom</li>';
-                   nbErr++;
-                };
-                if(document.getElementById('surname').value == '')
-                {
-                   errors+='<li>Vous devez indiquer votre prenom</li>';
-                   nbErr++;
-                };
-                if(errors!='')
-                {
-                    errors='<ul><h1>Veuillez corriger les erreurs suivantes :</h1>'+errors+'</ul>';
-                    errorbox=document.getElementById('errorbox');
-                    errorbox.innerHTML=errors;
-                    
-                    errorbox.style.borderColor='rgb(255,0,0)';
-                    errorbox.style.borderWidth='2px';
-                    errorbox.style.borderStyle='solid';
-                    
-                    return false;
-                }
-                return true;">   
-            <p><label for="Nom">Votre Nom</label> : <input id="name" type="text" name="Nom" </input></p>
-            <p><label for="Prénom">Votre Prénom</label> : <input id="surname" type="text" name="Prénom" </input></p>
-            <p><label for="Mail">Votre E-mail</label> : <input id="mail" type="email" name="Mail" placeholder="Ex : xxx@xxx.fr" </input></p>
-            <p><label for="Mailverif">Confirmez votre E-mail</label> : <input id="mailverif" type="email" name="Mailverif" placeholder="Ex : xxx@xxx.fr" </input></p>
-            <p><label for="Mdp">Votre Mot de Passe</label> : <input id="password" type="password" name="mdp"</input></p>
-            <p><label for="Mdpverif">Confirmez votre Mot de Passe</label> : <input id="passwordverif" type="password" name="mdpverif"</input></p>
-            <input type="submit" value="envoie"></input>
-    </form>
- 
-
-
-
 </body>
 </html>
