@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="style.css" rel="stylesheet" />
+	<title>Affichage des Mati&egrave;res Enseign&eacute;es</title>
+	
+<script type="text/javascript">
+function toggle_div(bouton, id)
+{ // fonction toggle_div : paramètres image et id
+var div = document.getElementById(id); // On trouve le div ciblé grâce à l'id
+if(div.style.display=="none")
+	{ // Si le div est masqué...
+	div.style.display = "block"; // ... on l'affiche
+	boutons.style.display = "none"; // on fait disparaître l'image '+'
+	}
+	else
+	{ // S'il est visible...
+	div.style.display = "none"; // ... on le masque
+	boutons.style.display = "block";// on fait apparaître l'image '+'
+	}
+}
+</script>
+
+</head>
+
+<body>
+	<header>
+		<table>
+			<tr>
+			<br>
+				<td>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="page_defaut.html" style='color: #ffffff'>Retour</a>
+					<a href="ModifMatiere.html" style='color: #ffffff'>Modification</a>
+					<a href="CreationMatiere.html" style='color: #ffffff'>Cr&eacute;ation</a>
+				</td>
+				<td width="660px"></td>
+				<td>
+					<a href="AffichMatiere2.html" style='color: #ffffff'>Suivant</a> 
+				</td>
+			</tr>
+		</table>
+	</header>
+	
+	<div id="content">
+		<p>MATIERES ENSEIGNEES</p>
+		<table>
+			<tr>
+				<td  style='width:100px'>MATIERE1</td>
+				<td><input type="text" style='width:280px' id="M1"></input></td>
+				<td style='width:40px'></td>
+				<td style='width:100px'>MATIERE2</td>
+				<td><input type="text" style='width:280px' id="M2"></input></td>
+			</tr>
+			<tr>
+				<td style='width:100px'>MATIERE3</td>
+				<td><input type="text" style='width:280px' id="M3"></input></td>
+				<td style='width:40px'></td>
+				<td style='width:100px'>MATIERE4</td>
+				<td><input type="text" style='width:280px' id="M4"></input></td>
+			</tr>
+			<tr>
+				<td style='width:100px'>MATIERE5</td>
+				<td><input type="text" style='width:280px' id="M5"></input></td>
+				<td style='width:40px'></td>
+				<td style='width:100px'>MATIERE6</td>
+				<td><input type="text" style='width:280px' id="M6"></input></td>
+			</tr>
+			<tr>
+				<td style='width:100px'>MATIERE7</td>
+				<td><input type="text" style='width:280px' id="M7"></input></td>
+				<td style='width:40px'></td>
+				<td style='width:100px'>MATIERE8</td>
+				<td><input type="text" style='width:280px' id="M8"></input></td>
+			</tr>
+			<tr>
+				<td style='width:100px'>MATIERE9</td>
+				<td><input type="text" style='width:280px' id="M9"></input></td>
+				<td style='width:40px'></td>
+				<td style='width:100px'>MATIERE10</td>
+				<td><input type="text" style='width:280px' id="M10"></input></td>
+			</tr>
+			<tr>
+				<td colspan=5></td>
+				<td>
+					<div id="boutons">
+						<!-- Une image '+' et un onclick qui appelle une fonction avec -->
+						<!-- en param l'image et l'id du div à afficher/masquer. -->
+						<img src="./img/bplus0.png" id="bouton_plus" alt="+ de Mati&egrave;res" onmouseover="this.src='./img/bplus1.png'" onmouseout="this.src='./img/bplus0.png'" onclick="toggle_div(this,'div1');">
+					</div>
+				</td>
+			</tr>
+		</table>
+		<!-- Un div caché avec un attribut id -->
+		<div id="div1" style="display:none;">
+			<table>
+				<tr>
+					<td style='width:100px'>MATIERE11</td>
+					<td><input type="text" style='width:280px' id="M11"></input></td>
+					<td style='width:40px'></td>
+					<td style='width:100px'>MATIERE12</td>
+					<td><input type="text" style='width:280px' id="M12"></input></td>
+				</tr>
+				<tr>
+					<td style='width:100px'>MATIERE13</td>
+					<td><input type="text" style='width:280px' id="M13"></input></td>
+					<td style='width:40px'></td>
+					<td style='width:100px'>MATIERE14</td><td>
+					<input type="text" style='width:280px' id="M14"></input></td>
+				</tr>
+				<tr>
+					<td style='width:100px'>MATIERE15</td>
+					<td><input type="text" style='width:280px' id="M15"></input></td>
+					<td style='width:40px'></td>
+					<td style='width:100px'>MATIERE16</td>
+					<td><input type="text" style='width:280px' id="M16"></input></td>
+				</tr>
+				<tr>
+					<td style='width:100px'>MATIERE17</td>
+					<td><input type="text" style='width:280px' id="M17"></input></td>
+					<td style='width:40px'></td>
+					<td style='width:100px'>MATIERE18</td>
+					<td><input type="text" style='width:280px' id="M18"></input></td>
+				</tr>
+				<tr>
+					<td style='width:100px'>MATIERE19</td>
+					<td><input type="text" style='width:280px' id="M19"></input></td>
+					<td style='width:40px'></td>
+					<td style='width:100px'>MATIERE20</td>
+					<td><input type="text" style='width:280px' id="M20"></input></td>
+				</tr>
+				<tr>
+					<td colspan=5></td>
+					<td>
+						<div id="boutons">
+							<!-- Une image '-' et un onclick qui appelle une fonction avec -->
+							<!-- en param l'image et l'id du div à afficher/masquer. -->
+							<img src="./img/bmoins0.png" id="bouton_moins" alt="- de Mati&egrave;res" onmouseover="this.src='./img/bmoins1.png'" onmouseout="this.src='./img/bmoins0.png'"onclick="toggle_div(this,'div1');">
+						</div>	
+					</td>
+				</tr>
+			</table>
+		</div>	
+
+	</div>
+
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
