@@ -34,7 +34,7 @@ header {
 	position: relative;
 }
 
-#centered {
+.centered {
 	margin: 0;
 	position: absolute;               
     top: 50%;        
