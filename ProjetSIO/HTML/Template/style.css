@@ -66,3 +66,31 @@ footer {
     position:relative;
     right:5px;
 }
+
+-table {		
+-	border:1px solid black;		
+- 	width:100%;		
+-}		
+-		
+-td { 		
+-	border:1px solid black		
+-}		
+-		
+-label		
+-{		
+-    display: block;		
+-    width: 150px;		
+-    float: left;		
+-}		
+-		
+-ul.role_list		
+-{		
+-    list-style-type: none;		
+-}		
+-		
+-ul.role_list label		
+-{		
+-    display: block;		
+-    width: 80px;		
+-    float: left;		
+ }		
