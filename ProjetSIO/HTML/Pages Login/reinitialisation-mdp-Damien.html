@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>Creation de compte</title>
+	<title>R&eacuteinitialisation de mot de passe</title>
         <meta charset="utf-8" />
 	<link href="../template/style.css" rel="stylesheet" />
 </head>
@@ -9,6 +9,8 @@
         <header>
 	header / navigation menu
 	</header>
+        
+        
 	<div id="content">
 		<div id="errorbox">
         
@@ -38,17 +40,17 @@
 							return false;
 						}
 						return true;">   
-					<p><label for="Nom">Votre Identifiant</label> : <input id="identifiant" type="text" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/ig, '')" name="Login" </input></p>
-					<p><label for="Mdp">Votre Mot de Passe</label> : <input id="password" type="password" name="mdp"</input></p>
-					<p><label for="Mdpverif">Confirmez votre Mot de Passe</label> : <input id="passwordverif" type="password" name="mdpverif"</input></p>
+					<p><label for="Mdp">Entrez votre nouveau Mot de Passe</label> : <input id="password" type="password" name="mdp"</input></p>
+					<p><label for="Mdpverif">Confirmez votre nouveau Mot de Passe</label> : <input id="passwordverif" type="password" name="mdpverif"</input></p>
 					<input type="submit" value="envoie"></input>
 			</form>
 		</div>
-		<div id="title">
-			<h1>Veuillez cr&eacuteer votre compte</h1>
-		</div>
+                <div id="title">
+                    <h1>Veuillez entrer les nouvelles informations de connexion</h1>
+                </div>
 	</div>
-	<footer>
+	
+        <footer>
 		<div id="footerGauche">
 			<p>Design Test</p>
 		</div>
