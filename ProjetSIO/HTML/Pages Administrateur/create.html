@@ -3,14 +3,25 @@
 <head>
 	<meta charset="utf-8" />
 	<link href="../template/style.css" rel="stylesheet" />
-	<title>Administration - Créer un nouvel utilisateur</title>
+	<title>Créer un nouvel utilisateur | Administration</title>
 </head>
 <body>
 	<header>
-		header / navigation menu
+		<script type="text/javascript">
+			function form_submit(){
+				if (document.getElementById('_continue').checked) {
+					document.getElementById('create_user').action = "create.html"
+				} else {
+					document.getElementById('create_user').action = "index.html";
+				}
+			}			
+		</script>
+		<p style="text-align:center">
+			Création d'un nouvel utilisateur
+		</p>
 	</header>
-	<div id="content">
-		<form method="POST" action="index.html" name="create_user"><br>
+	<div id="content" >
+		<form method="POST" id="create_user" onsubmit="form_submit()"><br>
 			<label for="username">Nom d'utilisateur :</label>
 			<input type="text" id="username" name="username" required/><br>
 
@@ -23,6 +34,7 @@
 			<label for="mail">Adresse e-mail :</label>
 			<input type="email" id="mail" name="mail" required/>
 			<br>
+			Rôle :
 			<ul class="role_list">
 				<li>
 					<label for="enseignant">Enseignant</label>

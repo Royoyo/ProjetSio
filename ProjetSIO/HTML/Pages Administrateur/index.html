@@ -3,16 +3,38 @@
 <head>
 	<meta charset="utf-8" />
 	<link href="../template/style.css" rel="stylesheet" />
-	<title>Administration</title>
+	<title>Liste des utilisateurs | Administration</title>
 </head>
 <body>
 	<header>
-		header / navigation menu
+		<p style="text-align:center">
+			Liste des utilisateurs
+		</p>
+		<script type="text/javascript">
+			function checkAll(box) {
+				var input = document.getElementsByTagName('input');
+				for(var i=0; i < input.length; i++) {
+					if(input[i].type == 'checkbox') {
+						input[i].checked = box.checked;
+					}
+				}
+			}
+		</script>
 	</header>
 	<div id="content">
+		<div id="action_select">
+			<label for="actions">Actions :</label>
+			<select id="actions onchange="window.location.href=this.value;">
+				<option value="activate.html">Activer les utilisateurs séléctionner</option>
+				<option value="suspend.html">Suspendre les utilisateurs séléctionner</option>
+				<option value="delete.html">Supprimer les utilisateurs séléctionner</option>
+				<option value="reinitialiser.html">Réinitialiser le mot de passe des utilisateurs séléctionner</option>
+			</select>
+		</div>
 		<table id="user_list">
 			<thead>
 				<tr>
+					<td><input id="checkbox_all" onclick="checkAll(this)" type="checkbox"></td>
 					<td>Nom d'utilisateur</td>
 					<td>Nom</td>
 					<td>Prénom</td>
@@ -25,6 +47,7 @@
 			</thead>
 			<tbody>
 				<tr>
+					<td><input id="checkbox_0" type="checkbox"></td>
 					<td><a href="consult.html">smourey</a></td>
 					<td>MOUREY</td>
 					<td>Stéphane</td>
@@ -36,13 +59,15 @@
 						<select onchange="window.location.href=this.value;">
 							<option>------------</option>
 							<option value="consult.html">Consulter</option>
-							<option value="modifier.html">Modifier</option>
-							<option value="activate.html">Activer</option>
+							<option value="update.html">Modifier</option>
+							<option value="suspend.html">Suspendre</option>
 							<option value="delete.html">Supprimer</option>
+							<option value="réinitialiser.html">Réinitialiser le mot de passe</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
+					<td><input id="checkbox_1" type="checkbox"></td>
 					<td><a href="consult.html">rspielmann</a></td>
 					<td>SPIELMANN</td>
 					<td>Romain</td>
@@ -54,13 +79,15 @@
 						<select onchange="window.location.href=this.value;">
 							<option>------------</option>
 							<option value="consult.html">Consulter</option>
-							<option value="modifier.html">Modifier</option>
+							<option value="update.html">Modifier</option>
 							<option value="activate.html">Activer</option>
 							<option value="delete.html">Supprimer</option>
+							<option value="réinitialiser.html">Réinitialiser le mot de passe</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
+					<td><input id="checkbox_2" type="checkbox"></td>
 					<td><a href="consult.html">ghaag</a></td>
 					<td>HAAG</td>
 					<td>Guillaume</td>
@@ -72,9 +99,10 @@
 						<select onchange="window.location.href=this.value;">
 							<option>------------</option>
 							<option value="consult.html">Consulter</option>
-							<option value="modifier.html">Modifier</option>
-							<option value="activate.html">Activer</option>
+							<option value="update.html">Modifier</option>
+							<option value="suspend.html">Suspendre</option>
 							<option value="delete.html">Supprimer</option>
+							<option value="réinitialiser.html">Réinitialiser le mot de passe</option>
 						</select>
 					</td>
 				</tr>
