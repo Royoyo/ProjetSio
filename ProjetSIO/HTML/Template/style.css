@@ -149,4 +149,33 @@ ul.role_list label {
     width: 80px;
     float: left;
 }
+#table_classe
+    {
+	border-spacing:0px;
+    }
+#table_classe th
+    {
+       border: 1px solid black;
+       background-color: grey
+    }
+#table_classe td
+{
+    border: 1px solid black;
+}
+#haut_gauche
+{
+    border-radius: 10px 0px 0px 0px
+}
+#haut_droite
+{
+    border-radius: 0px 10px 0px 0px
+}
+#bas_gauche
+{
+    border-radius: 0px 0px 0px 10px
+}
+#bas_droite
+{
+    border-radius: 0px 0px 10px 0px
+}
 >>>>>>> origin/master
