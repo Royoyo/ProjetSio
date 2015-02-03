@@ -1,4 +1,6 @@
 /* Template */
+
+/* Style de base de la page*/
 body {
     margin:0;
     padding:0;
@@ -31,12 +33,7 @@ header {
     margin:0 auto 10px auto;
     background:#fff;
     box-shadow:0px 5px 15px -5px #666;
-<<<<<<< HEAD
 	position: relative;
-
-=======
-    position: relative;
->>>>>>> origin/master
 }
 
 .centered {
@@ -72,8 +69,15 @@ footer {
     right:5px;
 }
 
-<<<<<<< HEAD
-table {		
+/*
+    Royoyo: J'ai mis cette section en commentaire car  le css ici change
+    l'affichage des pages pour tout le monde, à la place d'utiliser des 
+    balises génériques, il faudrait que les gens qui ont écris cette section
+    la refasse avec des id ou des class.
+*/
+
+/*
+    table {		
 	border:1px solid black;		
  	width:100%;		
 }		
@@ -88,35 +92,8 @@ label
     width: 250px;		
     float: left;		
 }		
-		
-ul.role_list		
-{		
-    list-style-type: none;		
-}		
-		
-ul.role_list label		
-{		
-    display: block;		
-    width: 80px;		
-    float: left;		
- }
+		*/
  
-=======
-table {
-    border:1px solid black;
-    width:100%;
-}
-
-td {
-    border:1px solid black
-}
-
-label	{
-    display: block;
-    width: 250px;
-    float: left;
-}
-
 /* Pages Administrateur */
 
 #action_select {
@@ -149,4 +126,3 @@ ul.role_list label {
     width: 80px;
     float: left;
 }
->>>>>>> origin/master
