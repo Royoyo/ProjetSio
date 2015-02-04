@@ -333,7 +333,7 @@ Il faut donc que le planificateur puisse éditer les dates extrêmes de la plani
 
 #### Gestion des semaines d'enseignements
 
-Pour chaque classe d'élèves, le Plannificateur doit pouvoir accéder à un tableau par semaine (uniquement en consultation pour les semaines passées).
+Pour chaque classe d'élèves, le Planificateur doit pouvoir accéder à un tableau par semaine (uniquement en consultation pour les semaines passées).
 
 Cet accès s'effectue par une liste des semaines (par défaut, on ne verra que les semaines à venir et la semaine en cours, mais il doit être possible d'afficher les semaines passées, par un système de pagination ?). Ces semaines regroupent toutes les années actives auxquelles la classe est affecté et sont triées dans l'ordre chronologique.
 
@@ -351,7 +351,7 @@ Pour chaque année scolaire active, un enseignant peut accéder à un tableau si
 
 Si l'enseignant indiquait une indisponibilité de cours sur une date pour laquelle il a déjà un cours de planifié, un avertissement sera affiché et un mail envoyé aux planificateurs ainsi qu'à l'enseignant pour prévenir du conflit.
 
-**Un tel conflit devra être mise en évidence sur les écrans pertinents de façon à ce que les utilisateurs de l'application ne puissent l'ignorer.**
+**Un tel conflit devra être mis en évidence sur les écrans pertinents de façon à ce que les utilisateurs de l'application ne puissent l'ignorer.**
 
 #### Consultation de sa planification
 
