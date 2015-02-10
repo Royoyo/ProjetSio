@@ -76,42 +76,44 @@ footer {
     la refasse avec des id ou des class.
 */
 
-/*
-    table {		
-	border:1px solid black;		
- 	width:100%;		
-}		
-		
-td { 		
-	border:1px solid black		
-}		
-		
-label		
+
+	
+/*label		
 {		
     display: block;		
     width: 250px;		
     float: left;		
-}		
-		*/
+}*/
+
  
 /* Pages Administrateur */
 
-#action_select {
+table#user_list {		
+    border:1px solid black;		
+    width:100%;		
+    border-spacing: 0px;
+}		
+
+table#user_list td { 		
+    border:1px solid black		
+}	
+
+form#action_select {
     text-align: left;
     margin-left: 20px;
     margin-bottom : 20px;
 }
 
-#action_select label {
+form#action_select label {
     width: 70px;
 }
 
-#create_user {
+form#create_user {
     text-align: left;
     margin-left:10px;
 }
 
-#create_user label {
+form#create_user label {
     display: block;
     width: 150px;
     float: left;
@@ -126,6 +128,35 @@ ul.role_list label {
     width: 80px;
     float: left;
 }
+
+/* Pages Planificateur*/
+table#calendar {
+    border: solid black 1px;
+    border-spacing: 0px;
+}
+
+table#calendar td {
+    border: solid black 1px;
+    width : 8em;
+    text-align:left;
+}
+
+table#calendar thead td {
+    background: #8b8b8b;
+    text-align: center;
+}
+
+table#calendar tbody td.closed {
+    background:#dddddd;
+    color:#8b8b8b;
+    text-align: center;
+}
+
+table#calendar td.other_month {
+    text-align: center;
+    color:#dddddd;
+}
+
 <<<<<<< HEAD
 #table_classe
     {
