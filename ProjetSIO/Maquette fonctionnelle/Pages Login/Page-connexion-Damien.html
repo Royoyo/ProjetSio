@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html>
+<head>
+	<title>Login</title>
+        <meta charset="utf-8" />
+	<link href="../template/style.css" rel="stylesheet" />
+    <script type="text/javascript">
+    function login()
+    {
+        var errors='';
+        var nbErr=0;
+
+        if(document.getElementById('identifiant').value == '')
+        {
+            errors+='<li>Vous devez indiquer votre identifiant</li>';
+            nbErr++;
+        };
+        if(document.getElementById('password').value == '')
+        {
+            errors+='<li>Vous devez indiquer votre mot de passe</li>';
+            nbErr++;
+        };
+        if(errors!='')
+        {
+            errors='<ul><h1>Veuillez corriger le(s) erreur(s) suivantes :</h1>'+errors+'</ul>';
+            errorbox=document.getElementById('errorbox');
+            errorbox.innerHTML=errors;
+
+            errorbox.style.borderColor='rgb(255,0,0)';
+            errorbox.style.borderWidth='2px';
+            errorbox.style.borderStyle='solid';
+
+            return false;
+        }
+        return true;
+    };
+    </script>
+
+</head>
+<body>
+    <header>
+	Login
+	</header>
+	<div id="content">
+        <div id="title">
+            <h1>Veuillez entrer vos informations de compte pour vous connecter</h1>
+        </div>
+		<div id="errorbox">
+		</div>
+		<div class="centered">
+			<form action="" name="methodepost"
+				  method="post"
+				  onsubmit="return login()">   
+					<p><label for="Id">Votre Identifiant</label> : <input id="identifiant" type="text"  name="Login" </input></p>
+					<p><label for="Mdp">Votre Mot de Passe</label> : <input id="password" type="password" name="mdp"</input></p>
+					<input type="submit" value="envoie"></input>
+			</form>
+            <a href="../Pages Administrateur/list_user.html">Login Administrateur   </a><a href="../Pages Enseignant/Page vue enseignant.html">Login Enseignants   </a><a href="../Pages Planificateur/hypertexte.html">Login Planificateur</a>
+		</div>
+	</div>
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
