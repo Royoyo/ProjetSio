@@ -133,6 +133,10 @@ ul.role_list label {
 table#calendar {
     border: solid black 1px;
     border-spacing: 0px;
+    margin-top: 5em;
+    margin-left: auto;
+    margin-right : auto;
+    margin-bottom: 2em;
 }
 
 table#calendar td {
