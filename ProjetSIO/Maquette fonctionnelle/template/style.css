@@ -133,10 +133,6 @@ ul.role_list label {
 table#calendar {
     border: solid black 1px;
     border-spacing: 0px;
-    margin-top: 5em;
-    margin-left: auto;
-    margin-right : auto;
-    margin-bottom: 2em;
 }
 
 table#calendar td {
@@ -161,23 +157,6 @@ table#calendar td.other_month {
     color:#dddddd;
 }
 
-table#matiere {
-    border: solid black 1px;
-    border-spacing: 0px;
-    border-collapse: collapse;
-}
-
-table#matiere td {
-    border: solid black 1px;
-    width : 8em;
-    text-align:left;
-    border-collapse: collapse;
-}
-
-table#matiere thead td {
-    background: #90d0f0;
-    text-align: center;
-}
 <<<<<<< HEAD
 #table_classe
     {

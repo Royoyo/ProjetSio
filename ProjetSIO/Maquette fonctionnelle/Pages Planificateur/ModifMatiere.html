@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="../template/style.css" rel="stylesheet" />
+	<title>Modification Mati&egrave;re</title>
+</head>
+
+<body>
+	<header>
+		<table>
+			<tr>
+			<br>
+				<td>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="page_defaut.html" style='color: #ffffff'>Retour</a>
+				</td>
+			</tr>
+		</table>
+	</header>
+	<div id="content">
+		<p> MATIERE : MODIFICATION</p>
+		<form method="POST" action=" " name="modif_matiere"><br>
+			<table>
+				<tr>
+					<td>
+						<label for="code" style='float: left'>Num&eacute;ro code :</label>
+					</td>
+					<td>
+						<input type="text" style='float: left' id="code" name="code" required/><br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="name" style='float: left'>D&eacute;signation :</label>
+					</td>
+					<td>
+						<input type="text" style='float: left;width: 230px' id="name" name="name" required/><br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="descr" style='float: left'>Description :</label>
+					</td>
+					<td>
+						<textarea id="descr" style='float:left;width:320px;height:100px' name="descr" required/></textarea><br>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style='float: right'>
+					<input type='reset' name="cancel" value="Annuler" onclick="self.location.href='javascript:history.back()'" />
+					</td>
+					<td style='float: left'>
+					<input type="submit" value="Enregistrer les modifications" />
+					</td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
