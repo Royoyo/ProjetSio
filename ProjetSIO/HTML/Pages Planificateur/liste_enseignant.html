@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="../template/style.css" rel="stylesheet" />
+	<title>Liste enseignant</title>
+</head>
+<body>
+	<header>
+	header / navigation menu
+	</header>
+	<div id="content">
+		<table id="user_list">
+			<thead>
+				<tr>
+					<td>Nom d'utilisateur</td>
+					<td>Nom</td>
+					<td>Pr&eacute;nom</td>
+					<td>Adresse e-mail</td>
+					<td>Actions</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="consult.html">smourey</a></td>
+					<td>MOUREY</td>
+					<td>St&eacute;phane</td>
+					<td>smourey@qqch.fr</td>
+					<td>Actif</td>
+					<td>
+						<select onchange="window.location.href=this.value;">
+							<option>------------</option>
+							<option value="consult.html">Consulter</option>
+							<option value="update.html">Modifier</option>
+							<option value="suspend.html">Suspendre</option>
+							<option value="delete.html">Supprimer</option>
+							<option value="réinitialiser.html">Réinitialiser le mot de passe</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><a href="consult.html"></a></td>
+					<td>BETETA</td>
+					<td>St&eacute;phane</td>
+					<td></td>
+					<td>Suspendu</td>
+					<td>
+						<select onchange="window.location.href=this.value;">
+							<option>------------</option>
+							<option value="consult.html">Consulter</option>
+							<option value="update.html">Modifier</option>
+							<option value="activate.html">Activer</option>
+							<option value="delete.html">Supprimer</option>
+							<option value="réinitialiser.html">Réinitialiser le mot de passe</option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<a href="create_user.html" style="float:right">Cr&eacute;er un nouvel utilisateur</a>
+		</div>
+	</div>
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
