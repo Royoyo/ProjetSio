@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="../template/style.css" rel="stylesheet" />
+	<title>Modification d'un utilisateur | Page Administration</title>
+</head>
+<body>
+	<header>
+		<script type="text/javascript">
+			function form_submit(){
+				if (document.getElementById('_continue').checked) {
+					document.getElementById('create_user').action = "create_user.html"
+				} else {
+					document.getElementById('create_user').action = "list_user.html";
+				}
+			}			
+		</script>
+		<p style="text-align:center">
+			Modification d'un utilisateur
+		</p>
+	</header>
+	<div id="content" >
+		<form method="POST" id="create_user" onsubmit="form_submit()"><br>
+			<label for="username">Nom d'utilisateur :</label>
+			<input type="text" id="username" name="username" required/><br>
+
+			<label for="last_name">Nom :</label>
+			<input type="text" id="last_name" name="last_name" required/><br>
+
+			<label for="first_name">Prénom :</label>
+			<input type="text" id="first_name" name="first_name" required/><br>
+
+			<label for="mail">Adresse e-mail :</label>
+			<input type="email" id="mail" name="mail" required/>
+			<br>
+			Rôle :
+			<ul class="role_list">
+				<li>
+					<label for="enseignant">Enseignant</label>
+					<input type="checkbox" id="enseignant" name="choix1" />
+				</li>
+				<li>
+					<label for="planificateur">Planificateur</label>
+					<input type="checkbox" id="planificateur" name="choix2" />
+				</li>
+				<li>
+					<label for="administrateur">Administrateur</label>
+					<input type="checkbox" id="administrateur" name="choix3" />
+				</li>
+			</ul>
+			<br>
+			<input type="submit" value="Enregistrer les modifications" />
+		</form>
+	</div>
+	<footer>
+		<div id="footerGauche">
+			<p>Design Test</p>
+		</div>
+		<div id="footerDroite">
+			<p><?php echo date("Y") ?> - Groupe SIO</p>
+		</div>
+	</footer>
+</body>
+</html>
