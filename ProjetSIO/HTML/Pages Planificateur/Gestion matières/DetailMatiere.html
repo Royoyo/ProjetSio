@@ -18,45 +18,204 @@
 		</table>
 	</header>
 	<div id="content">
-		<p> MATIERE : DETAILS</p>
-		<form method="POST" action=" " name="modif_matiere"><br>
+		<p> MATIERE : GESTION DES ENSEIGNANTS</p>
+		<form method="POST" action=" " name="gestion_enseignants"><br>
+			
 			<table>
 				<tr>
 					<td>
-						<label for="code" style='float: left'>Num&eacute;ro code :</label>
+						<table>
+							<tr>	
+								<td>
+								<label for="code" style='float: left'>Num&eacute;ro code :</label>
+								</td>
+								<td>
+								<input type="text" placeholder="SYS01" style='float: left' id="code" name="code" required/><br>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								<label for="name"  style='float: left'>D&eacute;signation :</label>
+								</td>
+								<td>
+								<input type="text" style='float: left;width: 230px' placeholder="SYSTEME" id="design" name="design" required/><br>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+								<label for="descr" style='float: left'>Enseignant affect&eacute; :</label>
+								</td>
+								<td>
+								<input type="text" style='float: left;width: 230px' placeholder="BETETA" id="enseignant" name="enseignant" required/><br>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							
+						</table>
 					</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;</td>
 					<td>
-						<input type="text" placeholder="SYS01" style='float: left' id="code" name="code" required/><br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="name"  style='float: left'>D&eacute;signation :</label>
-					</td>
-					<td>
-						<input type="text" style='float: left;width: 230px' placeholder="SYSTEME" id="name" name="name" required/><br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="descr" style='float: left'>Description :</label>
-					</td>
-					<td>
-						<textarea id="descr" style='float:left;width:320px;height:100px' name="descr" required/>OS Windows, Linux
-Syst&egrave;me d'Informations
-Virtualisation de Syst&egrave;me d'Exploitation
-Clonage de disques</textarea><br>
+						<table id="matiere">
+							<tr>
+								<td></td>
+								<td>ID</td>
+								<td>NOM</td>
+								<td>PRENOM</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant1" name="choix1"/></td>
+								<td>VB</td>
+								<td>BALA</td>
+								<td>Vidya</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant2" name="choix2" /></td>
+								<td>HB</td>
+								<td>BENAHMED</td>
+								<td>Hassan</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant3" name="choix3" /></td>
+								<td>CB</td>
+								<td>BENAMRON</td>
+								<td>Charles</td>						
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant4" name="choix4" /></td>
+								<td>BS</td>
+								<td>BETETA</td>
+								<td>St&eacute;phane</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant5" name="choix5" /></td>
+								<td>NC</td>
+								<td>CADAPEN</td>
+								<td>Neveen</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant6" name="choix6" /></td>
+								<td>GD</td>
+								<td>DEMESY</td>
+								<td>Gilles</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant7" name="choix7" /></td>
+								<td>BH</td>
+								<td>HABERMACHER</td>
+								<td>Benjamin</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant8" name="choix8" /></td>
+								<td>RJ</td>
+								<td>JEDEI</td>
+								<td>Rime</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant9" name="choix9" /></td>
+								<td>BM</td>
+								<td>MAZZIA</td>
+								<td>Bertand</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant10" name="choix10" /></td>
+								<td>SM</td>
+								<td>MOUREY</td>
+								<td>St&eacute;phane</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant11" name="choix11" /></td>
+								<td>PP</td>
+								<td>PADOAN</td>
+								<td>Philippe</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant12" name="choix12" /></td>
+								<td>AR</td>
+								<td>ROESSLER</td>
+								<td>Alain</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant13" name="choix13" /></td>
+								<td>ER</td>
+								<td>ROHMER</td>
+								<td>Eric</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant14" name="choix14" /></td>
+								<td>SD</td>
+								<td>SADDIK</td>
+								<td>Mohamed</td>
+							</tr>
+							<tr> 
+								<td><input style='float: right' type="checkbox" id="enseignant15" name="choix15" /></td>
+								<td>FS</td>
+								<td>SCHOSSIG</td>
+								<td>Fran&ccedil;ois</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant16" name="choix16" /></td>
+								<td>SS</td>
+								<td>SCHREIBER</td>
+								<td>Stephan</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant17" name="choix17" /></td>
+								<td>MT</td>
+								<td>THIL</td>
+								<td>Myl&egrave;ne</td>
+							</tr>
+							<tr>
+								<td><input style='float: right' type="checkbox" id="enseignant18" name="choix18" /></td>
+								<td>SY</td>
+								<td>YAHMI</td>
+								<td>Sami</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
-				</tr>
+				</tr>	
 				<tr>
 					<td></td>
-					<td style='float: right'>
-					<input type='reset' name="cancel" value="Fermer" onclick="self.location.href='javascript:history.back()'" />
-					</td>
 					<td>
+					<input type='reset' name="cancel" value="Fermer" onclick="self.location.href='javascript:history.back()'" />
 					</td>
 				</tr>
 			</table>
