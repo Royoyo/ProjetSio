@@ -65,7 +65,9 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-								<td>&nbsp;</td>
+								<td>
+								<input type='submit' name="valider" value="Valider" onclick="self.location.href='javascript:history.back()'" />
+								</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
@@ -92,12 +94,15 @@
 					&nbsp;&nbsp;</td>
 					<td>
 						<table id="matiere">
-							<tr>
-								<td></td>
-								<td>ID</td>
-								<td>NOM</td>
-								<td>PRENOM</td>
-							</tr>
+							<thead>
+							   <tr>
+								<th></th>
+								<th>ID</th>
+								<th>NOM</th>
+								<th>PRENOM</th>
+							   </tr>
+							</thead>
+							<tbody>
 							<tr>
 								<td><input style='float: right' type="checkbox" id="enseignant1" name="choix1"/></td>
 								<td>VB</td>
@@ -206,18 +211,14 @@
 								<td>YAHMI</td>
 								<td>Sami</td>
 							</tr>
+							</tbody>
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 				</tr>	
-				<tr>
-					<td></td>
-					<td>
-					<input type='reset' name="cancel" value="Fermer" onclick="self.location.href='javascript:history.back()'" />
-					</td>
-				</tr>
+				
 			</table>
 		</form>	
 	</div>
