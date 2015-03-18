@@ -1,115 +1,94 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 	<meta charset="utf-8" />
-	<link href="../template/style.css" rel="stylesheet" />
-	<title>liste des classe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link href="../template/style.css" rel="stylesheet" />-->
+    <link href="../template/normalize.css" rel="stylesheet" />
+    <link href="../template/skeleton.css" rel="stylesheet" />
+    <link href="../template/styleTable.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+	<title>Liste des classes | Planificateur</title>
 </head>
 <body>
-	<header>
-	Liste des classes
-	</header>
-	<div id="content">
-		<br>
-		<br>
-		<table id='table_classe'>
-			<tr>
-				<th id="haut_gauche">annee</th>
-				<th>BTS</th>
-				<th>matiere enseignee</th>
-				<th>enseignants</th>
-				<th>professeur principal</th>
-				<th id="haut_droite">action</th>
-				
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>SIO</td>
-				<td>
-					<select>
-						<option>matiere 1</option>
-						<option>matiere 2</option>
-						<option>matiere 3</option>
-					</select>
-				</td>
-				<td>
-					<select>
-						<option>prof 1</option>
-						<option>prof 2</option>
-						<option>prof 3</option>
-					</select>
-				</td>
-				<td>M.BETETA</td>
-				<td>
-					<select>
-						<option>modifier</option>
-						<option>suprimer</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>MUC</td>
-				<td>
-					<select>
-						<option>matiere 1</option>
-						<option>matiere 2</option>
-						<option>matiere 3</option>
-					</select>
-				</td>
-				<td>
-					<select>
-						<option>prof 1</option>
-						<option>prof 2</option>
-						<option>prof 3</option>
-					</select>
-				</td>
-				<td>M.MUC</td>
-				<td>
-					<select>
-						<option>modifier</option>
-						<option>suprimer</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td id="bas_gauche">1</td>
-				<td>AG</td>
-				<td>
-					<select>
-						<option>matiere 1</option>
-						<option>matiere 2</option>
-						<option>matiere 3</option>
-					</select>
-				</td>
-				<td>
-					<select>
-						<option>prof 1</option>
-						<option>prof 2</option>
-						<option>prof 3</option>
-					</select>
-				</td>
-				<td>M.AG</td>
-				<td id="bas_droite">
-					<select>
-						<option>modifier</option>
-						<option>suprimer</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-		<div align="left"><a href="hypertexte.html">retour</a></div>
-		<div align="right"><a href="page classe2.html">creer</a></div>
-	</div>
-	<footer>
-		<div id="footerGauche">
-			<p>Design Test</p>
-		</div>
-		<div id="footerDroite">
-			<p><?php echo date("Y") ?> - Groupe SIO</p>
-		</div>
-	</footer>
+    <header>
+        <div class="header-limiter">
+
+            <h1><a href="#">Ifide<span>Formation</span></a></h1>
+            <nav>
+                <a href="#">Accueil</a>
+                <a href="#" class="selected">Administration</a>
+                <a href="#">Planification</a>
+            </nav>
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Déconnexion</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="twelve columns">
+                    <table>
+                        <tr>
+                            <th>Année</th>
+                            <th>Classe</th>
+                            <th>Professeur principal</th>
+                            <th>Actions</th>
+
+                        </tr>
+                        <tr>
+                            <td>2014/2015</td>
+                            <td>SIO1</td>
+                            <td>M.BETETA</td>
+                            <td>
+                                <select>
+                                    <option>Consulter</option>
+                                    <option>Modifier</option>
+                                    <option>Supprimer</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2014/2015</td>
+                            <td>MUC1</td>
+                            <td>M.SCHREIBER</td>
+                            <td>
+                                <select>
+                                    <option>Consulter</option>
+                                    <option>Modifier</option>
+                                    <option>Supprimer</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2014/2015</td>
+                            <td>AG1</td>
+                            </td>
+                            <td>M.SCHREIBER</td>
+                            <td>
+                                <select>
+                                    <option>Consulter</option>
+                                    <option>Modifier</option>
+                                    <option>Supprimer</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <div class="u-pull-left"><a href="hypertexte.html">retour</a></div>
+                </div>
+                <div class="six columns">
+                    <div style="u-pull-right"><a href="page classe2.html">creer</a></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>

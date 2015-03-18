@@ -1,62 +1,88 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 	<meta charset="utf-8" />
-	<link href="../template/style.css" rel="stylesheet" />
-	<title>creations classe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link href="../template/style.css" rel="stylesheet" />-->
+    <link href="../template/normalize.css" rel="stylesheet" />
+    <link href="../template/skeleton.css" rel="stylesheet" />
+    <link href="../template/styleTable.css" rel="stylesheet" />
+
+	<title>Création d'une classe | Planificateur</title>
 </head>
 <body>
-	<header>
-	Creation de classe
-	</header>
-	<div id="content">
-		<p>
-			<form>
-				<fieldset>
-					<legend>creations de classe</legend>
-					<label for="annee_classe">Annee :</label> <input type=text name=annee_classe id=annee_classe>
-					<br>
-					<br>
-					<label for="type_bts">Nom du BTS :</label> <input type=text name=type_bts id=type_bts>
-					<br>
-					<br>
-					<!--<label for=matiere>Matiere enseigne :</label>
-					<select name=matiere id=matiere>
-						<option value=mat1>Mat1</option>
-						<option value=mat2>Mat2</option>
-						<option value=mat3>Mat3</option>
-					</select>
-					<br>
-					<br>
-					<label for=enseignant>Enseignant : </label>
-					<select name=enseignant id=enseignant>
-						<option value=prof1>Prof1</option>
-						<option value=prof2>Prof2</option>
-						<option value=prof3>Prof3</option>
-					</select>
-					<br>
-					<br>-->
-					<label for=prof_prin>Professeur Principal</label>
-					<select name=prof_prin id=prof_prin>
-						<option value=prof1>prof1</option>
-						<option value=prof2>prof2</option>
-						<option value=prof3>prof3</option>
-					</select>
-					<br>
-					<br>
-					<input type=button value=valider>
-				</fieldset>
-			</form>
-			<div align="left"><a href="page classe.html">retour</a></div>
-		</p>
-	</div>
-	<footer>
-		<div id="footerGauche">
-			<p>Design Test</p>
-		</div>
-		<div id="footerDroite">
-			<p><?php echo date("Y") ?> - Groupe SIO</p>
-		</div>
-	</footer>
+    <header>
+        <div class="header-limiter">
+
+            <h1><a href="#">Ifide<span>Formation</span></a></h1>
+            <nav>
+                <a href="#">Accueil</a>
+                <a href="#" class="selected">Administration</a>
+                <a href="#">Planification</a>
+            </nav>
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Déconnexion</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="content">
+        <div class="container">
+            <form>
+                <div class="row">
+                    <div class="twelve columns">
+                        <h4>Création d'une classe</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <label for="annee_classe">Année :</label>
+                        <input type=text name=annee_classe id=annee_classe>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <label for="type_bts">Nom du BTS :</label>
+                        <input type=text name=type_bts id=type_bts>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <label for=prof_prin>Professeur Principal :</label>
+                        <select name=prof_prin id=prof_prin>
+                            <option value=prof1>prof1</option>
+                            <option value=prof2>prof2</option>
+                            <option value=prof3>prof3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <input type=button value=valider>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-left">
+            <p class="footer-links">
+                <a href="#">Accueil</a>
+                ·
+                <a href="#">Documentation</a>
+                ·
+                <a href="#">A propos</a>
+                ·
+                <a href="#">Faq</a>
+                ·
+                <a href="#">Contact</a>
+            </p>
+            <p>Ifide Formation &copy; 2015</p>
+        </div>
+
+        <div class="footer-right">
+            <p>Travail de la classe SIO 2014/2016</p>
+        </div>
+    </footer>
 </body>
 </html>

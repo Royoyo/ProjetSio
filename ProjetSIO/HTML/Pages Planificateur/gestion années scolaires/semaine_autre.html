@@ -1,155 +1,196 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <link href="../../template/style.css" rel="stylesheet" />
-    <title>Semaine 01| Page Planificateur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link href="../template/style.css" rel="stylesheet" />-->
+    <link href="../../template/normalize.css" rel="stylesheet" />
+    <link href="../../template/skeleton.css" rel="stylesheet" />
+    <link href="../../template/styleTable.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <title>Semaine 01| Planificateur</title>
 </head>
 <body>
     <header>
-            Semaine 01
+        <div class="header-limiter">
+
+            <h1><a href="#">Ifide<span>Formation</span></a></h1>
+            <nav>
+                <a href="#">Accueil</a>
+                <a href="#" class="selected">Administration</a>
+                <a href="#">Planification</a>
+            </nav>
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Déconnexion</a></li>
+            </ul>
+        </div>
     </header>
     <div id="content">
-        <form action="" method="POST">
-        <table id="calendar">
-            <thead>
-                <tr>
-                    <td>Jour</td>
-                    <td>Lundi</td>
-                    <td>Mardi</td>
-                    <td>Mercredi</td>
-                    <td>Jeudi</td>
-                    <td>Vendredi</td>
-                    <td>Samedi</td>
-                    <td>Dimanche</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>8h - 12h15</td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td class="closed">
-                    </td>
-                    <td class="closed">
-                    </td>
-                </tr>
-                <tr>
-                    <td>13h15 - 17h30</td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>RESEAUX</option>
-                            <option>DEVELOPMMENT</option>
-                        </select>
-                        <select>
-                            <option>S. BETETA</option>
-                            <option>S. MOUREY</option>
-                        </select>
-                    </td>
-                    <td class="closed">
-                    </td>
-                    <td class="closed">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <input type="submit" value="Enregistrer">
-        <input type="submit" value="Finaliser">
+        <div class="container u-pull-left">
+            <form action="" method="POST">
+                <div class="row">
+                    <div class="twelve columns" id="flip-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Jour</th>
+                                    <th>Lundi</th>
+                                    <th>Mardi</th>
+                                    <th>Mercredi</th>
+                                    <th>Jeudi</th>
+                                    <th>Vendredi</th>
+                                    <th>Samedi</th>
+                                    <th>Dimanche</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>8h - 12h15</td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td class="closed"></td>
+                                    <td class="closed"></td>
+                                </tr>
+                                <tr>
+                                    <td>13h15 - 17h30</td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select>
+                                            <option>RESEAUX</option>
+                                            <option>DEVELOPMMENT</option>
+                                        </select>
+                                        <select>
+                                            <option>S. BETETA</option>
+                                            <option>S. MOUREY</option>
+                                        </select>
+                                    </td>
+                                    <td class="closed"></td>
+                                    <td class="closed"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <input type="submit" value="Enregistrer">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <input type="submit" value="Finaliser">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <footer>
-        <div id="footerGauche">
-            <p>Design Test</p>
+        <div class="footer-left">
+            <p class="footer-links">
+                <a href="#">Accueil</a>
+                ·
+                <a href="#">Documentation</a>
+                ·
+                <a href="#">A propos</a>
+                ·
+                <a href="#">Faq</a>
+                ·
+                <a href="#">Contact</a>
+            </p>
+            <p>Ifide Formation &copy; 2015</p>
         </div>
-        <div id="footerDroite">
-            <p><?php echo date("Y") ?> - Groupe SIO</p>
+
+        <div class="footer-right">
+            <p>Travail de la classe SIO 2014/2016</p>
         </div>
     </footer>
 </body>
