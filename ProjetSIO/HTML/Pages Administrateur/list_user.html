@@ -7,7 +7,7 @@
     <link href="../template/normalize.css" rel="stylesheet" />
     <link href="../template/skeleton.css" rel="stylesheet" />
     <link href="../template/styleTable.css" rel="stylesheet" />
-    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="../template/fonts/fonts.css" rel="stylesheet" type="text/css">
 
 	<title>Liste des utilisateurs | Administration</title>
     <script type="text/javascript">
@@ -39,8 +39,13 @@
         </div>
     </header>
     <div id="content">
-        <div class="container u-pull-left">
-            <div class="row firstdiv">
+        <div class="container">
+			<div class="row">
+				<div class="twelve columns">
+					<h3>Liste des utilisateurs</h3>
+				</div>
+			</div>
+            <div class="row">
                 <div class="three columns">
                     <label for="actions">Actions :</label>
                 </div>
@@ -53,12 +58,12 @@
                     </select>
                 </div>
             </div>
-            <div class="row firstdiv">
+            <div class="row">
                 <div class="twelve columns" id="flip-scroll">
                     <table>
                         <thead>
                             <tr>
-                                <th>Sélectionner tous <input id="checkbox_all" onclick="checkAll(this)" type="checkbox"></th>
+                                <th><input id="checkbox_all" onclick="checkAll(this)" type="checkbox"></th>
                                 <th>Nom d'utilisateur</th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
