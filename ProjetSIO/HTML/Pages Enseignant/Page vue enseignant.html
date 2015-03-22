@@ -1,14 +1,15 @@
 ﻿<!doctype html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link href="../template/style.css" rel="stylesheet" />-->
-    <link href="../template/normalize.css" rel="stylesheet" />
-    <link href="../template/skeleton.css" rel="stylesheet" />
-    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--<link href="../template/style.css" rel="stylesheet" />-->
+	<link href="../template/normalize.css" rel="stylesheet" />
+	<link href="../template/skeleton.css" rel="stylesheet" />
+	<link href="../template/styleTable.css" rel="stylesheet" />
+	<link href="../template/fonts/fonts.css" rel="stylesheet" type="text/css">
 
-    <title>Liste liens | Planificateur </title>
+    <title>Accueil | Enseignant</title>
 </head>
 <body>
     <header>
@@ -28,11 +29,32 @@
     </header>
     <div id="content">
         <div class="container">
-            <p><a href="page%20classe.html">Indication des disponibilites</a></p>
-            <p><a href="/.html">Consultation de sa planification</a></p>
-            <p><a href="/.html">Consultation de la planification des classes</a></p>
+			<div class="row">
+				<div classe="twelve columns">
+					<h3>Bienvenue M. MOSIN</h3>
+					<table>
+						<thead>
+							<tr>
+								<th><h4>Section Enseignant</h4></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="indiquer_indisponibilitees.html">Indiquer mes indisponibilitées</a></td>
+							</tr>
+							<tr>
+								<td><a href="verifier_sa_planification.html">Consultation de mes cours</a></td>
+							</tr>
+							<tr>
+								<td><a href="voir_classes.html">Consultation de la planification de mes classes</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<button onclick="history.back()">Retour</button>
+				</div>
+			</div>
         </div>
-    </div id="content">
+    </div>
     <footer>
         <div class="footer-left">
             <p class="footer-links">
@@ -53,6 +75,5 @@
             <p>Travail de la classe SIO 2014/2016</p>
         </div>
     </footer>
-
 </body>
 </html>
