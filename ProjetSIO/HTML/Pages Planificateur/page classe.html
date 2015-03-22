@@ -44,11 +44,13 @@
                             <td>SIO1</td>
                             <td>M.BETETA</td>
                             <td>
-                                <select>
-                                    <option>Consulter</option>
-                                    <option>Modifier</option>
-                                    <option>Supprimer</option>
-                                </select>
+								<select onchange="window.location.href=this.value;">
+									<option>------------------------</option>
+									<option value="Gestion années scolaires/list_semaines.html">Changer planification</option>
+									<option value="affecter_matieres.html">Affecter matières</option>
+									<option value="page classe3.html">Modifier</option>
+									<option value="page classe.html">Supprimer</option>
+								</select>
                             </td>
                         </tr>
                         <tr>
@@ -56,35 +58,38 @@
                             <td>MUC1</td>
                             <td>M.SCHREIBER</td>
                             <td>
-                                <select>
-                                    <option>Consulter</option>
-                                    <option>Modifier</option>
-                                    <option>Supprimer</option>
-                                </select>
+								<select onchange="window.location.href=this.value;">
+									<option>------------------------</option>
+									<option value="Gestion années scolaires/list_semaines.html">Changer planification</option>
+									<option value="affecter_matieres.html">Affecter matières</option>
+									<option value="page classe3.html">Modifier</option>
+									<option value="page classe.html">Supprimer</option>
+								</select>
                             </td>
                         </tr>
                         <tr>
                             <td>2014/2015</td>
                             <td>AG1</td>
-                            </td>
                             <td>M.SCHREIBER</td>
                             <td>
-                                <select>
-                                    <option>Consulter</option>
-                                    <option>Modifier</option>
-                                    <option>Supprimer</option>
-                                </select>
+								<select onchange="window.location.href=this.value;">
+									<option>------------------------</option>
+									<option value="Gestion années scolaires/list_semaines.html">Changer planification</option>
+									<option value="affecter_matieres.html">Affecter matières</option>
+									<option value="page classe3.html">Modifier</option>
+									<option value="page classe.html">Supprimer</option>
+								</select>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="row">
-                <div class="six columns">
-                    <div class="u-pull-left"><a href="hypertexte.html">retour</a></div>
+                <div class="three columns">
+					<button onclick="history.back()">Retour</button>
                 </div>
                 <div class="six columns">
-                    <div style="u-pull-right"><a href="page classe2.html">creer</a></div>
+					<button onclick="window.location.href = 'page classe2.html'">Créer une classe</button>
                 </div>
             </div>
 

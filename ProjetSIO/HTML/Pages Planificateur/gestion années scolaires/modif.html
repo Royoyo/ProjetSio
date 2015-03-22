@@ -1,38 +1,70 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 	<meta charset="utf-8" />
-	<link href="../../template/style.css" rel="stylesheet" />
-	<title>Modification d'une ann&eacute;e scolaire | Page Planificateur</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--<link href="../template/style.css" rel="stylesheet" />-->
+	<link href="../../template/normalize.css" rel="stylesheet" />
+	<link href="../../template/skeleton.css" rel="stylesheet" />
+	<link href="../../template/styleTable.css" rel="stylesheet" />
+	<link href="../../template/fonts/fonts.css" rel="stylesheet" type="text/css">
+
+	<title>Modification d'une année scolaire | Page Planificateur</title>
 </head>
 <body>
 	<header>
-            Modification d'une ann&eacute;e scolaire
+		<div class="header-limiter">
+
+			<h1><a href="#">Ifide<span>Formation</span></a></h1>
+			<nav>
+				<a href="#">Accueil</a>
+				<a href="#" class="selected">Administration</a>
+				<a href="#">Planification</a>
+			</nav>
+			<ul>
+				<li><a href="#">Login</a></li>
+				<li><a href="#">Déconnexion</a></li>
+			</ul>
+		</div>
 	</header>
 	<div id="content">
-            <form action="list_annee.html" method="POST">
-                <label for="name">Nom :</label><input type="text" id="name" /><br />
-                <label for="date_debut">Date de d&eacute;but :</label><input type="date" id="date_debut" /><br />
-                <label for="date_fin">Date de fin :</label><input type="date" id="date_fin" /><br />
-                Classe affect&eacute;e :
-                <select>
-                    <option>--------</option>
-                    <option>AG premi&egrave;re ann&eacute;e</option>
-                    <option>MUC premi&egrave;re ann&eacute;e</option>
-                    <option>SIO premi&egrave;re ann&eacute;e</option>
-                    <option>AG deuxi&egrave;me ann&eacute;e</option>
-                    <option>MUC deuxi&egrave;me ann&eacute;e</option>
-                    <option>SIO deuxi&egrave;me ann&eacute;e</option>
-                </select><br />
-                <input type="submit" value="Sauvegarder les modifications" />
-            </form>
+		<div class="container">
+			<div class="row">
+				<div class="twelve columns">
+					<h3>Modification d'une année scolaire</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="twelve columns">
+					<form action="list_annee.html" method="POST">
+						<label for="name">Nom :</label><input type="text" id="name" /><br />
+						<label for="date_debut">Date de début :</label><input type="date" id="date_debut" /><br />
+						<label for="date_fin">Date de fin :</label><input type="date" id="date_fin" /><br />
+						<input type="submit" value="Sauvegarder les modifications" />
+						<input type="submit" value="Annuler" />
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 	<footer>
-		<div id="footerGauche">
-			<p>Design Test</p>
+		<div class="footer-left">
+			<p class="footer-links">
+				<a href="#">Accueil</a>
+				·
+				<a href="#">Documentation</a>
+				·
+				<a href="#">A propos</a>
+				·
+				<a href="#">Faq</a>
+				·
+				<a href="#">Contact</a>
+			</p>
+			<p>Ifide Formation &copy; 2015</p>
 		</div>
-		<div id="footerDroite">
-			<p><?php echo date("Y") ?> - Groupe SIO</p>
+
+		<div class="footer-right">
+			<p>Travail de la classe SIO 2014/2016</p>
 		</div>
 	</footer>
 </body>

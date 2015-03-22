@@ -7,7 +7,7 @@
     <link href="../../template/normalize.css" rel="stylesheet" />
     <link href="../../template/skeleton.css" rel="stylesheet" />
     <link href="../../template/styleTable.css" rel="stylesheet" />
-    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+	<link href="../../template/fonts/fonts.css" rel="stylesheet" type="text/css">
 
     <title>Année scolaire | Planificateur</title>
 </head>
@@ -31,12 +31,13 @@
         <div class="container">
             <div class="row">
                 <div class="twelve columns">
-                    <h3>Janvier 2015</h3>
+                    <h3>Gestion jours de fermeture</h3>
+					<h4>Janvier 2015</h4>
                 </div>
             </div>
             <form method="POST" cible="list_annee.html">
                 <div class="row">
-                    <div class="twelve columns" id="flip-scroll">
+                    <div class="twelve columns">
                         <table>
                             <thead>
                                 <tr>
@@ -45,19 +46,19 @@
                                     <th>Mercredi</th>
                                     <th>Jeudi</th>
                                     <th>Vendredi</th>
-                                    <th class="closed">Samedi</th>
-                                    <th class="closed">Dimanche</th>
+                                    <th>Samedi</th>
+                                    <th>Dimanche</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="other_month">29</td>
-                                    <td class="other_month">30</td>
-                                    <td class="other_month">31</td>
-                                    <td class="closed">1</td>
+                                    <td class="other_month"><input id="29" type="checkbox" checked disabled /><label for="29">29</label></td>
+                                    <td class="other_month"><input id="30" type="checkbox" checked disabled /><label for="30">30</label></td>
+                                    <td class="other_month"><input id="31" type="checkbox" checked disabled /><label for="31">31</label></td>
+                                    <td><input id="1" type="checkbox" /><label for="1">1</label></td>
                                     <td><input id="2" type="checkbox" /><label for="2">2</label></td>
-                                    <td class="closed">3</td>
-                                    <td class="closed">4</td>
+                                    <td><input id="3" type="checkbox" checked disabled /><label for="3">3</label></td>
+                                    <td><input id="4" type="checkbox" checked disabled /><label for="4">4</label></td>
                                 </tr>
                                 <tr>
                                     <td><input id="5" type="checkbox" /><label for="5">5</label></td>
@@ -65,8 +66,8 @@
                                     <td><input id="7" type="checkbox" /><label for="7">7</label></td>
                                     <td><input id="8" type="checkbox" /><label for="8">8</label></td>
                                     <td><input id="9" type="checkbox" /><label for="9">9</label></td>
-                                    <td class="closed">10</td>
-                                    <td class="closed">11</td>
+                                    <td><input id="10" type="checkbox" checked disabled/><label for="10">10</label></td>
+                                    <td><input id="11" type="checkbox" checked disabled /><label for="11">11</label></td>
                                 </tr>
                                 <tr>
                                     <td><input id="12" type="checkbox" /><label for="12">12</label></td>
@@ -74,8 +75,8 @@
                                     <td><input id="14" type="checkbox" /><label for="14">14</label></td>
                                     <td><input id="15" type="checkbox" /><label for="15">15</label></td>
                                     <td><input id="16" type="checkbox" /><label for="16">16</label></td>
-                                    <td class="closed">17</td>
-                                    <td class="closed">18</td>
+                                    <td><input id="17" type="checkbox" checked disabled /><label for="17">17</label></td>
+                                    <td><input id="18" type="checkbox" checked disabled /><label for="18">18</label></td>
                                 </tr>
                                 <tr>
                                     <td><input id="19" type="checkbox" /><label for="19">19</label></td>
@@ -83,8 +84,8 @@
                                     <td><input id="21" type="checkbox" /><label for="21">21</label></td>
                                     <td><input id="22" type="checkbox" /><label for="22">22</label></td>
                                     <td><input id="23" type="checkbox" /><label for="23">23</label></td>
-                                    <td class="closed">24</td>
-                                    <td class="closed">25</td>
+                                    <td><input id="24" type="checkbox" checked disabled /><label for="24">24</label></td>
+                                    <td><input id="25" type="checkbox" checked disabled /><label for="25">25</label></td>
                                 </tr>
                                 <tr>
                                     <td><input id="26" type="checkbox" /><label for="26">26</label></td>
@@ -92,29 +93,29 @@
                                     <td><input id="28" type="checkbox" /><label for="28">28</label></td>
                                     <td><input id="29" type="checkbox" /><label for="29">29</label></td>
                                     <td><input id="30" type="checkbox" /><label for="30">30</label></td>
-                                    <td class="closed">31</td>
-                                    <td class="other_month">1</td>
+                                    <td><input id="31" type="checkbox" checked disabled /><label for="31">31</label></td>
+                                    <td class="other_month"><input id="1" type="checkbox" checked disabled /><label for="1">1</label></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+				<form action="vue_annee.html" method="POST">
+					<div class="row">
+						<div class="four columns">
+							<input type="submit" value="Mois précédent">
+						</div>
+						<div class="four columns">
+							<input type="submit" value="Mois suivant">
+						</div>
+					</div>
+				</form>
                 <div class="row">
                     <div class="twelve columns">
                         <input type="submit" value="Enregistrer" />
                     </div>
                 </div>
             </form>
-            <form action="inactive.html" method="POST">
-                <div class="row">
-                    <div class="four columns">
-                        <input type="submit" value="Rendre actif">
-                    </div>
-                    <div class="four columns">
-                        <input type="submit" value="Rendre inactif">
-                    </div>
-                </div>
-             </form>
         </div>
     </div>
     <footer>

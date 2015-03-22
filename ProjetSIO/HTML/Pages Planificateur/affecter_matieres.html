@@ -4,10 +4,10 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--<link href="../template/style.css" rel="stylesheet" />-->
-	<link href="../../template/normalize.css" rel="stylesheet" />
-	<link href="../../template/skeleton.css" rel="stylesheet" />
-	<link href="../../template/styleTable.css" rel="stylesheet" />
-	<link href="../../template/fonts/fonts.css" rel="stylesheet" type="text/css">
+	<link href="../template/normalize.css" rel="stylesheet" />
+	<link href="../template/skeleton.css" rel="stylesheet" />
+	<link href="../template/styleTable.css" rel="stylesheet" />
+	<link href="../template/fonts/fonts.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript">
     function checkAll(box) {
         var input = document.getElementsByTagName('input');
@@ -19,7 +19,7 @@
     }
 	</script>
 
-	<title>Matières et enseignants | Planificateur</title>
+	<title>Affecter matières à une classe | Planificateur</title>
 </head>
 
 <body>
@@ -42,39 +42,45 @@
 		<div class="container">
 			<div class="row">
 				<div class="twelve columns">
-					<h3>Matière : Gestion des enseignants</h3>
+					<h3>Classe : Affecter matières</h3>
 				</div>
 			</div>
 			<hr />
 			<div class="row">
-				<form method="POST" action=" " name="gestion_enseignants">
+				<form method="POST" action=" " name="gestion_matieres">
 					<div class="six columns">
-						<h4>Matière sélectionnée</h4>
+						<h4>Classe sélectionnée</h4>
 						<table>
 							<tr>
 								<td>
-									<label for="code">Code matière:</label>
+									<label for="classe">Classe:</label>
 								</td>
 								<td>
-									<input type="text" value="SYS01" id="code" name="code" readonly /><br>
+									<input type="text" value="SIO01" name="classe" readonly />
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<label for="name">Matière:</label>
+									<label for="principal">Professeur<br />principal:</label>
 								</td>
 								<td>
-									<input type="text" value="SYSTEME 1ère année" id="name" name="name" readonly /><br>
+									<input type="text" value="M. BETETA" name="principal" readonly />
 								</td>
 							</tr>
 						</table>
 						<table>
 							<thead>
 								<tr>
-									<th>Enseignant(s) déjà affecté(s):</th>
+									<th>Matière(s) déjà affectée(s):</th>
 								</tr>
 								<tr>
-									<td>BETETA Stéphane</td>
+									<td>Systèmes 1ère année</td>
+								</tr>
+								<tr>
+									<td>Programmation 1ère année</td>
+								</tr>
+								<tr>
+									<td>Economie 1ère année</td>
 								</tr>
 							</thead>
 						</table>
@@ -82,105 +88,58 @@
 						<input class="u-pull-right" type='submit' name="annuler" value="Annuler" onclick="self.location.href='javascript:history.back()'" />
 					</div>
 					<div class="six columns">
-						<h4>Liste des enseignants</h4>
+						<h4>Liste des matières</h4>
 						<table>
 							<thead>
 								<tr>
 									<th><input id="checkbox_all" onclick="checkAll(this)" type="checkbox"></th>
-									<th>NOM</th>
-									<th>PRENOM</th>
+									<th>Matière</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td><input type="checkbox" id="enseignant1" name="choix1" /></td>
-									<td>BALA</td>
-									<td>Vidya</td>
+									<td>Systèmes et réseaux</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant2" name="choix2" /></td>
-									<td>BENAHMED</td>
-									<td>Hassan</td>
+									<td>Développement</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant3" name="choix3" /></td>
-									<td>BENAMRON</td>
-									<td>Charles</td>
+									<td>Programmation</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant4" name="choix4" /></td>
-									<td>BETETA</td>
-									<td>Stéphane</td>
+									<td>Marketing</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant5" name="choix5" /></td>
-									<td>CADAPEN</td>
-									<td>Neveen</td>
+									<td>Culture générale</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant6" name="choix6" /></td>
-									<td>DEMESY</td>
-									<td>Gilles</td>
+									<td>Bases de données</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant7" name="choix7" /></td>
-									<td>HABERMACHER</td>
-									<td>Benjamin</td>
+									<td>Economie</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant8" name="choix8" /></td>
-									<td>JEDEI</td>
-									<td>Rime</td>
+									<td>Droit</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant9" name="choix9" /></td>
-									<td>MAZZIA</td>
-									<td>Bertand</td>
+									<td>Management</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant10" name="choix10" /></td>
-									<td>MOUREY</td>
-									<td>Stéphane</td>
+									<td>Anglais</td>
 								</tr>
 								<tr>
 									<td><input type="checkbox" id="enseignant11" name="choix11" /></td>
-									<td>PADOAN</td>
-									<td>Philippe</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant12" name="choix12" /></td>
-									<td>ROESSLER</td>
-									<td>Alain</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant13" name="choix13" /></td>
-									<td>ROHMER</td>
-									<td>Eric</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant14" name="choix14" /></td>
-									<td>SADDIK</td>
-									<td>Mohamed</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant15" name="choix15" /></td>
-									<td>SCHOSSIG</td>
-									<td>François</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant16" name="choix16" /></td>
-									<td>SCHREIBER</td>
-									<td>Stephan</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant17" name="choix17" /></td>
-									<td>THIL</td>
-									<td>Mylène</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" id="enseignant18" name="choix18" /></td>
-									<td>YAHMI</td>
-									<td>Sami</td>
+									<td>Relations internationales</td>
 								</tr>
 							</tbody>
 						</table>
