@@ -6,14 +6,15 @@
 // et le système sera bien différent une fois l'api backend mise en place
 // TO DO : remplacer les infos de la maquette et mettre une connexion avec l'API backend
 webApp.service('adminList',
-	function($filter){
+	function($filter,$http){
 		//Pour la maquette, je crée une liste de données fictives :
-		var personnes = [
-        {id: "0", Identifiant: 'ghaag', Nom: 'Haag', Prenom: 'Guillaume', Mail: 'haag.guillaume@gmail.com', Matiere: 'AngularJS', Roles : { admin : true, planificateur : true , enseignant : true}, Statut : true},
-        {id: "1", Identifiant: 'ndeu', Nom: 'Deutschmann', Prenom: 'Nicolas', Mail: 'd.nico@gmail.com', Matiere: 'Django', Roles : { admin : false, planificateur : true , enseignant : true}, Statut : true},
-        {id: "2", Identifiant: 'srom', Nom: 'Spielmann', Prenom: 'Romain', Mail: 's.romain@gmail.com', Matiere: 'Django', Roles : { admin : false, planificateur : true , enseignant : true}, Statut : true},
-		{id: "3", Identifiant: 'nkev', Nom: 'Niva', Prenom: 'Kevin', Mail: 'k.niva@yahoo.com', Matiere: 'Cisp (lisp & C)', Roles : { admin : false, planificateur : true , enseignant : true}, Statut : true}
-    	];
+		var personnes;
+		
+		$http.get('http://192.168.0.3/SIO/PPEBackend/admin/personnes')
+			.then(function(response){
+				personnes = response.data;
+			});
+			
 		
 		//Toute la logique objet que j'indique ici sera côté serveur à terme
 		
@@ -24,7 +25,10 @@ webApp.service('adminList',
 		
 		//Une fonction pour récupérer la liste entière
 		var getPersonnes = function(){
-			return personnes;
+		return $http.get('http://192.168.0.3/SIO/PPEBackend/admin/personnes')
+			.then(function(response){
+				personnes = response.data;
+			});
 		}
 		
 		//Une fonction pour récupérer un user en particulier

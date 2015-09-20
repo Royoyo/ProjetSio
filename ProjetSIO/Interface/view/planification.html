@@ -1,0 +1,15 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2">
+			<h2>Section planificateur</h2>
+			<p>Bonjour {{ user.name }}</p>
+			<ul>
+				<li><a ui-sref="planification.classes">Gestion des classes</a></li>
+				<li><a ui-sref="planification.matieres">Gestion des professeurs</a></li>
+				<li><a ui-sref="planification.periodes">Gestion des périodes</a></li>
+			</ul>			
+		</div>
+		<div class="col-md-10" ui-view="planificateurView">
+		</div>
+	</div>
+</div>

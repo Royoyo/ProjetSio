@@ -51,7 +51,7 @@ $stateProvider
 	
 	.state('planification', {
 	url: "/planification",
-	templateUrl: "view/administration.html",
+	templateUrl: "view/planification.html",
 	controller: "PlanController"
 	})
 	;
