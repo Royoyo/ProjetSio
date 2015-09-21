@@ -1,6 +1,6 @@
 //C'est ici que l'application Angular est déclarée
 // Le premier paramètre est le nom qu'on donne à l'application, le 2eme est une liste des plugins qu'on rajoute
-var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table','ngAnimate']);
+var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table','ngAnimate','restangular']);
 
 //Présentation rapide des plugins :
 //
@@ -15,7 +15,11 @@ var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table',
 // Autres plugins potentiels : ui.calendar ( pour le calendrier),restangular(pour gérer la liaison avec le backend) 
 
 //Ici on utilise la méthode config pour déclarer le routage de l'application
-webApp.config(function($stateProvider, $urlRouterProvider) {
+webApp.config(function($stateProvider, $urlRouterProvider,RestangularProvider) {
+
+//Mise en place de l'url de base pour restangular
+RestangularProvider.setBaseUrl('http://guilaumehaag.ddns.net/SIO/PPEBackend');
+
 
 //Cette ligne force toute les routes autres que celles déclarées vers "/"
 $urlRouterProvider.otherwise("/");
@@ -34,6 +38,8 @@ $stateProvider
 	controller: "loginController"
 	})
 	
+	
+	//Partie Administrateur
 	.state('administration', {
 	url: "/administration",
 	templateUrl: "view/administration.html",
@@ -49,10 +55,33 @@ $stateProvider
 	controller: "AdminDetails"
 	})
 	
+	
+	//Partie Planificateur
 	.state('planification', {
 	url: "/planification",
 	templateUrl: "view/planification.html",
 	controller: "PlanController"
 	})
+	
+	.state('planification.classes', {
+	url: "/planification/classes",
+	templateUrl: "view/planification.classes.html",
+	controller: "PlanClassesController"
+	})
+	
+	.state('planification.matieres', {
+	url: "/planification/matieres",
+	templateUrl: "view/planification.matieres.html",
+	controller: "PlanMatieresController"
+	})
+	
+	.state('planification.periodes', {
+	url: "/planification/periodes",
+	templateUrl: "view/planification.periodes.html",
+	controller: "PlanPeriodesController"
+	})
+	
+	//Partie Enseignant
+	
 	;
 });

@@ -6,14 +6,10 @@
 // et le système sera bien différent une fois l'api backend mise en place
 // TO DO : remplacer les infos de la maquette et mettre une connexion avec l'API backend
 webApp.service('adminList',
-	function($filter,$http){
-		//Pour la maquette, je crée une liste de données fictives :
-		var personnes;
+	function($filter, Restangular){
+
+		var personnes = Restangular.all('admin/personnes');
 		
-		$http.get('http://192.168.0.3/SIO/PPEBackend/admin/personnes')
-			.then(function(response){
-				personnes = response.data;
-			});
 			
 		
 		//Toute la logique objet que j'indique ici sera côté serveur à terme
@@ -25,15 +21,12 @@ webApp.service('adminList',
 		
 		//Une fonction pour récupérer la liste entière
 		var getPersonnes = function(){
-		return $http.get('http://192.168.0.3/SIO/PPEBackend/admin/personnes')
-			.then(function(response){
-				personnes = response.data;
-			});
+			return personnes;
 		}
 		
 		//Une fonction pour récupérer un user en particulier
 		var getPersonne = function(id) {
-			return $filter('filter')(personnes, {id : id})[0];
+			return personnes.get(id);
 		}
 		
 		
