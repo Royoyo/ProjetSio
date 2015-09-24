@@ -17,7 +17,7 @@
 						<th st-sort="Matiere">Matière</th>
 						<th st-sort="Role">Rôles</th>
 						<th st-sort="Statut">Statut</th>
-						<th st-sort="Actions">Actions</th>
+						<th>Actions</th>
 					</tr>
 					<tr>
 						<th>
@@ -41,9 +41,6 @@
 						<th>
 							<input st-search="Statut" placeholder="recherche Statut" class="input-sm form-control" type="search"/>
 						</th>
-						<th>
-							<input st-search="Actions" placeholder="recherche Actions" class="input-sm form-control" type="search"/>
-						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -55,7 +52,7 @@
 						<td>{{ personne.Matiere }}</td>
 						<td>{{ personne.rolesString }}</td>
 						<td>{{ personne.statusString }}</td>
-						<td>{{ personne.Actions }}</td>
+						<td><a ui-sref="administration.details({id: personne.id})"><span class="glyphicon glyphicon-pencil"></span></a><a><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>				
 				</tbody>
 			</table>

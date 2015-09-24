@@ -1,0 +1,14 @@
+<div class="col-md-6">
+	<img class="img-rounded">
+	<h2>{{ enseignant.prenom }}</h2>	
+</div>
+<div class="col-md-6">
+	<table class="table table-responsive table-hover">
+		<thead>
+			<th>Matières</th>
+		</thead>
+		<tbody>
+			<td ng-repeat="matiere in enseignant.matieres">{{ matiere }}</td>
+		</tbody>
+	</table>
+</div>
