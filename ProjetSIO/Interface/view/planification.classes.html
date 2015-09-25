@@ -19,15 +19,21 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="personne in personnes">
-			<td><a ui-sref="administration.details({id: personne.id})">{{ personne.Identifiant }}</a></td>
-			<td>{{ personne.Nom }}</td>
-			<td>{{ personne.Prenom }}</td>
-			<td>{{ personne.Mail }}</td>
-			<td>{{ personne.Matiere }}</td>
-			<td>{{ personne.rolesString }}</td>
-			<td>{{ personne.statusString }}</td>
-			<td>{{ personne.Actions }}</td>
+		<tr ng-repeat="annee in annees">
+			<td>{{ classe.annee }}</td>
+			<td>{{ classe.name }}</td>
+			<td>{{ classe.personne.nomPrenom }}</td>
+			<td>
+				<div class="btn-group" dropdown keyboard-nav>
+					<button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
+						Actions <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li role="menuitem"><a ng-click="edit(personne)">Editer</a></li>
+						<li role="menuitem"><a ng-click="supprimer(personne)">Supprimer</a></li>									
+					</ul>
+				</div>
+			</td>
 		</tr>				
 	</tbody>
 </table>
