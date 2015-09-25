@@ -7,6 +7,7 @@
 webApp.controller('mainController',
 	function($scope){
 		//Ce controller servira principalement à contrôler la navbar
+		// et à garder les infos de la session en cours
 	});
 	
 webApp.controller('loginController',
@@ -16,14 +17,25 @@ webApp.controller('loginController',
 	
 //Ce controller utilise le service AdminList pour récupérer une liste des utilisateurs du serveur
 webApp.controller('AdminList',
-	function ($scope, $filter, adminList, Restangular) {
+	function ($scope, $filter, adminService,$modal, Restangular) {
 		
 		$scope.personnes = [];
-		var personnes = adminList.getPersonnes();
+		var personnes = adminService.getPersonnes();
 		personnes.getList().then(function(personnes){
 			Restangular.copy(personnes,$scope.personnes);
 		});
-
+		
+		$scope.openDetails = function(id) {
+			var modalDetails = $modal.open({
+				animation : true,
+				templateUrl:"view/administration.details.html",
+				controller: "AdminDetails",
+				size: "md",
+				resolve: {
+					id:id
+				}
+			})
+		};
 		//$scope.personnes = adminList.getPersonnes();
 	});
 
@@ -31,21 +43,35 @@ webApp.controller('AdminList',
 //Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller('AdminDetails',
-	function($scope,$stateParams, adminList, $filter, $state, Restangular){
+	function($scope, adminService, Restangular, id, $modalInstance){
 		
 		//TO DO : connexion avec l'api backend par requêtes GET(pour le select) + POST(pour l'update)
 		//Filtrage de la liste par l'id
 		$scope.personne = {};
-		adminList.getPersonne($stateParams.id).then(function(personne){
+		adminService.getPersonne(id).then(function(personne){
 			Restangular.copy(personne,$scope.personne);
 		});
+		
+		$scope.save = function () {
+			$modalInstance.close();
+		};
+		
+		$scope.cancel = function () {
+			$modalInstance.dismiss('Annuler');
+		};
 		
 	});
 
 	
 webApp.controller('PlanController',
-	function($scope){
-		//TODO :
+	function($scope,planService, Restangular){
+		
+		$scope.personnes = [];
+		
+		var personnes = planService.getPersonnes();
+		personnes.getList().then(function(personne){
+			Restangular.copy(personnes,$scope.personnes);
+		});
 	});
 
 webApp.controller('PlanClassesController',
@@ -59,6 +85,11 @@ webApp.controller('PlanMatieresController',
 	});
 	
 webApp.controller('PlanPeriodesController',
+	function($scope){
+		//TODO :
+	});
+	
+webApp.controller('InfoPlanificateurController',
 	function($scope){
 		//TODO :
 	});
