@@ -46,16 +46,6 @@ $stateProvider
 	controller: "AdminList"
 	})
 	
-	// le point "." dans "administration.details" indique un lien parent->child, c'est ce qui permet d'avoir des nested views
-	.state('administration.details', {
-	// Dans la ligne suivante on peut que voir dans l'url ":id", c'est ce qu'on appelle un paramètre de route, cela permet
-	// de récupérer une variable par l'URL et la traiter avec le controller.
-	url: "/administration/details/:id",
-	templateUrl: "view/administration.details.html",
-	controller: "AdminDetails"
-	})
-	
-	
 	//Partie Planificateur
 	.state('planification', {
 	url: "/planification",
