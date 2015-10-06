@@ -25,18 +25,21 @@ webApp.controller('AdminList',
 			Restangular.copy(personnes,$scope.personnes);
 		});
 		
-		$scope.openDetails = function(id) {
+		$scope.openDetails = function(idList) {
+			//Il faut mettre l'idList dans $scope pour qu'il soit accessible dans resolve:
+			$scope.idList = idList;
 			var modalDetails = $modal.open({
 				animation : true,
 				templateUrl:"view/administration.details.html",
 				controller: "AdminDetails",
 				size: "md",
 				resolve: {
-					id:id
+					id: function(){
+						return $scope.idList;
+					}
 				}
 			})
 		};
-		//$scope.personnes = adminList.getPersonnes();
 	});
 
 
@@ -69,7 +72,7 @@ webApp.controller('PlanController',
 		$scope.personnes = [];
 		
 		var personnes = planService.getPersonnes();
-		personnes.getList().then(function(personne){
+		personnes.getList().then(function(personnes){
 			Restangular.copy(personnes,$scope.personnes);
 		});
 	});
@@ -79,9 +82,45 @@ webApp.controller('PlanClassesController',
 		//TODO :
 	});
 	
+webApp.controller('PlanEnseignantsController',
+	function($scope, planService, Restangular){
+		
+		$scope.personnes = [];
+		
+		var personnes = planService.getPersonnes();
+		personnes.getList().then(function(personnes){
+			Restangular.copy(personnes,$scope.personnes);
+		});
+	});
+
 webApp.controller('PlanMatieresController',
-	function($scope){
-		//TODO :
+	function($scope, personne, matieres, $modal){
+		$scope.personne = personne;
+		
+		$scope.matieres = matieres;
+		$scope.showAddForm = function(idList) {
+
+			var modalDetails = $modal.open({
+				animation : true,
+				templateUrl:"view/planification.enseignants.matieres.details.html",
+				controller: "MatieresDetailsController",
+				size: "lg",
+				resolve: {
+					personne : function(){
+						return $scope.personne;
+					},
+					matieres : function(){
+						return $scope.matieres;
+					}
+				}
+			})
+		};
+	});
+
+webApp.controller('MatieresDetailsController',
+	function($scope,personne,matieres){
+		$scope.personne = personne;
+		$scope.matieres = matieres;
 	});
 	
 webApp.controller('PlanPeriodesController',
