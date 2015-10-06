@@ -54,15 +54,29 @@ $stateProvider
 	})
 	
 	.state('planification.classes', {
-	url: "/planification/classes",
+	url: "/classes",
 	templateUrl: "view/planification.classes.html",
 	controller: "PlanClassesController"
 	})
-	
-	.state('planification.matieres', {
-	url: "/planification/matieres",
-	templateUrl: "view/planification.matieres.html",
-	controller: "PlanMatieresController"
+
+	.state('planification.enseignants', {
+	url: "/enseignants",
+	templateUrl: "view/planification.enseignants.html",
+	controller: "PlanEnseignantsController"
+	})
+		
+	.state('planification.enseignants.matieres', {
+	url: "/:id/matieres",
+	templateUrl: "view/planification.enseignants.matieres.html",
+	controller: "PlanMatieresController",
+	resolve:{
+		personne: function(planService, $stateParams){
+			return planService.getPersonne($stateParams.id);
+		},
+		matieres: function(matiereService){
+			return matiereService.getMatieres();
+		}
+	}
 	})
 	
 	.state('planification.periodes', {
