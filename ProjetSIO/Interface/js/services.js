@@ -32,7 +32,7 @@ webApp.service('adminService',
 webApp.service('planService',
 	function(Restangular){
 
-		var personnes = Restangular.all('plan/personnes');
+		var personnes = Restangular.all('admin/personnes');
 		
 			
 		
@@ -56,10 +56,26 @@ webApp.service('planService',
 		}
 	})
 	
+webApp.service('matiereService',
+	function(Restangular){
+
+		var matieres = Restangular.all('matieres');		
+		
+		//Une fonction pour récupérer la liste entière
+		var getMatieres = function(){
+			return matieres;
+		}
+		
+		return {
+			//De base, les fonctions déclarées dans un service sont privées, pour les rendre publiques il faut les indiquer comme cela :
+			getMatieres : getMatieres
+		}
+	})
+	
 webApp.service('loginService',
 	function(Restangular){
 		
-		keep
+		
 		//TO DO
 		return {
 		}
