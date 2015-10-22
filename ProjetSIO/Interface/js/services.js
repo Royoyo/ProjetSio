@@ -8,8 +8,7 @@
 webApp.service('adminService',
 	function(Restangular){
 
-		var personnes = Restangular.all('admin/personnes');
-		
+		var personnes = Restangular.all('/admin/personnes');
 
 		//Une fonction pour récupérer la liste entière
 		var getPersonnes = function(){
