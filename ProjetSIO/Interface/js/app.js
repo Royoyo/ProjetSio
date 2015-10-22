@@ -14,78 +14,31 @@ var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table',
 //
 // Autres plugins potentiels : ui.calendar ( pour le calendrier),restangular(pour gérer la liaison avec le backend) 
 
-//Ici on utilise la méthode config pour déclarer le routage de l'application
-webApp.config(function($stateProvider, $urlRouterProvider,RestangularProvider) {
+//Logique de login :
 
-//Mise en place de l'url de base pour restangular
-RestangularProvider.setBaseUrl('http://localhost/ProjetSIO/ProjetSIO/Backend');
+// Déclaration des constantes pour les logins
+webApp.constant('USERS_ROLES', {
+	administrateur : 'administrateur',
+	planificateur : 'planificateur',
+	enseignant : 'enseignant'
+})
 
+// Déclaration des constantes pour les évènements de login
+webApp.constant('AUTH_EVENTS',{
+	loginSuccess : 'auth-loginSuccess',
+	loginFailed : 'auth-loginFailed',
+	logoutSuccess : 'auth-logoutSuccess',
+	sessionTimeout : 'auth-sessionTimeout',
+	notAuthenticated : 'auth-notAuthenticated',
+	notAuthorized : 'auth-notAuthorized'
+})
 
-//Cette ligne force toute les routes autres que celles déclarées vers "/"
-$urlRouterProvider.otherwise("/");
-
-// NOTA BENE : ui-router utilise la terminologie "state" à la place de "route", mais le principe de base reste le même
-
-//déclaration des states ( ou routes)
-$stateProvider
-	//D'abord on déclare le nom du state
-	.state('login', {
-	//Puis on crée la liaison avec un url 
-	url: "/",
-	//Ensuite on indique le template utilisé 
-	templateUrl: "view/login.html",
-	//Et pour finir on lie un controller à la view
-	controller: "loginController"
-	})
-	
-	
-	//Partie Administrateur
-	.state('administration', {
-	url: "/administration",
-	templateUrl: "view/administration.html",
-	controller: "AdminList"
-	})
-	
-	//Partie Planificateur
-	.state('planification', {
-	url: "/planification",
-	templateUrl: "view/planification.html",
-	controller: "PlanController"
-	})
-	
-	.state('planification.classes', {
-	url: "/classes",
-	templateUrl: "view/planification.classes.html",
-	controller: "PlanClassesController"
-	})
-
-	.state('planification.enseignants', {
-	url: "/enseignants",
-	templateUrl: "view/planification.enseignants.html",
-	controller: "PlanEnseignantsController"
-	})
-		
-	.state('planification.enseignants.matieres', {
-	url: "/:id/matieres",
-	templateUrl: "view/planification.enseignants.matieres.html",
-	controller: "PlanMatieresController",
-	resolve:{
-		personne: function(planService, $stateParams){
-			return planService.getPersonne($stateParams.id);
-		},
-		matieres: function(matiereService){
-			return matiereService.getMatieres();
-		}
-	}
-	})
-	
-	.state('planification.periodes', {
-	url: "/planification/periodes",
-	templateUrl: "view/planification.periodes.html",
-	controller: "PlanPeriodesController"
-	})
-	
-	//Partie Enseignant
-	
-	;
-});
+// Rajout d'un intercepteur de toutes les requêtes http pour vérifier le login
+webApp.config(function ($httpProvider) {
+  $httpProvider.interceptors.push([
+    '$injector',
+    function ($injector) {
+      return $injector.get('AuthInterceptor');
+    }
+  ]);
+})
