@@ -70,12 +70,19 @@ webApp.service('matiereService',
 			getMatieres : getMatieres
 		}
 	})
-	
-webApp.service('loginService',
-	function(Restangular){
-		
-		
-		//TO DO
-		return {
-		}
-	})
+
+//Session utilisateur Javascript ( garder au chaud dans la session du navigateur par la factory Authentification)
+webApp.service('Session', function($rootScope, USERS_ROLES) {
+
+	this.create = function(user) {
+		this.user = user.name;
+		this.userRole = user.userRole;
+		this.token = user.token;
+	};
+	this.destroy = function() {
+		this.user = null;
+		this.userRole = null;
+		this.token = null;
+	};
+	return this;
+});
