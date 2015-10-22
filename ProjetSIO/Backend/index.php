@@ -8,6 +8,16 @@ $app->get('/', function () {
     echo "Hello, it works!";
 });
 
+$app->post('/login', function () use ($app) {
+    $user = array(
+    "name" => "Guillaume",
+    "password" => "123",
+    "userRole"   => "administrateur"
+    );
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setBody(json_encode($user));
+});
+
 $app->get('/hello/:name', function ($name) {
     echo "Hello, $name";
 });
