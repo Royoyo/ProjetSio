@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `dateDebut` date NOT NULL,
   `dateFin` date NOT NULL,
   `nom` varchar(25) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `classes`
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `cours` (
   `dateFin` datetime NOT NULL,
   `id_Matieres` int(11) NOT NULL,
   `id_Users` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `cours`
@@ -70,7 +70,7 @@ INSERT INTO `cours` (`id`, `dateDebut`, `dateFin`, `id_Matieres`, `id_Users`) VA
 CREATE TABLE IF NOT EXISTS `cours_classes` (
   `id_Cours` int(11) NOT NULL,
   `id_Classes` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `fermetures` (
 `id` int(11) NOT NULL,
   `dateDebut` datetime NOT NULL,
   `dateFin` datetime NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `fermetures`
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `indisponibilites` (
   `dateDebut` datetime NOT NULL,
   `dateFin` datetime NOT NULL,
   `id_Users` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `indisponibilites`
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `matieres` (
 `id` int(11) NOT NULL,
   `nom` varchar(25) NOT NULL,
   `code` varchar(25) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `matieres`
@@ -139,7 +139,7 @@ INSERT INTO `matieres` (`id`, `nom`, `code`) VALUES
 CREATE TABLE IF NOT EXISTS `roles` (
 `id` int(11) NOT NULL,
   `role` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `roles`
@@ -159,21 +159,22 @@ INSERT INTO `roles` (`id`, `role`) VALUES
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
   `login` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `enable` tinyint(1) NOT NULL,
   `token` varchar(50) DEFAULT NULL,
   `tokenCDate` datetime DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `firstName`, `lastName`, `email`, `enable`, `token`, `tokenCDate`) VALUES
-(1, 'testbiscuit', 'premier', 'test', 'test@biscuit.fr', 1, NULL, NULL),
-(2, 'jardinbus', 'jardin', 'raisin', 'raisin@biscuit.fr', 1, NULL, NULL);
+INSERT INTO `users` (`id`, `login`, `password`, `firstName`, `lastName`, `email`, `enable`, `token`, `tokenCDate`) VALUES
+(1, 'testbiscuit', 'Ptptt42S', 'premier', 'test', 'test@biscuit.fr', 1, NULL, NULL),
+(2, 'jardinbus', 'Tract0Pl', 'jardin', 'raisin', 'raisin@biscuit.fr', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -184,7 +185,7 @@ INSERT INTO `users` (`id`, `login`, `firstName`, `lastName`, `email`, `enable`, 
 CREATE TABLE IF NOT EXISTS `users_matieres` (
   `id_Users` int(11) NOT NULL,
   `id_Matieres` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `users_matieres`
@@ -203,7 +204,7 @@ INSERT INTO `users_matieres` (`id_Users`, `id_Matieres`) VALUES
 CREATE TABLE IF NOT EXISTS `users_roles` (
   `id_Roles` int(11) NOT NULL,
   `id_Users` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `users_roles`
