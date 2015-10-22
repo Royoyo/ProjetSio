@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html lang='fr'>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap/normalize.css">
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="css/animations.css">
+</head>
+<body ng-app="webApp" ng-controller="mainController">
+	<nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+          Ifide
+          <!-- TO DO :changer le css pour faire que l'image s'affiche correctement
+          <img alt="Ifide" src="img/logo.png">
+          -->
+		  </a>
+        </div>
+        <div class="navbar-collapse collapse" collapse="navCollapsed">
+          <ul class="nav navbar-nav">
+            <li ui-sref-active="active" ui-sref="login"><a>Accueil</a></li>
+            <li ui-sref-active="active" ui-sref="administration"><a>Administration</a></li>
+            <li ui-sref-active="active" ui-sref="planification"><a>Planification</a></li>
+          </ul>
+          <button type="button" class="btn btn-default navbar-btn navbar-right">Se connecter</button>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+	<div ui-view></div>
+  <script src="lib/lodash.min.js"></script>
+	<script src="lib/angular.js"></script>
+  <script src="lib/restangular.min.js"></script>
+	<script src="lib/angular-ui-router.min.js"></script>
+	<script src="lib/ui-bootstrap-tpls.min.js"></script>
+	<script src="lib/smart-table.min.js"></script>
+	<script src="lib/angular-animate.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/controllers.js"></script>
+</body>
+</html>
