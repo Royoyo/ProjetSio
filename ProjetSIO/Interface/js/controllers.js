@@ -30,7 +30,7 @@ webApp.controller('loginController',
 			//2ème paramètre = fonction de succès
 			$modalInstance.close();
 			if (user)
-			$state.go('accueil');
+			$state.go(user.home);
 		}, function(err) {
 			//3ème paramètre fonction d'echec
 			console.log("error");

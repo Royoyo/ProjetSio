@@ -36,7 +36,7 @@ webApp.factory('Authentification',function($rootScope, $window, Session, AUTH_EV
 		if (!angular.isArray(authorizedRoles)) {
 	      authorizedRoles = [authorizedRoles];
 	    }
-	    return (authService.isAuthenticated() && authorizedRoles.indexOf(Session.userRole) !== -1);
+	    return (authService.isAuthenticated() && authorizedRoles.indexOf(Session.role) !== -1);
 	};
 	
 	//logout de l'utilisateur, destruction de la session ( javascript + naviguateur)

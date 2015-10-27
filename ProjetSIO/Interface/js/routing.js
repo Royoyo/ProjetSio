@@ -28,26 +28,38 @@ $stateProvider
 	.state('administration', {
 	url: "/administration",
 	templateUrl: "view/administration.html",
-	controller: "AdminList"
+	controller: "AdminList",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur]
+      }
 	})
 	
 	//Partie Planificateur
 	.state('planification', {
 	url: "/planification",
 	templateUrl: "view/planification.html",
-	controller: "PlanController"
+	controller: "PlanController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
 	})
 	
 	.state('planification.classes', {
 	url: "/classes",
 	templateUrl: "view/planification.classes.html",
-	controller: "PlanClassesController"
+	controller: "PlanClassesController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
 	})
 
 	.state('planification.enseignants', {
 	url: "/enseignants",
 	templateUrl: "view/planification.enseignants.html",
-	controller: "PlanEnseignantsController"
+	controller: "PlanEnseignantsController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
 	})
 		
 	.state('planification.enseignants.matieres', {
@@ -61,13 +73,19 @@ $stateProvider
 		matieres: function(matiereService){
 			return matiereService.getMatieres();
 		}
-	}
+	},
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
 	})
 	
 	.state('planification.periodes', {
 	url: "/planification/periodes",
 	templateUrl: "view/planification.periodes.html",
-	controller: "PlanPeriodesController"
+	controller: "PlanPeriodesController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
 	})
 	
 	//Partie Enseignant
