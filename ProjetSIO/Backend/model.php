@@ -19,16 +19,9 @@ $resolver->addConnection('default', $conn);
 $resolver->setDefaultConnection('default');
 \Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
 
-<<<<<<< HEAD
+
 class Users extends \Illuminate\Database\Eloquent\Model
 {
-    protected $fillable = ['login', 'firstName', 'lastName', 'email'];
-    public $timestamps = false;
-=======
-use \Illuminate\Database\Eloquent\Model;
-
-
-class Users extends Model {
     protected $fillable = ['login', 'firstName', 'lastName', 'email'];
     public $timestamps = false;
 
@@ -98,6 +91,5 @@ class Roles extends Model {
     public function user() {
         return $this->belongsToMany('Users', 'users_matieres', 'id_Roles', 'id_Users');
     }
->>>>>>> origin/master
 }
 ?>
