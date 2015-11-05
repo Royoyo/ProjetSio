@@ -76,14 +76,14 @@ webApp.service('Session', function($rootScope, USERS_ROLES) {
 
 	this.create = function(user) {
 		this.user = user.name;
-		this.role = user.role;
+		this.roles = user.roles;
 		this.token = user.token;
 		this.home = user.home;
 		this.id = user.id;
 	};
 	this.destroy = function() {
 		this.user = null;
-		this.role = null;
+		this.roles = null;
 		this.token = null;
 		this.home = null;
 		this.id = null;
