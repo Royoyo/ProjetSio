@@ -1,6 +1,0 @@
-{
-    "require": {
-        "slim/slim": "2.*",
-        "illuminate/database": "*"
-    }
-}
