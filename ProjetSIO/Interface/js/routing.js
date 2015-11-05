@@ -17,7 +17,7 @@ $stateProvider
 	//Puis on crée la liaison avec un url 
 	url: "/",
 	//Ensuite on indique le template utilisé 
-	templateUrl: "view/login.html",
+	templateUrl: "view/accueil.html",
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur, USERS_ROLES.enseignant]
       }
