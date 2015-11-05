@@ -139,6 +139,7 @@ INSERT INTO `matieres` (`id`, `nom`, `code`) VALUES
 CREATE TABLE IF NOT EXISTS `roles` (
 `id` int(11) NOT NULL,
   `role` varchar(25) DEFAULT NULL
+  `home` varchar(50) NOT NULL,
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
