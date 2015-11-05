@@ -1,0 +1,61 @@
+<div class="container-fluid">
+	<div class="row">
+		<h1 class="page-header col-md-12">
+			Liste des utilisateurs
+		</h1>
+	</div>
+	<div class="row">
+		<div ui-view></div>
+		<div class="col-md-12">
+			<table st-table="personnes" class="table table-responsive table-hover">
+				<thead>
+					<tr>
+						<th st-sort="Identifiant">Identifiant</th>
+						<th st-sort="Nom">Nom</th>
+						<th st-sort="Prenom">Prénom</th>
+						<th st-sort="Mail">Mail</th>
+						<th st-sort="Matiere">Matière</th>
+						<th st-sort="Role">Rôles</th>
+						<th st-sort="Statut">Statut</th>
+						<th>Actions</th>
+					</tr>
+					<tr>
+						<th>
+							<input st-search="Identifiant" placeholder="recherche Identifiant" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Nom" placeholder="recherche Nom" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Prenom" placeholder="recherche Prenom" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Mail" placeholder="recherche Mail" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Matiere" placeholder="recherche Matiere" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Role" placeholder="recherche Role" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="Statut" placeholder="recherche Statut" class="input-sm form-control" type="search"/>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="personne in personnes">
+						<td><a ui-sref="administration.details({id: personne.id})">{{ personne.Identifiant }}</a></td>
+						<td>{{ personne.Nom }}</td>
+						<td>{{ personne.Prenom }}</td>
+						<td>{{ personne.Mail }}</td>
+						<td>{{ personne.Matiere }}</td>
+						<td>{{ personne.rolesString }}</td>
+						<td>{{ personne.statusString }}</td>
+						<td><a ui-sref="administration.details({id: personne.id})"><span class="glyphicon glyphicon-pencil"></span></a><a><span class="glyphicon glyphicon-trash"></span></a></td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

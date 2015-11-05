@@ -8,32 +8,16 @@ $app->get('/', function () {
     echo "Hello, it works!";
 });
 
-$app->post('/login', function () use ($app) { 
-    $request = $app->request();
-    $body = $request->getBody();
-    $user = json_decode($body);
-    $username = "rspielmann";
-    $password = "020395";
-    $token = "demo";
-    $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
-
-    // Créer session
-    if (!isset($_SESSION['token']) || !isset($_SESSION['id'])) {
-        session_start();
-        $_SESSION['id'] = $user_obj->id;
-        $_SESSION['token'] = $token;
-        $user_obj->connected = True;
-        $user_obj->save();
-    }
-
-    $user_json = array(
-        "name"=>$user_obj->login,   
-        "userRole"=>$user_obj->roles,
-        "token"=>$token,
-        );
+$app->post('/login', function () use ($app) {
+    $user = array(
+    "name" => "Guillaume",
+    "password" => "123",
+    "userRole"   => "administrateur"
+    );
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($user_json));
+    $app->response->setBody(json_encode($user));
 });
+
 $app->get('/hello/:name', function ($name) {
     echo "Hello, $name";
 });

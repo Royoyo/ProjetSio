@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Détails {{ personne.firstName }} {{ personne.lastName }}</div>
+	<div class="panel-body">
+		<form novalidate class="form">
+			<div class="form-group">
+				<label>Identifiant</label>
+				<p type="text" class="form-control-static">{{ personne.login }}</p>
+			</div>
+			<div class="form-group">
+				<label>Nom</label>
+				<input type="text" class="form-control" ng-model="personne.lastName">
+			</div>
+			<div class="form-group">
+				<label>Prénom</label>
+				<input type="text" class="form-control" ng-model="personne.firstName">
+			</div>
+			<div class="form-group">
+				<label>e-mail</label>
+				<input type="text" class="form-control" ng-model="personne.email">
+			</div>
+			<div class="form-group">
+				<label>Rôles :</label>
+				<label class="checkbox-inline">
+				<input type="checkbox" id="inlineCheckbox1" ng-model="personne.Roles.enseignant"> Enseignant
+				</label>
+				<label class="checkbox-inline">
+				<input type="checkbox" id="inlineCheckbox2" ng-model="personne.Roles.planificateur"> Planificateur
+				</label>
+				<label class="checkbox-inline">
+				<input type="checkbox" id="inlineCheckbox3" ng-model="personne.Roles.admin"> Administrateur
+				</label>
+			</div>
+			</div>
+			<div class="form-group">
+			<div class="col-sm-offset-2">
+				<input type="submit" class="btn btn-default" ng-click="save()" value="Enregistrer"/>
+				<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

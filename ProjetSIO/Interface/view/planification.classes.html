@@ -1,0 +1,39 @@
+<table st-table="personnes" class="table table-responsive table-hover">
+	<thead>
+		<tr>
+			<th st-sort="Annee">Année</th>
+			<th st-sort="Classe">Classe</th>
+			<th st-sort="ProfPrincipal">Professeur principal</th>
+			<th>Actions</th>
+		</tr>
+		<tr>
+			<th>
+				<input st-search="Annee" placeholder="recherche Annee" class="input-sm form-control" type="search"/>
+			</th>
+			<th>
+				<input st-search="Classe" placeholder="recherche Classe" class="input-sm form-control" type="search"/>
+			</th>
+			<th>
+				<input st-search="ProfPrincipal" placeholder="recherche ProfPrincipal" class="input-sm form-control" type="search"/>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="annee in annees">
+			<td>{{ classe.annee }}</td>
+			<td>{{ classe.name }}</td>
+			<td>{{ classe.personne.nomPrenom }}</td>
+			<td>
+				<div class="btn-group" dropdown keyboard-nav>
+					<button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
+						Actions <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li role="menuitem"><a ng-click="edit(personne)">Editer</a></li>
+						<li role="menuitem"><a ng-click="supprimer(personne)">Supprimer</a></li>									
+					</ul>
+				</div>
+			</td>
+		</tr>				
+	</tbody>
+</table>
