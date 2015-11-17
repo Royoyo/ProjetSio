@@ -50,11 +50,11 @@ webApp.controller('loginController',
 	
 //Ce controller utilise le service AdminList pour récupérer une liste des utilisateurs du serveur
 webApp.controller('AdminList',
-	function ($scope, $filter, adminService,$modal, Restangular) {
+	function ($scope, $filter, adminPersonnes, $modal, Restangular) {
 		
 		$scope.personnes = [];
-		var personnes = adminService.getPersonnes();
-		personnes.getList().then(function(personnes){
+		var personnes = adminPersonnes.getPersonnes();
+		personnes.then(function(personnes){
 			Restangular.copy(personnes,$scope.personnes);
 		});
 		
@@ -63,7 +63,7 @@ webApp.controller('AdminList',
 			$scope.idList = idList;
 			var modalDetails = $modal.open({
 				animation : true,
-				templateUrl:"view/administration.details.html",
+				templateUrl:"modals/administration.details.html",
 				controller: "AdminDetails",
 				size: "md",
 				resolve: {
@@ -79,16 +79,21 @@ webApp.controller('AdminList',
 //Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller('AdminDetails',
-	function($scope, adminService, Restangular, id, $modalInstance){
+	function($scope, adminPersonnes, Restangular, id, $modalInstance){	
 		
-		//TO DO : connexion avec l'api backend par requêtes GET(pour le select) + POST(pour l'update)
-		//Filtrage de la liste par l'id
-		$scope.personne = {};
-		adminService.getPersonne(id).then(function(personne){
-			Restangular.copy(personne,$scope.personne);
-		});
-		
+		$scope.creation = false;	
+		if (id === -1)
+		{
+			$scope.creation = true;
+			$scope.personne = {};
+		}
+		else
+		{
+			$scope.personne = adminPersonnes.getPersonne(id);
+		}
+			
 		$scope.save = function () {
+			adminPersonnes.savePersonne($scope.personne);
 			$modalInstance.close();
 		};
 		

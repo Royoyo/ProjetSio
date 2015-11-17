@@ -1,5 +1,6 @@
 <div class="panel panel-default">
-	<div class="panel-heading">Détails {{ personne.firstName }} {{ personne.lastName }}</div>
+	<div class="panel-heading" ng-hide="creation">Détails {{ personne.firstName }} {{ personne.lastName }}</div>
+	<div class="panel-heading" ng-show="creation">Création d'utilisateur</div>
 	<div class="panel-body">
 		<form novalidate class="form">
 			<div class="form-group">

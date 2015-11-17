@@ -5,26 +5,19 @@
 // Bien sûr toutes les fonctions pour la connection avec la BDD ne sont pas encore en place dans cet exemple
 // et le système sera bien différent une fois l'api backend mise en place
 // TO DO : remplacer les infos de la maquette et mettre une connexion avec l'API backend
-webApp.service('adminService',
+webApp.factory('adminPersonnes',
 	function(Restangular){
-
-		var personnes = Restangular.all('/admin/personnes');
-
-		//Une fonction pour récupérer la liste entière
-		var getPersonnes = function(){
-			return personnes;
-		}
-		
-		//Une fonction pour récupérer un user en particulier
-		var getPersonne = function(id) {
-			return personnes.get(id);
-		}
-		
-		
 		return {
-			//De base, les fonctions déclarées dans un service sont privées, pour les rendre publiques il faut les indiquer comme cela :
-			getPersonnes : getPersonnes,
-			getPersonne : getPersonne
+			getPersonnes: function(){
+				return Restangular.all('admin/personnes').getList();
+			},
+			
+			getPersonne: function(id){
+				return Restangular.one('admin/personnes',id).get();
+			},
+			savePersonne: function(personne){
+				personne.save();
+			}
 		}
 	})
 	
