@@ -11,7 +11,7 @@ $settings = array(
     'prefix' => ''
 );
 
-$container = new Illuminate\Container\Container;
+$container = new \Illuminate\Container\Container;
 $connFactory = new \Illuminate\Database\Connectors\ConnectionFactory($container);
 $conn = $connFactory->make($settings);
 $resolver = new \Illuminate\Database\ConnectionResolver();
@@ -19,9 +19,10 @@ $resolver->addConnection('default', $conn);
 $resolver->setDefaultConnection('default');
 \Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
 
+use \Illuminate\Database\Eloquent\Model;
 
-class Users extends \Illuminate\Database\Eloquent\Model
-{
+
+class Users extends Model {
     protected $fillable = ['login', 'firstName', 'lastName', 'email'];
     public $timestamps = false;
 
