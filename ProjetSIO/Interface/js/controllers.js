@@ -89,7 +89,10 @@ webApp.controller('AdminDetails',
 		}
 		else
 		{
-			$scope.personne = adminPersonnes.getPersonne(id);
+			var personne = adminPersonnes.getPersonne(id);
+			personne.then(function(personne){
+				$scope.personne = personne;
+			});
 		}
 			
 		$scope.save = function () {
