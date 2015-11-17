@@ -53,8 +53,7 @@ webApp.controller('AdminList',
 	function ($scope, $filter, adminPersonnes, $modal, Restangular) {
 		
 		$scope.personnes = [];
-		var personnes = adminPersonnes.getPersonnes();
-		personnes.then(function(personnes){
+		adminPersonnes.getPersonnes().then(function(personnes){
 			Restangular.copy(personnes,$scope.personnes);
 		});
 		
@@ -73,6 +72,14 @@ webApp.controller('AdminList',
 				}
 			})
 		};
+		
+		$scope.remove = function(personne){
+			personne.remove().then(function(){
+				var index = $scope.products.indexOf(personne);
+      			if (index > -1)
+				  $scope.products.splice(index, 1);
+			})
+		}
 	});
 
 
@@ -81,24 +88,24 @@ webApp.controller('AdminList',
 webApp.controller('AdminDetails',
 	function($scope, adminPersonnes, Restangular, id, $modalInstance){	
 		
+		$scope.personne = {}
 		$scope.creation = false;	
 		if (id === -1)
 		{
 			$scope.creation = true;
-			$scope.personne = {};
 		}
 		else
 		{
-			var personne = adminPersonnes.getPersonne(id);
-			personne.then(function(personne){
-				$scope.personne = personne;
+			adminPersonnes.getPersonne(id).then(function(personne){
+				Restangular.copy(personne,$scope.personne);
 			});
 		}
 			
 		$scope.save = function () {
-			adminPersonnes.savePersonne($scope.personne);
-			$modalInstance.close();
-		};
+			adminPersonnes.savePersonne($scope.personne).then(
+			$modalInstance.close(),
+			$scope.error = true
+			)};
 		
 		$scope.cancel = function () {
 			$modalInstance.dismiss('Annuler');

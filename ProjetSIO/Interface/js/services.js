@@ -17,6 +17,9 @@ webApp.factory('adminPersonnes',
 			},
 			savePersonne: function(personne){
 				personne.save();
+			},
+			deletePersonne: function(personne){
+				personne.remove();
 			}
 		}
 	})
