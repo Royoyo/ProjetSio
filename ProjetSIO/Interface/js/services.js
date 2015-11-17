@@ -15,11 +15,14 @@ webApp.factory('adminPersonnes',
 			getPersonne: function(id){
 				return Restangular.one('admin/personnes',id).get();
 			},
-			savePersonne: function(personne){
-				personne.save();
+			postPersonne: function(personne){
+				return Restangular.all('admin/personnes').post(personne);
+			},
+			putPersonne: function(personne){
+				return Restangular.all('admin/personnes').put(personne);
 			},
 			deletePersonne: function(personne){
-				personne.remove();
+				return personne.remove();
 			}
 		}
 	})
