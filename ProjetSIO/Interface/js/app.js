@@ -1,6 +1,6 @@
 //C'est ici que l'application Angular est déclarée
 // Le premier paramètre est le nom qu'on donne à l'application, le 2eme est une liste des plugins qu'on rajoute
-var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table','ngAnimate','restangular']);
+var webApp = angular.module('webApp', ['ui.router','ui.bootstrap','smart-table','ngAnimate','restangular','ui.calendar']);
 
 //Présentation rapide des plugins :
 //

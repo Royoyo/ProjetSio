@@ -80,7 +80,7 @@ $stateProvider
 	})
 	
 	.state('planification.periodes', {
-	url: "/planification/periodes",
+	url: "/periodes",
 	templateUrl: "view/planification.periodes.html",
 	controller: "PlanPeriodesController",
 	data: {
