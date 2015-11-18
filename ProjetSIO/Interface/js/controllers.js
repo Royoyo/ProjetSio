@@ -101,12 +101,11 @@ webApp.controller('AdminDetails',
 			});
 		}
 			
-		$scope.save = function (personne) {
-			if (id === -1)	
-				adminPersonnes.postPersonne(personne);
-			else
-				adminPersonnes.putPersonne(personne);
-		};
+		$scope.save = function () {
+			adminPersonnes.savePersonne($scope.personne).then(
+			$modalInstance.close(),
+			$scope.error = true
+			)};
 		
 		$scope.cancel = function () {
 			$modalInstance.dismiss('Annuler');
