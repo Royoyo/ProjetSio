@@ -15,8 +15,8 @@ webApp.factory('adminPersonnes',
 			getPersonne: function(id){
 				return Restangular.one('admin/personnes',id).get();
 			},
-			savePersonne: function(personne){
-				personne.save();
+			postPersonne: function(personne){
+				Restangular.all('admin/personnes').post(personne);
 			},
 			deletePersonne: function(personne){
 				personne.remove();

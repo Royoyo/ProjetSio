@@ -102,7 +102,10 @@ webApp.controller('AdminDetails',
 		}
 			
 		$scope.save = function (personne) {
-			personne.save();
+			if (id === -1)
+				adminPersonnes.postPersonne(personne)
+			else
+				personne.save();
 		};
 		
 		$scope.cancel = function () {
