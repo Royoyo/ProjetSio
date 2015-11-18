@@ -101,11 +101,9 @@ webApp.controller('AdminDetails',
 			});
 		}
 			
-		$scope.save = function () {
-			adminPersonnes.savePersonne($scope.personne).then(
-			$modalInstance.close(),
-			$scope.error = true
-			)};
+		$scope.save = function (personne) {
+			personne.save();
+		};
 		
 		$scope.cancel = function () {
 			$modalInstance.dismiss('Annuler');
