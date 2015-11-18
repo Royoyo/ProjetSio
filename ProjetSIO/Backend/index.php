@@ -101,9 +101,29 @@ $app->get('/admin/personnes/:id', function($id) use ($app) {
         "firstName"=>$personne->firstName,
         "lastName"=>$personne->lastName,
         "email"=>$personne->email,
-        );
+    );
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($user_json));
+});
+
+$app->post('/admin/personnes', function() use ($app) {
+    try{
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+        $user = new Users(array(
+                'login' => $data['login'],
+                'password' => '',
+                'firstName' => $data['firstName'],
+                'lastName' => $data['lastName'],
+                'email' => $data['email'],
+        ));
+        $user->enabled = 1;
+        $user->save();
+        $app->response->setBody(true);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody(json_encode($e));
+    }
 });
 
 $app->put('/admin/personnes/:id', function($id) use ($app) {
