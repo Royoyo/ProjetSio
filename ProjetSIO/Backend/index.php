@@ -36,6 +36,9 @@ function authenticate(\Slim\Route $route) {
     }
 */
 
+/**
+* Creating a new session
+*/
 $app->post('/login', function () use ($app) {
         $json = $app->request->getBody();
         $data = json_decode($json, true);
@@ -49,9 +52,7 @@ $app->post('/login', function () use ($app) {
             $token = "demo";
             $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
         }
-/**
-* Create a new session
-*/
+
         $temp_home = array();
         foreach($user_obj->roles as $role) {
             array_push($temp_home, $role['home']);
@@ -82,7 +83,6 @@ $app->post('/login', function () use ($app) {
 /**
 * Authentication cookies check in function
 */
-
 function validateUserKey($uid, $key) {
     if ($uid == 'demo' && $key == 'demo') {
         return true;
@@ -94,7 +94,6 @@ function validateUserKey($uid, $key) {
 /**
 * Session cookies creation
 */
-
 $app->get('/demo', function () use ($app) {
     try {
         $app->setEncryptedCookie('uid', 'demo', '5 minutes');
