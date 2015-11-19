@@ -1,4 +1,4 @@
-<?php
+<?php/*
 // Connexion à la BDD
 $settings = array(
     'driver' => 'mysql',
@@ -20,4 +20,4 @@ $resolver->setDefaultConnection('default');
 \Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
 
 use \Illuminate\Database\Eloquent\Model;
-?>
+*/?>
