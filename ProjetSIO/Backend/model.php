@@ -48,8 +48,7 @@ class Users extends Model {
     }
 }
 
-/// classes class : corresponding to the "classes". A "classe" is
-/// composed by many students
+/// classes class : corresponding to the "classes". A "classe" is composed by many students
 class Classes extends Model {
     protected $fillable = ['dateDebut', 'dateFin', 'nom'];
     public $timestamps = false;
@@ -103,8 +102,7 @@ class Cours extends Model {
     }
 }
 
-/// roles class : corresponding to the role an user has. He can be : Administrateur,
-/// Planificateur or Enseignant
+/// roles class : corresponding to the role an user has. He can be : Administrateur,Planificateur or Enseignant
 class Roles extends Model {
     protected $fillable = ['role'];
     public $timestamps = false;
