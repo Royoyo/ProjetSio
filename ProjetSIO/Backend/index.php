@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * \file		index.php
+ * \author		SIO-SLAM 2014-2016
+ * \version		1.0
+ * \date     	11/19/2015
+ * \brief       backend index
+ *
+ * \details		this file contains the index for the backend
+ */
+
 require 'vendor/autoload.php';
 require_once 'model.php';
 ini_set('display_errors',1);
@@ -6,7 +17,9 @@ ini_set('display_startup_errors',1);
 error_reporting(-1);    
 $app = new \Slim\Slim();
 
-// Authentification
+/**
+* Authentication
+*/
 function authenticate(\Slim\Route $route) {
     $app = \Slim\Slim::getInstance();
     if (!isset($_SESSION['token']) && !isset($_SESSION['id'])) {
@@ -36,7 +49,9 @@ $app->post('/login', function () use ($app) {
             $token = "demo";
             $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
         }
-        // Créer session
+/**
+* Create a new session
+*/
         $temp_home = array();
         foreach($user_obj->roles as $role) {
             array_push($temp_home, $role['home']);
@@ -64,7 +79,10 @@ $app->post('/login', function () use ($app) {
 
 });
 
-// Verification des cookies pour l'authentification
+/**
+* Authentication cookies check in function
+*/
+
 function validateUserKey($uid, $key) {
     if ($uid == 'demo' && $key == 'demo') {
         return true;
@@ -73,7 +91,10 @@ function validateUserKey($uid, $key) {
     }
 }
 
-// Créer les cookies necessaire pour la session
+/**
+* Session cookies creation
+*/
+
 $app->get('/demo', function () use ($app) {
     try {
         $app->setEncryptedCookie('uid', 'demo', '5 minutes');
@@ -85,9 +106,9 @@ $app->get('/demo', function () use ($app) {
 });
 
 $app->get('/admin/personnes', function () use ($app) {
-    // On cherche les utilisateurs qui sont activé (enable à 1), ainsi que leur roles.
+    /// Looking for all the enabled users (where enabled = 1) and the corresponding role
     $users = Users::where('enabled', 1)->with('roles')->get();
-    // On les envoie au format JSON pour que AngularJS les traites.
+    /// Sending them as JSON then it is readable by AngularJS
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($users));
 });
