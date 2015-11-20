@@ -55,29 +55,40 @@ webApp.controller('AdminList',
 		$scope.personnes = [];
 		adminPersonnes.getPersonnes().then(function(personnes){
 			Restangular.copy(personnes,$scope.personnes);
+			$scope.personnesView = [].concat($scope.personnes);
 		});
 		
-		$scope.openDetails = function(idList) {
+		$scope.openDetails = function(personne) {
 			//Il faut mettre l'idList dans $scope pour qu'il soit accessible dans resolve:
-			$scope.idList = idList;
+			$scope.personne = personne;
+			
 			var modalDetails = $modal.open({
 				animation : true,
 				templateUrl:"modals/administration.details.html",
 				controller: "AdminDetails",
 				size: "md",
 				resolve: {
-					id: function(){
-						return $scope.idList;
+					personne: function(){
+						return $scope.personne;
 					}
 				}
-			})
+			});
+			
+			modalDetails.result.then(function(creation){
+				if (creation === 1){
+					adminPersonnes.getPersonnes().then(function(personnes){
+						Restangular.copy(personnes,$scope.personnes);
+						$scope.personnesView = [].concat($scope.personnes);
+					});
+				}
+			});
 		};
 		
 		$scope.remove = function(personne){
 			personne.remove().then(function(){
-				var index = $scope.products.indexOf(personne);
+				var index = $scope.personnes.indexOf(personne);
       			if (index > -1)
-				  $scope.products.splice(index, 1);
+				  $scope.personnes.splice(index, 1);
 			})
 		}
 	});
@@ -86,26 +97,34 @@ webApp.controller('AdminList',
 //Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller('AdminDetails',
-	function($scope, adminPersonnes, Restangular, id, $modalInstance){	
+	function($scope, adminPersonnes, Restangular, personne, $modalInstance){	
 		
-		$scope.personne = {}
-		$scope.creation = false;	
-		if (id === -1)
+		$scope.personne = personne;
+		$scope.creation = false;
+			
+		if (personne === -1)
 		{
 			$scope.creation = true;
+			$scope.personne = {};
 		}
 		else
 		{
-			adminPersonnes.getPersonne(id).then(function(personne){
+			adminPersonnes.getPersonne(personne.id).then(function(personne){
 				Restangular.copy(personne,$scope.personne);
 			});
 		}
 			
 		$scope.save = function (personne) {
-			if (id === -1)
+			if ($scope.creation = true)
+			{
 				adminPersonnes.postPersonne(personne)
+				$modalInstance.close(1)
+			}			
 			else
+			{
 				personne.save();
+				$modalInstance.close(0)
+			}			
 		};
 		
 		$scope.cancel = function () {

@@ -6,33 +6,38 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<table st-table="personnes" class="table table-responsive table-hover">
+			<table st-table="personnesView" st-safe-src="personnes"  class="table table-responsive table-hover">
 				<thead>
 					<tr>
-						<th st-sort="Nom">Nom</th>
-						<th st-sort="Prenom">Prénom</th>
-						<th st-sort="Mail">Mail</th>
-						<th st-sort="Role">Rôles</th>
-						<th st-sort="Statut">Statut</th>
+						<th st-sort="login">Login</th>
+						<th st-sort="firstName">Prénom</th>
+						<th st-sort="lastName">Nom</th>
+						<th st-sort="email">Mail</th>
+						<th st-sort="roles">Rôles</th>
+						<th>Statut</th>
 						<th>Actions</th>
 					</tr>
 					<tr>
 						<th>
-							<input st-search="Nom" placeholder="recherche Nom" class="input-sm form-control" type="search"/>
+							<input st-search="login" placeholder="recherche Login" class="input-sm form-control" type="search"/>
 						</th>
 						<th>
-							<input st-search="Prenom" placeholder="recherche Prenom" class="input-sm form-control" type="search"/>
+							<input st-search="firstName" placeholder="recherche Nom" class="input-sm form-control" type="search"/>
 						</th>
 						<th>
-							<input st-search="Mail" placeholder="recherche Mail" class="input-sm form-control" type="search"/>
+							<input st-search="lastName" placeholder="recherche Prenom" class="input-sm form-control" type="search"/>
 						</th>
 						<th>
-							<input st-search="Role" placeholder="recherche Role" class="input-sm form-control" type="search"/>
+							<input st-search="email" placeholder="recherche Mail" class="input-sm form-control" type="search"/>
+						</th>
+						<th>
+							<input st-search="roles" placeholder="recherche Role" class="input-sm form-control" type="search"/>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="personne in personnes">
+					<tr ng-repeat="personne in personnesView">
+						<td>{{ personne.login }}</td>
 						<td>{{ personne.firstName }}</td>
 						<td>{{ personne.lastName }}</td>
 						<td>{{ personne.email }}</td>
@@ -50,7 +55,7 @@
 									Actions <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" role="menu">
-									<li role="menuitem"><a ng-click="openDetails(personne.id)">Editer</a></li>
+									<li role="menuitem"><a ng-click="openDetails(personne)">Editer</a></li>
 									<li role="menuitem"><a ng-click="remove(personne)">Supprimer</a></li>									
 								</ul>
 							</div>
