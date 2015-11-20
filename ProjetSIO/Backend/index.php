@@ -21,109 +21,102 @@ $app = new \Slim\Slim();
 * Authentication
 */
 function authenticate(\Slim\Route $route) {
+    session_start();
     $app = \Slim\Slim::getInstance();
-    if (!isset($_SESSION['token']) && !isset($_SESSION['id'])) {
+    if (!isset($_SESSION['id'])) {
       $app->halt(401);
     }
 }
-/*
-    if (!isset($_SESSION['token']) || !isset($_SESSION['id'])) {
-        session_start();
-        $_SESSION['id'] = $user_obj->id;
-        $_SESSION['token'] = $token;
-        $user_obj->connected = true;
-        $user_obj->save();
-    }
-*/
 
-/**
-* Creating a new session
-*/
-$app->post('/login', function () use ($app) {
-        $json = $app->request->getBody();
-        $data = json_decode($json, true);
-        if(array_key_exists('id', $data)) {
-            $id = $data['id'];
-            $token = $data['token'];
-            $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
-        } else {
-            $username = $data['name'];
-            $password = $data['password'];
-            $token = "demo";
-            $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
-        }
-
-        $temp_home = array();
-        foreach($user_obj->roles as $role) {
-            array_push($temp_home, $role['home']);
-            if(in_array('administration', $temp_home)) {
-                $user_home = 'administration';
-                break;
-            } else if(in_array('planification', $temp_home)) {
-                $user_home = 'planification';
-                break;
-            } else if(in_array('enseignement', $temp_home)) {
-                $user_home = 'enseignement';
-                break;
+$authenticateForRole = function ($role_required){
+    return function () use ( $role_required ) {
+        $id = $_SESSION['id'];
+        $user = Users::where('id', $id)->with('roles')->firstOrFail();
+        foreach($user->roles as $role) {
+            if ($role->role == $role_required) {
+                return True;
             }
         }
+        return False;
+    };
+};
 
-        $user_json = array(
-            "name"=>$user_obj->login,
-            "roles"=>$user_obj->roles,
-            "token"=>$token,
-            "home"=>$user_home,
-            "id"=>$user_obj->id,
-            );
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($user_json));
-
-});
-
-/**
-* Authentication cookies check in function
-*/
-function validateUserKey($uid, $key) {
-    if ($uid == 'demo' && $key == 'demo') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
-* Session cookies creation
-*/
-$app->get('/demo', function () use ($app) {
+$app->post('/login', function () use ($app) {
     try {
-        $app->setEncryptedCookie('uid', 'demo', '5 minutes');
-        $app->setEncryptedCookie('key', 'demo', '5 minutes');
-    } catch (Exception $e) {
-        $app->response()->status(400);
-        $app->response()->header('X-Status-Reason', $e->getMessage());
+        try{
+        session_start();
+        }catch(Exception $e) {
+
+        }
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+        $token = uniqid(rand(), true);
+        if (isset($data)) {
+            if (!isset($_SESSION['id'])) {
+                $username = $data['name'];
+                $password = $data['password'];
+                $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
+                $_SESSION['id'] = $user_obj->id;
+                $_SESSION['token'] = $token;
+            } else {
+                $id = $_SESSION['id'];
+                $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
+            } 
+            if (isset($user_obj)){
+                $user_obj->connected = true;
+                $user_obj->save();
+                $temp_home = array();
+                $role_array = array();
+                foreach($user_obj->roles as $role) {
+                    array_push($temp_home, $role['home']);
+                    array_push($role_array, $role['role']);
+                }
+    
+                if(in_array('administration', $temp_home)) {
+                    $user_home = 'administration';
+                } else if(in_array('planification', $temp_home)) {
+                    $user_home = 'planification';
+                } else if(in_array('enseignement', $temp_home)) {
+                    $user_home = 'enseignement';
+                }
+    
+                $user_json = array(
+                    "name"=>$user_obj->login,
+                    "firstName"=>$user_obj->firstName,
+                    "lastName"=>$user_obj->lastName,
+                    "roles"=>$role_array,
+                    "token"=>$token,
+                    "home"=>$user_home,
+                    "id"=>$user_obj->id,
+                    );
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setBody(json_encode($user_json));
+            } else {
+                $app->response->headers->set('Content-Type', 'text/html');
+                $app->response->setBody(false);
+            }
+        } else {
+            $app->response->headers->set('Content-Type', 'text/html');
+            $app->response->setBody(false);
+        }
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'text/html');
+        $app->response->setBody($e);
     }
 });
 
 $app->get('/admin/personnes', function () use ($app) {
     /// Looking for all the enabled users (where enabled = 1) and the corresponding role
-    $users = Users::where('enabled', 1)->with('roles')->get();
+    $users = Users::with('roles')->select('id', 'login', 'firstName', 'lastName', 'email', 'enabled', 'connected')->get();
     /// Sending them as JSON then it is readable by AngularJS
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($users));
 });
 
 $app->get('/admin/personnes/:id', function($id) use ($app) {
-    $personne = Users::where('id', $id)->with('roles')->firstOrFail();
-    $user_json = array(
-        "id"=>$personne->id,
-        "login"=>$personne->login,
-        "roles"=>$personne->roles,
-        "firstName"=>$personne->firstName,
-        "lastName"=>$personne->lastName,
-        "email"=>$personne->email,
-    );
+    $personne = Users::where('id', $id)->with('roles')->select('id', 'login', 'firstName', 'lastName', 'email', 'enabled')->firstOrFail();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($user_json));
+    $app->response->setBody(json_encode($personne));
 });
 
 $app->post('/admin/personnes', function() use ($app) {
@@ -138,6 +131,7 @@ $app->post('/admin/personnes', function() use ($app) {
                 'email' => $data['email'],
         ));
         $user->enabled = 1;
+        $user->connected = 0;
         $user->save();
         $app->response->setBody(true);
     } catch(Exception $e) {
