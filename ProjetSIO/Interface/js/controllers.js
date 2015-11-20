@@ -115,7 +115,7 @@ webApp.controller('AdminDetails',
 		}
 			
 		$scope.save = function (personne) {
-			if ($scope.creation = true)
+			if ($scope.creation === true)
 			{
 				adminPersonnes.postPersonne(personne)
 				$modalInstance.close(1)
