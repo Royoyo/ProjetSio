@@ -39,7 +39,7 @@ webApp.factory('Authentification',function($rootScope, $window, Session, AUTH_EV
 		var bool = false;
 		if (authService.isAuthenticated()){
 			angular.forEach(Session.roles, function(role) {
-				if (authorizedRoles.IndexOf(role) !== -1)
+				if (authorizedRoles.indexOf(role) !== -1)
 					bool = true;
 				});
 		}
