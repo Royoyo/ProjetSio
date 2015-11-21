@@ -198,10 +198,10 @@ webApp.controller('PlanPeriodesController',
 		var m = date.getMonth();
 		var y = date.getFullYear();
 		
-		$scope.changeTo = 'Hungarian';
 		/* event source that pulls from google.com */
 		$scope.eventSource = {
-				url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
+				googleCalendarId: 'fr.french#holiday@group.v.calendar.google.com',
+				googleCalendarApiKey: 'AIzaSyAbOYkIfOWcqCnHEs_Mlf0JuT0HJ8TVq1M',
 				className: 'gcal-event',           // an option!
 				currentTimezone: 'Europe/Paris' // an option!
 		};
@@ -294,14 +294,13 @@ webApp.controller('PlanPeriodesController',
 			eventClick: $scope.alertOnEventClick,
 			eventDrop: $scope.alertOnDrop,
 			eventResize: $scope.alertOnResize,
-			eventRender: $scope.eventRender
+			eventRender: $scope.eventRender,
+			dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+			dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+			monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"]
 		}
 		};
-	
-		$scope.changeLang = function() {
-			$scope.uiConfig.calendar.dayNames = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-			$scope.uiConfig.calendar.dayNamesShort = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-		};
+
 		/* event sources array*/
 		$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
 		$scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
