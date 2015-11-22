@@ -208,7 +208,7 @@ $app->get('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
     $app->response->setBody(json_encode($cours));
 });
 
-$app->get('/plan/enseignant/', $authenticateWithRole('planificateur'), function() use ($app) {
+$app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function() use ($app) {
     $users = Users::whereHas('roles', function($q) {
         $q->where('role', 'enseignant');
     })->with('matieres')->get();
