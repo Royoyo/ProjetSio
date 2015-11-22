@@ -24,30 +24,35 @@ webApp.factory('adminPersonnes',
 		}
 	})
 	
-webApp.service('planService',
+webApp.factory('planCours',
 	function(Restangular){
-
-		var personnes = Restangular.all('admin/personnes');
-		
-			
-		
-		//Toute la logique objet que j'indique ici sera côté serveur à terme
-		
-		//Une fonction pour récupérer la liste entière
-		var getPersonnes = function(){
-			return personnes;
-		}
-		
-		//Une fonction pour récupérer un user en particulier
-		var getPersonne = function(id) {
-			return personnes.get(id);
-		}
-		
-		
 		return {
-			//De base, les fonctions déclarées dans un service sont privées, pour les rendre publiques il faut les indiquer comme cela :
-			getPersonnes : getPersonnes,
-			getPersonne : getPersonne
+			getCours: function(){
+				return Restangular.all('plan/cours').getList();
+			},
+			
+			getCoursSeul: function(id){
+				return Restangular.one('plan/cours',id).get();
+			},
+			postCours: function(personne){
+				Restangular.all('plan/cours').post(personne);
+			},
+			deleteCours: function(personne){
+				personne.remove();
+			}
+		}
+	})
+
+webApp.factory('planEnseignants',
+	function(Restangular){
+		return {
+			getEnseignants: function(){
+				return Restangular.all('plan/enseignant').getList();
+			},
+					
+			getEnseignant: function(id){
+				return Restangular.one('plan/enseignant',id).get();
+			}
 		}
 	})
 	
