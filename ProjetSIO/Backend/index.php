@@ -16,12 +16,13 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
 $app = new \Slim\Slim();
-// Create Transport
+/// Create Transport
 $transport = Swift_SmtpTransport::newInstance('localhost', 25);
 
-// Create Mailer with our Transport.
+/// Create Mailer with our Transport.
 $mailer = Swift_Mailer::newInstance($transport);
 
+/*
 // Send email
 $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
     // Get user & mail
@@ -41,7 +42,7 @@ $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
     // Print the results, 1 = message sent!
     print($message);
 });  
-
+*/
 
 /**
 * Authentication
@@ -201,7 +202,9 @@ $app->delete('/admin/personnes/:id', $authenticateWithRole('administrateur'), fu
     }
 });
 
-// Planificateur
+/** 
+* Planificateur
+*/
 $app->get('/plan/cours/',  function () use ($app) {
     $start = $_GET['start'];
     $end = $_GET['end'];
