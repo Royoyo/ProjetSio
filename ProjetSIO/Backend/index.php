@@ -51,14 +51,14 @@ $authenticateWithRole = function ($role_required){
         $app = \Slim\Slim::getInstance();
         try{
             session_start();
-        } catch(Exception $e) {}
-        if (!isset($_SESSION['id'])) {
-            $app->halt(401);
-        } else { 
+        } catch(Exception $e) {}		/// We are trying to open the users session
+        if (!isset($_SESSION['id'])) {	/// If the session ID isn't recognized, error 401 is sent
+            $app->halt(401);	
+        } else {						/// In this case, we check if the user id is correctly associated with his role, if not, error 401 is sent
             $id = $_SESSION['id'];
-            $user = Users::where('id', $id)->with('roles')->firstOrFail();
+            $user = Users::where('id', $id)->with('roles')->firstOrFail();	///	Matching the current role to the users id
             foreach($user->roles as $role) {
-                if ($role['role'] == $role_required) {
+                if ($role['role'] == $role_required) { /// Testing if the role is the role the user must have
                     return True;
                 }
             }
@@ -67,37 +67,40 @@ $authenticateWithRole = function ($role_required){
     };
 };
 
+/**
+* Login
+*/
 $app->post('/login', function () use ($app) {
     try {
-        try{
+        try{	/// If the session is already on, then session_start will return an error signal
             session_start();
         } catch(Exception $e) {
 
         }
-        $json = $app->request->getBody();
+        $json = $app->request->getBody(); /// getBody get the request sent by the log in form
         $data = json_decode($json, true);
         $token = uniqid(rand(), true);
         if (isset($data)) {
-            if (!isset($_SESSION['id'])) {
+            if (!isset($_SESSION['id'])) { /// if the user isn't logged in, this test will match the user's data corresponding to the user's id 
                 $username = $data['name'];
                 $password = $data['password'];
                 $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
                 $_SESSION['id'] = $user_obj->id;
                 $_SESSION['token'] = $token;
-            } else {
+            } else {	/// if the user is already logged in, the previous assignement is already done, we can skip it
                 $id = $_SESSION['id'];
                 $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
             } 
-            if (isset($user_obj)){
+            if (isset($user_obj)){			/* à tester sans le if */
                 $user_obj->connected = true;
-                $user_obj->save();
+                $user_obj->save();	/// to keep the online status in the database
                 $temp_home = array();
                 $role_array = array();
                 foreach($user_obj->roles as $role) {
                     array_push($temp_home, $role['home']);
                     array_push($role_array, $role['role']);
                 }
-    
+				/// The 7 next line match the user with their roles to their role homepage
                 if(in_array('administration', $temp_home)) {
                     $user_home = 'administration';
                 } else if(in_array('planification', $temp_home)) {
@@ -106,7 +109,7 @@ $app->post('/login', function () use ($app) {
                     $user_home = 'enseignement';
                 }
     
-                $user_json = array(
+                $user_json = array(	/// stock all the user's information's in the user_json variable
                     "name"=>$user_obj->login,
                     "firstName"=>$user_obj->firstName,
                     "lastName"=>$user_obj->lastName,
@@ -117,6 +120,7 @@ $app->post('/login', function () use ($app) {
                     );
                 $app->response->headers->set('Content-Type', 'application/json');
                 $app->response->setBody(json_encode($user_json));
+				/// The last lines are the errors cases
             } else {
                 $app->response->headers->set('Content-Type', 'text/html');
                 $app->response->setBody(false);
@@ -131,9 +135,11 @@ $app->post('/login', function () use ($app) {
     }
 });
 
-// Administrator
+/** 
+* Administrateur
+*/
+
 $app->get('/admin/personnes', $authenticateWithRole('administrateur'), function () use ($app) {
-    /// Looking for all the enabled users (where enabled = 1) and the corresponding role
     $users = Users::with('roles')->select('id', 'login', 'firstName', 'lastName', 'email', 'enabled', 'connected')->get();
     /// Sending them as JSON then it is readable by AngularJS
     $app->response->headers->set('Content-Type', 'application/json');
