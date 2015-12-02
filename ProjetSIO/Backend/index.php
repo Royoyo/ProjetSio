@@ -46,6 +46,8 @@ $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
 
 /**
 * Authentication
+* \param[in] role_required is a string wich is the title of the role the user must have
+* \return a boolean with the state \a True or an error code 
 */
 $authenticateWithRole = function ($role_required){
     return function () use ( $role_required ) {
