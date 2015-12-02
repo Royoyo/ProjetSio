@@ -196,8 +196,30 @@ $app->delete('/admin/personnes/:id', $authenticateWithRole('administrateur'), fu
 });
 
 // Planificateur
-$app->get('/plan/cours', $authenticateWithRole('planificateur'), function () use ($app) {
-    $cours = Cours::with('user', 'matiere', 'classes')->get();
+$app->get('/plan/cours/',  function () use ($app) {
+    $start = $_GET['start'];
+    $end = $_GET['end'];
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->where('dateDebut', '<=', $start)->orWhere('dateFin', '>=', $end)->get();
+    $title = '';
+    $cours = array();
+    foreach($cours_obj as $cour) {
+        $title .= $cour->matiere['nom'];
+        $title .= '<br>';
+        $title .= $cour->user['lastName'];
+        $title .= ' ';
+        $title .= $cour->user['firstName'];
+        $title .= '<br>';
+        foreach($cour->classes as $classe) {
+            $title .= $classe['nom'];
+            $title .= '/';
+        }
+        array_push($cours, 
+            "user", $cour->user,
+            "matiere", $cour->matiere,
+            "classes", $cour->classes,
+            "title", $title
+        );
+    }
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($cours));
 });
@@ -214,6 +236,12 @@ $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function()
     })->with('matieres')->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($users));
+});
+
+$app->get('/plan/classes/', $authenticateWithRole('planificateur'), function() use ($app) {
+    $classes = Classes::all();
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setBody(json_encode($classes));
 });
 
 $app->run();
