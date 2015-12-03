@@ -12,8 +12,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="personne in personnes" ui-sref="planification.enseignants.matieres({id:personne.id})">
-					<td>{{ personne.firstName }} {{ personne.lastName}}</td>
+				<tr ng-repeat="enseignant in enseignants" ui-sref="planification.enseignants.matieres({id:enseignant.id})">
+					<td>{{ enseignant.firstName }} {{ enseignant.lastName}}</td>
 				</tr>				
 			</tbody>
 		</table>
