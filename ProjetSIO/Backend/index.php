@@ -16,13 +16,12 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
 $app = new \Slim\Slim();
-/// Create Transport
+// Create Transport
 $transport = Swift_SmtpTransport::newInstance('localhost', 25);
 
-/// Create Mailer with our Transport.
+// Create Mailer with our Transport.
 $mailer = Swift_Mailer::newInstance($transport);
 
-/*
 // Send email
 $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
     // Get user & mail
@@ -42,28 +41,24 @@ $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
     // Print the results, 1 = message sent!
     print($message);
 });  
-*/
+
 
 /**
-* 				\b function
-* \brief 		Get the role the user must have and save it in #$authenticateWithRole variable
-* \param[in] 	$role_required is a string wich is the title of the role the user must have
-* \return 		a boolean with the state \a  True or an error code 
+* Authentication
 */
-$authenticateWithRole = function ($role_required){ 
+$authenticateWithRole = function ($role_required){
     return function () use ( $role_required ) {
         $app = \Slim\Slim::getInstance();
         try{
             session_start();
-        } catch(Exception $e) {}		/// We try to open the users session
-        if (!isset($_SESSION['id'])) {	/// If the session ID isn't recognized, error 401 is sent
-            $app->halt(401);	
-        } else {						/// In this case, we check if the user id is correctly associated with his role, if not, error 401 is sent
+        } catch(Exception $e) {}
+        if (!isset($_SESSION['id'])) {
+            $app->halt(401);
+        } else { 
             $id = $_SESSION['id'];
-            $user = Users::where('id', $id)->with('roles')->firstOrFail();	///	Matching the current role to the users id
-            $user = Users::where('id', $id)->with('roles')->firstOrFail();	///	Matching the current role to the users id
+            $user = Users::where('id', $id)->with('roles')->firstOrFail();
             foreach($user->roles as $role) {
-                if ($role['role'] == $role_required) { /// Testing if the role is the role the user must have
+                if ($role['role'] == $role_required) {
                     return True;
                 }
             }
@@ -72,40 +67,37 @@ $authenticateWithRole = function ($role_required){
     };
 };
 
-/**
-* Login
-*/
 $app->post('/login', function () use ($app) {
     try {
-        try{	/// If the session is already on, then session_start will return an error signal
+        try{
             session_start();
         } catch(Exception $e) {
 
         }
-        $json = $app->request->getBody(); /// getBody get the request sent by the log in form
+        $json = $app->request->getBody();
         $data = json_decode($json, true);
         $token = uniqid(rand(), true);
         if (isset($data)) {
-            if (!isset($_SESSION['id'])) { /// if the user isn't logged in, this test will match the user's data corresponding to the user's id 
+            if (!isset($_SESSION['id'])) {
                 $username = $data['name'];
                 $password = $data['password'];
                 $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
                 $_SESSION['id'] = $user_obj->id;
                 $_SESSION['token'] = $token;
-            } else {	/// if the user is already logged in, the previous assignement is already done, we can skip it
+            } else {
                 $id = $_SESSION['id'];
                 $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
             } 
-            if (isset($user_obj)){			/* à tester sans le if */
+            if (isset($user_obj)){
                 $user_obj->connected = true;
-                $user_obj->save();	/// to keep the online status in the database
+                $user_obj->save();
                 $temp_home = array();
                 $role_array = array();
                 foreach($user_obj->roles as $role) {
                     array_push($temp_home, $role['home']);
                     array_push($role_array, $role['role']);
                 }
-				/// The 7 next line match the user with their roles to their role homepage
+    
                 if(in_array('administration', $temp_home)) {
                     $user_home = 'administration';
                 } else if(in_array('planification', $temp_home)) {
@@ -114,7 +106,7 @@ $app->post('/login', function () use ($app) {
                     $user_home = 'enseignement';
                 }
     
-                $user_json = array(	/// stock all the user's information's in the user_json variable
+                $user_json = array(
                     "name"=>$user_obj->login,
                     "firstName"=>$user_obj->firstName,
                     "lastName"=>$user_obj->lastName,
@@ -125,7 +117,6 @@ $app->post('/login', function () use ($app) {
                     );
                 $app->response->headers->set('Content-Type', 'application/json');
                 $app->response->setBody(json_encode($user_json));
-				/// The last lines are the errors cases
             } else {
                 $app->response->headers->set('Content-Type', 'text/html');
                 $app->response->setBody(false);
@@ -140,11 +131,9 @@ $app->post('/login', function () use ($app) {
     }
 });
 
-/** 
-* Administrateur
-*/
-
+// Administrator
 $app->get('/admin/personnes', $authenticateWithRole('administrateur'), function () use ($app) {
+    /// Looking for all the enabled users (where enabled = 1) and the corresponding role
     $users = Users::with('roles')->select('id', 'login', 'firstName', 'lastName', 'email', 'enabled', 'connected')->get();
     /// Sending them as JSON then it is readable by AngularJS
     $app->response->headers->set('Content-Type', 'application/json');
@@ -206,13 +195,15 @@ $app->delete('/admin/personnes/:id', $authenticateWithRole('administrateur'), fu
     }
 });
 
-/** 
-* Planificateur
-*/
-$app->get('/plan/cours/',  function () use ($app) {
+// Planificateur
+$app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () use ($app) {
     $start = $_GET['start'];
     $end = $_GET['end'];
-    $cours_obj = Cours::with('user', 'matiere', 'classes')->where('dateDebut', '<=', $start)->orWhere('dateFin', '>=', $end)->get();
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'dateDebut', 'dateFin')->where(function($q) use($start) {
+        $q->where('dateDebut', '>=', $start);
+    })->where(function($q) use($end) {
+        $q->where('dateDebut', '<=', $end);
+    })->get();
     $title = '';
     $cours = array();
     foreach($cours_obj as $cour) {
@@ -226,7 +217,8 @@ $app->get('/plan/cours/',  function () use ($app) {
             $title .= $classe['nom'];
             $title .= '/';
         }
-        array_push($cours, 
+        array_push($cours,
+            "cours", $cour,
             "user", $cour->user,
             "matiere", $cour->matiere,
             "classes", $cour->classes,
@@ -238,7 +230,25 @@ $app->get('/plan/cours/',  function () use ($app) {
 });
 
 $app->get('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($id) use ($app) {
-    $cours = Cours::where('id', $id)->with('user', 'matiere', 'classes')->firstOrFail();
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->where('id', $id)->firstOrFail();
+    $title = '';
+    $cours = array();
+    $title .= $cours_obj->matiere['nom'];
+    $title .= '<br>';
+    $title .= $cours_obj->user['lastName'];
+    $title .= ' ';
+    $title .= $cours_obj->user['firstName'];
+    $title .= '<br>';
+    foreach($cours_obj->classes as $classe) {
+        $title .= $classe['nom'];
+        $title .= '/';
+    }
+    array_push($cours, 
+        "user", $cours_obj->user,
+        "matiere", $cours_obj->matiere,
+        "classes", $cours_obj->classes,
+        "title", $title
+    );
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($cours));
 });
@@ -251,7 +261,7 @@ $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function()
     $app->response->setBody(json_encode($users));
 });
 
-$app->get('/plan/classes/', $authenticateWithRole('planificateur'), function() use ($app) {
+$app->get('/plan/classes', $authenticateWithRole('planificateur'), function() use ($app) {
     $classes = Classes::all();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($classes));

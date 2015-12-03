@@ -1,17 +1,5 @@
 <?php
-
-/**
- * \file		model.php
- * \author		SIO-SLAM 2014-2016
- * \version		1.0
- * \date     	11/19/2015
- * \brief       backend models and db connection
- *
- * \details		this file enable the connection to the DB and
- *				display a list of all the models used
- */
- 
-//// DataBase connection
+// Connexion à la BDD
 $settings = array(
     'driver' => 'mysql',
     'host' => '127.0.0.1',
@@ -33,11 +21,10 @@ $resolver->setDefaultConnection('default');
 
 use \Illuminate\Database\Eloquent\Model;
 
-/// users class : corresponding to the users
+
 class Users extends Model {
     protected $fillable = ['login', 'firstName', 'lastName', 'email'];
     public $timestamps = false;
-
 
     public function roles() {
         return $this->belongsToMany('Roles', 'users_roles', 'id_Users', 'id_Roles');
@@ -48,7 +35,6 @@ class Users extends Model {
     }
 }
 
-/// classes class : corresponding to the "classes". A "classe" is composed by many students
 class Classes extends Model {
     protected $fillable = ['dateDebut', 'dateFin', 'nom'];
     public $timestamps = false;
@@ -58,13 +44,12 @@ class Classes extends Model {
     }
 }
 
-/// fermeture class : corresponding to the day the school is close
+
 class Fermeture extends Model {
     protected $fillable = ['dateDebut', 'dateFin'];
     public $timestamps = false;
 }
 
-/// indisponibilite class : corresponding to the unusable hours in the teacher's schedule
 class Indisponibilite extends Model {
     protected $fillable = ['dateDebut', 'dateFin', 'id_Users'];
     public $timestamps = false;
@@ -74,7 +59,6 @@ class Indisponibilite extends Model {
     }
 }
 
-/// matieres class : corresponding to the lesson's subject f.e. : mathematics, english
 class Matieres extends Model {
     protected $fillable = ['nom', 'code'];
     public $timestamps = false;
@@ -84,25 +68,20 @@ class Matieres extends Model {
     }
 }
 
-/// cours class : corresponding to lessons
 class Cours extends Model {
-    protected $fillable = ['dateDebut', 'dateFin', 'id_Matiere', 'id_Users'];
-    public $timestamps = false;
-
     public function user() {
-        return $this->hasOne('Users', 'id');
+        return $this->hasOne('Users', 'id')->select('id', 'firstName', 'lastName');
     }
 
     public function matiere() {
-        return $this->hasOne('Matieres', 'id');
+        return $this->hasOne('Matieres', 'id')->select('id', 'nom', 'code');
     }
 
     public function classes() {
-        return $this->belongsToMany('Classes', 'cours_classes', 'id_Cours', 'id_Classes');
+        return $this->belongsToMany('Classes', 'cours_classes', 'id_Cours', 'id_Classes')->select('id', 'nom');
     }
 }
 
-/// roles class : corresponding to the role an user has. He can be : Administrateur,Planificateur or Enseignant
 class Roles extends Model {
     protected $fillable = ['role'];
     public $timestamps = false;
