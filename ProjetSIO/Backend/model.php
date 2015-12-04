@@ -22,11 +22,10 @@ $resolver->setDefaultConnection('default');
 use \Illuminate\Database\Eloquent\Model;
 
 /**
-* \class 		users model.php "Backend/model.php
-* \brief 		corresponding to the registered users
+* \class        users model.php "Backend/model.php
+* \brief        corresponding to the registered users
 */
 class Users extends Model {
-    protected $fillable = ['login', 'firstName', 'lastName', 'email'];
     public $timestamps = false;
 
     public function roles() {
@@ -40,7 +39,6 @@ class Users extends Model {
 
 /// classes class : corresponding to the "classes". A "classe" is composed by many students
 class Classes extends Model {
-    protected $fillable = ['dateDebut', 'dateFin', 'nom'];
     public $timestamps = false;
 
     public function cours() {
@@ -50,13 +48,11 @@ class Classes extends Model {
 
 /// fermeture class : corresponding to the day the school is close
 class Fermeture extends Model {
-    protected $fillable = ['dateDebut', 'dateFin'];
     public $timestamps = false;
 }
 
 /// indisponibilite class : corresponding to the unusable hours in the teacher's schedule
 class Indisponibilite extends Model {
-    protected $fillable = ['dateDebut', 'dateFin', 'id_Users'];
     public $timestamps = false;
 
     public function user() {
@@ -66,7 +62,6 @@ class Indisponibilite extends Model {
 
 /// matieres class : corresponding to the lesson's subject f.e. : mathematics, english
 class Matieres extends Model {
-    protected $fillable = ['nom', 'code'];
     public $timestamps = false;
 
     public function user() {
@@ -91,7 +86,6 @@ class Cours extends Model {
 
 /// roles class : corresponding to the role an user has. He can be : Administrateur,Planificateur or Enseignant
 class Roles extends Model {
-    protected $fillable = ['role'];
     public $timestamps = false;
 
     public function user() {
