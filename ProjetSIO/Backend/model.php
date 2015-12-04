@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * \file        model.php
+ * \author      SIO-SLAM 2014-2016
+ * \version     1.1
+ * \date        11/19/2015
+ * \brief       model for classes
+ *
+ * \details     this file contains all the models built with slim framework
+ */
+
 // Connexion à la BDD
 $settings = array(
     'driver' => 'mysql',
