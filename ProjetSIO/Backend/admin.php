@@ -1,8 +1,7 @@
 <?php
-
 require 'vendor/autoload.php';
+require_once 'function.php';
 require_once 'model.php';
-$app = new \Slim\Slim();
 
 /**
 * Login
