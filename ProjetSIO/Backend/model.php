@@ -22,7 +22,7 @@ $resolver->setDefaultConnection('default');
 use \Illuminate\Database\Eloquent\Model;
 
 /**
-* \class        users model.php "Backend/model.php
+* \class        Users model.php "Backend/model.php
 * \brief        corresponding to the registered users
 */
 class Users extends Model {

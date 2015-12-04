@@ -3,11 +3,11 @@
 /**
  * \file        index.php
  * \author      SIO-SLAM 2014-2016
- * \version     1.0
+ * \version     1.1
  * \date        11/19/2015
  * \brief       backend index
  *
- * \details     this file contains the index for the backend
+ * \details     this file contains the includes for the backend
  */
 
 require 'vendor/autoload.php';

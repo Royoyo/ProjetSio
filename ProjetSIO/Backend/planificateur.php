@@ -1,11 +1,15 @@
 <?php
-require 'vendor/autoload.php';
-require_once 'function.php';
-require_once 'model.php';
 
 /**
-* Planificateur
-*/
+ * \file        planificateur.php
+ * \author      SIO-SLAM 2014-2016
+ * \version     1.0
+ * \date        12/04/2015
+ * \brief       "planificateur" routes
+ *
+ * \details     this file contains all the routes for "planificateur" role
+ */
+ 
 $app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () use ($app) {
     $start = $_GET['start'];
     $end = $_GET['end'];

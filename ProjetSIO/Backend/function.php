@@ -1,8 +1,14 @@
 <?php
 
-require 'vendor/autoload.php';
-require_once 'model.php';
-$app = new \Slim\Slim();
+/**
+ * \file        functions.php
+ * \author      SIO-SLAM 2014-2016
+ * \version     1.0
+ * \date        12/04/2015
+ * \brief       functions used in the backend
+ *
+ * \details     this file contains all the functions for the backend
+ */
 
 /// Create Transport
 $transport = Swift_SmtpTransport::newInstance('localhost', 25);
