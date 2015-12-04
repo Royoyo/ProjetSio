@@ -48,7 +48,11 @@ class Users extends Model {
     }
 }
 
-/// classes class : corresponding to the "classes". A "classe" is composed by many students
+/**
+* \class        Classes model.php "Backend/model.php
+* \brief        corresponding to the classes
+* \details		corresponding to the "classes". A "classe" is composed by many students
+*/
 class Classes extends Model {
     public $timestamps = false;
 
@@ -57,12 +61,18 @@ class Classes extends Model {
     }
 }
 
-/// fermeture class : corresponding to the day the school is close
+/**
+* \class        Fermeture model.php "Backend/model.php
+* \brief        corresponding to the day the school is close
+*/ 
 class Fermeture extends Model {
     public $timestamps = false;
 }
 
-/// indisponibilite class : corresponding to the unusable hours in the teacher's schedule
+/**
+* \class        Indisponibilite model.php "Backend/model.php
+* \brief        corresponding to the unusable hours in the teacher's schedule
+*/
 class Indisponibilite extends Model {
     public $timestamps = false;
 
@@ -71,7 +81,10 @@ class Indisponibilite extends Model {
     }
 }
 
-/// matieres class : corresponding to the lesson's subject f.e. : mathematics, english
+/**
+* \class        Matieres model.php "Backend/model.php
+* \brief        corresponding to the lesson's subject f.e. : mathematics, english
+*/
 class Matieres extends Model {
     public $timestamps = false;
 
@@ -80,7 +93,10 @@ class Matieres extends Model {
     }
 }
 
-/// cours class : corresponding to lessons
+/**
+* \class        Cours Cours.php "Backend/model.php
+* \brief        corresponding to lessons
+*/
 class Cours extends Model {
     public function user() {
         return $this->hasOne('Users', 'id')->select('id', 'firstName', 'lastName');
@@ -95,7 +111,11 @@ class Cours extends Model {
     }
 }
 
-/// roles class : corresponding to the role an user has. He can be : Administrateur,Planificateur or Enseignant
+/**
+* \class        Roles model.php "Backend/model.php
+* \brief        Keeping the different roles an user can have
+* \details		corresponding to the role an user has. He can be : Administrateur,Planificateur or Enseignant
+*/
 class Roles extends Model {
     public $timestamps = false;
 
