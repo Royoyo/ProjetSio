@@ -1,13 +1,13 @@
 <?php
 
 /**
- * \file        functions.php
+ * \file        function.php
  * \author      SIO-SLAM 2014-2016
  * \version     1.0
  * \date        12/04/2015
- * \brief       functions used in the backend
+ * \brief       functions and variables used in the backend
  *
- * \details     this file contains all the functions for the backend
+ * \details     this file contains all the functions and some global variables for the backend
  */
 
 /// Create Transport
