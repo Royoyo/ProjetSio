@@ -24,6 +24,25 @@ webApp.factory('adminPersonnes',
 		}
 	})
 	
+webApp.factory('planClasses',
+	function(Restangular){
+		return {
+			getClasses: function(){
+				return Restangular.all('plan/classes').getList();
+			},
+			
+			getClasse: function(id){
+				return Restangular.one('plan/classes',id).get();
+			},
+			postClasse: function(classe){
+				Restangular.all('plan/classes').post(classe);
+			},
+			deleteClasse: function(classe){
+				classe.remove();
+			}
+		}
+	})
+	
 webApp.factory('planCours',
 	function(Restangular){
 		return {
@@ -77,6 +96,8 @@ webApp.service('Session', function($rootScope, USERS_ROLES) {
 
 	this.create = function(user) {
 		this.user = user.name;
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
 		this.roles = user.roles;
 		this.token = user.token;
 		this.home = user.home;
@@ -84,6 +105,8 @@ webApp.service('Session', function($rootScope, USERS_ROLES) {
 	};
 	this.destroy = function() {
 		this.user = null;
+		this.firstName = null;
+		this.lastName = null;
 		this.roles = null;
 		this.token = null;
 		this.home = null;

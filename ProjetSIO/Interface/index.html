@@ -4,11 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap/normalize.css">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
-	<link rel="stylesheet" href="css/animations.css">
+	<link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/fullcalendar.min.css"/>
 </head>
 <body ng-app="webApp" ng-controller="mainController">
-	<nav class="navbar navbar-default navbar-static-top">
+	<nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
@@ -30,11 +30,16 @@
             <li ui-sref-active="active" ui-sref="administration"><a>Administration</a></li>
             <li ui-sref-active="active" ui-sref="planification"><a>Planification</a></li>
           </ul>
-          <button type="button" class="btn btn-default navbar-btn navbar-right">Se connecter</button>
+          <div class="navbar-right">
+            <!-- la ligne horizontale s'affiche mais peut rester dans la vue desktop si l'utilisateur change la taille de la fenetre - NIVEAU BUG : faible -->
+            <hr ng-show="!navCollapsed">
+            <p class="navbar-text">Bonjour <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong></p>
+            <button type="button" class="btn btn-default navbar-btn" ng-click="logout()">Se déconnecter</button>
+          </div>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-	<div ui-view></div>
+	<div ui-view class="container-fluid"></div>
   
   <!-- librairies -->
   <script src="lib/lodash.min.js"></script>
@@ -57,6 +62,9 @@
 	<script src="js/app.js"></script>
   <script src="js/routing.js"></script>
   <script src="js/fonctionGlobale.js"></script>
+  
+  <!-- directives -->
+  <script src="js/directives.js"></script>
   
   <!-- factories -->
   <script src="js/intercepteurHttp.js"></script>

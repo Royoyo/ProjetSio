@@ -31,7 +31,7 @@ webApp.controller('PlanMatieresController',
 
 			var modalDetails = $modal.open({
 				animation : true,
-				templateUrl:"view/planification.enseignants.matieres.details.html",
+				templateUrl:"view/planification/detailsEnseignant.html",
 				controller: "MatieresDetailsController",
 				size: "lg",
 				resolve: {

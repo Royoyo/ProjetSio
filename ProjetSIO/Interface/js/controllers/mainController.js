@@ -1,9 +1,10 @@
-webApp.controller('mainController', function($scope, $rootScope, $modal, Authentification, AUTH_EVENTS, USERS_ROLES){
+webApp.controller('mainController', function($scope, $rootScope, $modal, Authentification, Session, AUTH_EVENTS, USERS_ROLES){
 	// Controller de base, tous les controllers héritent de celui-ci
 	///Applique la logique d'authentification
 
 	
 	$scope.modalShown = false;
+	
 	var showLogin = function() {
 		if(!$scope.modalShown){
 			$scope.modalShown = true;
@@ -20,11 +21,15 @@ webApp.controller('mainController', function($scope, $rootScope, $modal, Authent
 	};
 	
 	var setCurrentUser = function(){
-		$scope.currentUser = $rootScope.currentUser;
+		$scope.currentUser = Session;
 	}
 	
 	var showNotAuthorized = function(){
 		alert("Zone non autorisé");
+	}
+	
+	$scope.logout = function(){
+		Authentification.logout();
 	}
 	
 	$scope.currentUser = null;

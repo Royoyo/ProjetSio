@@ -27,7 +27,7 @@ $stateProvider
 	//Partie Administrateur
 	.state('administration', {
 	url: "/administration",
-	templateUrl: "view/administration.html",
+	templateUrl: "view/administration/administration.html",
 	controller: "AdminList",
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur]
@@ -37,8 +37,7 @@ $stateProvider
 	//Partie Planificateur
 	.state('planification', {
 	url: "/planification",
-	templateUrl: "view/planification.html",
-	controller: "PlanController",
+	templateUrl: "view/planification/navigation.html",
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
       }
@@ -46,7 +45,7 @@ $stateProvider
 	
 	.state('planification.classes', {
 	url: "/classes",
-	templateUrl: "view/planification.classes.html",
+	templateUrl: "view/planification/listeClasses.html",
 	controller: "PlanClassesController",
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
@@ -55,7 +54,7 @@ $stateProvider
 
 	.state('planification.enseignants', {
 	url: "/enseignants",
-	templateUrl: "view/planification.enseignants.html",
+	templateUrl: "view/planification/listeEnseignants.html",
 	controller: "PlanEnseignantsController",
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
@@ -64,7 +63,7 @@ $stateProvider
 		
 	.state('planification.enseignants.matieres', {
 	url: "/:id/matieres",
-	templateUrl: "view/planification.enseignants.matieres.html",
+	templateUrl: "view/planification/ListeEnseignantsMatieres.html",
 	controller: "PlanMatieresController",
 	resolve:{
 		personne: function(planService, $stateParams){
@@ -81,8 +80,22 @@ $stateProvider
 	
 	.state('planification.periodes', {
 	url: "/periodes",
-	templateUrl: "view/planification.periodes.html",
-	controller: "PlanPeriodesController",
+	templateUrl: "view/planification/listeClassesCalendar.html",
+	controller: "PlanCalendarClasses",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
+	})
+	
+	.state('planification.periodes.calendar', {
+	url: "/periodes/:id",
+	templateUrl: "view/planification/calendar.html",
+	controller: "PlanCalendar",
+	resolve:{
+		id: function($stateParams){
+			return $stateParams.id
+		}
+	},
 	data: {
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
       }
