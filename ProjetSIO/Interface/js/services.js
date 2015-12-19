@@ -48,8 +48,7 @@ webApp.factory('planCours',
 		return {
 			getCours: function(){
 				return Restangular.all('plan/cours').getList();
-			},
-			
+			},			
 			getCoursSeul: function(id){
 				return Restangular.one('plan/cours',id).get();
 			},
@@ -61,7 +60,25 @@ webApp.factory('planCours',
 			}
 		}
 	})
-
+	
+webApp.factory('roles',
+	function(Restangular){
+		return {
+			getRoles: function(){
+				return Restangular.all('roles').getList();
+			},
+		}
+	})
+	
+webApp.factory('matieres',
+	function(Restangular){
+		return {
+			getMatieres: function(){
+				return Restangular.all('matieres').getList();
+			},
+		}
+	})
+	
 webApp.factory('planEnseignants',
 	function(Restangular){
 		return {
@@ -72,22 +89,6 @@ webApp.factory('planEnseignants',
 			getEnseignant: function(id){
 				return Restangular.one('plan/enseignant',id).get();
 			}
-		}
-	})
-	
-webApp.service('matiereService',
-	function(Restangular){
-
-		var matieres = Restangular.all('matieres');		
-		
-		//Une fonction pour récupérer la liste entière
-		var getMatieres = function(){
-			return matieres;
-		}
-		
-		return {
-			//De base, les fonctions déclarées dans un service sont privées, pour les rendre publiques il faut les indiquer comme cela :
-			getMatieres : getMatieres
 		}
 	})
 
