@@ -21,7 +21,7 @@ require_once 'login.php';
 require_once 'planificateur.php';
 require_once 'admin.php';
 
-$app->get('/roles', $authenticateWithRole('planificateur'), function () use ($app) {
+$app->get('/roles', $authenticateWithRole('administrateur'), function () use ($app) {
 
     $roles = Roles::get();
     

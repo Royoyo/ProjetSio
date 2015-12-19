@@ -28,16 +28,24 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
-        $user = new Users(array(
-                'login' => $data['login'],
-                'password' => '',
-                'firstName' => $data['firstName'],
-                'lastName' => $data['lastName'],
-                'email' => $data['email']
-        ));
-        $user->enabled = 1;
-        $user->connected = 0;
-        $user->save();
+        $personne = new Users;
+        $personne->login = $data['login'];
+        $personne->password = '';
+        $personne->firstName = $data['firstName'];
+        $personne->lastName = $data['lastName'];
+        $personne->email = $data['email'];
+        $personne->enabled = 1;
+        $personne->connected = 0;
+        $personne->save();
+        
+        //sync roles
+        $newRoles = [];
+        foreach($data['roles'] as $role){
+            array_push($newRoles, $role['id']);
+        }
+        
+        $personne->roles()->sync($newRoles);
+        
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
