@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">Liste matières</div>
+			<table class="table table-striped" st-safe-src="matieres" st-table="matieresView">
+				<thead>
+					<tr>
+						<th>
+							<input st-search="nom" placeholder="filtre..." class="input-sm form-control" type="search" />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="matiere in matieresView">
+						<td>
+							<button type="button" class="btn btn-default btn-lg btn-block" ng-click="add(matiere)">{{ matiere.nom }}</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">Matières de {{ nom }}</div>
+			<table class="table table-striped" st-table="matieresChoix">
+				<tbody>
+					<tr ng-repeat="matiere in matieresChoix">
+						<td>
+							<button type="button" class="btn btn-default btn-lg btn-block">{{ matiere.nom }}</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<p>
+			<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="save()">Sauvegarder</button>
+		</p>
+	</div>
+	<div class="col-md-6">
+		<p>
+			<button type="button" class="btn btn-danger btn-lg btn-block" ng-click="cancel()">Annuler</button>
+		</p>
+	</div>
+</div>
