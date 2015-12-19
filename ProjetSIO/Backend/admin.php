@@ -33,7 +33,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
                 'password' => '',
                 'firstName' => $data['firstName'],
                 'lastName' => $data['lastName'],
-                'email' => $data['email'],
+                'email' => $data['email']
         ));
         $user->enabled = 1;
         $user->connected = 0;
@@ -53,7 +53,17 @@ $app->put('/admin/personnes/:id', $authenticateWithRole('administrateur'), funct
         $personne->firstName = $data['firstName'];
         $personne->lastName = $data['lastName'];
         $personne->email = $data['email'];
+        $personne->enabled = ($data['enabled']=="true" ? 1 : 0);
         $personne->save();
+        
+        //sync roles
+        $newRoles = [];
+        foreach($data['roles'] as $role){
+            array_push($newRoles, $role['id']);
+        }
+        
+        $personne->roles()->sync($newRoles);
+        
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
