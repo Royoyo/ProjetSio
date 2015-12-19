@@ -25,14 +25,8 @@
 			</div>
 			<div class="form-group">
 				<label>Rôles :</label>
-				<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox1" value="" ng-model="personne.roles.enseignant"> Enseignant
-				</label>
-				<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox2" ng-model="personne.roles.planificateur"> Planificateur
-				</label>
-				<label class="checkbox-inline">
-				<input type="checkbox" id="inlineCheckbox3" ng-model="personne.roles.admin"> Administrateur
+				<label data-ng-repeat="role in roles" class="checkbox-inline">
+					<input type="checkbox" ng-model="formRoles[role.id]" id="{{ role.id }}"> {{ role.role }}
 				</label>
 			</div>
 			</div>

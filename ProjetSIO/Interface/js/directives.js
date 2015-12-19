@@ -4,6 +4,8 @@ Les directives permettent de créer ses propres balises htmls avec des règles b
 
 
 
+
+
 /*
 Les filtres permettent de créer des filtres uniques pour le plugin smarttable
 */

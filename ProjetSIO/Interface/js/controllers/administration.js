@@ -1,53 +1,60 @@
 //Ce controller utilise le service AdminList pour récupérer une liste des utilisateurs du serveur
 webApp.controller('AdminList',
 	function ($scope, $filter, adminPersonnes, $modal, Restangular) {
-		
+
 		$scope.personnes = [];
-		adminPersonnes.getPersonnes().then(function(personnes){		
-			angular.forEach(personnes,function(element){
-				if (element.enabled == 1){
-					element.enabled = true;
-				}
-				else{
-					element.enabled = false;
-				}
-			})
-			Restangular.copy(personnes,$scope.personnes);
-			$scope.personnesView = [].concat($scope.personnes);
-		});
-		
-		$scope.openDetails = function(personne) {
+
+		updateTable();
+
+		$scope.openDetails = function (personne) {
 			//Il faut mettre l'idList dans $scope pour qu'il soit accessible dans resolve:
 			$scope.personne = personne;
-			
+
 			var modalDetails = $modal.open({
-				animation : true,
-				templateUrl:"modals/administration.details.html",
+				animation: true,
+				templateUrl: "modals/administration.details.html",
 				controller: "AdminDetails",
 				size: "md",
 				resolve: {
-					personne: function(){
+					personne: function () {
 						return $scope.personne;
 					}
 				}
 			});
-			
-			modalDetails.result.then(function(creation){
-				if (creation === 1){
-					adminPersonnes.getPersonnes().then(function(personnes){
-						Restangular.copy(personnes,$scope.personnes);
-						$scope.personnesView = [].concat($scope.personnes);
-					});
-				}
+
+			modalDetails.result.then(function () {
+				updateTable();
 			});
 		};
-		
-		$scope.remove = function(personne){
-			personne.remove().then(function(){
-				var index = $scope.personnes.indexOf(personne);
-      			if (index > -1)
-				  $scope.personnes.splice(index, 1);
-			})
+
+		function updateTable() {
+			adminPersonnes.getPersonnes().then(function (personnes) {
+				angular.forEach(personnes, function (element) {
+					if (element.enabled == 1) {
+						element.enabled = true;
+					}
+					else {
+						element.enabled = false;
+					}
+				})
+				Restangular.copy(personnes, $scope.personnes);
+				$scope.personnesView = [].concat($scope.personnes);
+			});
+		}
+
+		$scope.changeState = function (personne) {
+
+			adminPersonnes.getPersonne(personne.id).then(function (per) {
+				per.enabled = personne.enabled ? "false" : "true";
+				per.save();
+				updateTable();
+			})			
+			// lignes qui suivent à garder au chaud
+			//personne.remove().then(function(){
+			//var index = $scope.personnes.indexOf(personne);
+			//if (index > -1)
+			//  $scope.personnes.splice(index, 1);				
+			//})
 		}
 	});
 
@@ -55,38 +62,66 @@ webApp.controller('AdminList',
 //Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller('AdminDetails',
-	function($scope, adminPersonnes, Restangular, personne, $modalInstance){	
+	function ($scope, adminPersonnes, Restangular, personne, $modalInstance, roles) {	
 		
-		$scope.personne = personne;
+		//Initialisation form
+		
+		$scope.personne = {};
+		$scope.roles = {};
 		$scope.creation = false;
-			
-		if (personne === -1)
-		{
+		$scope.formRoles = {};
+
+		roles.getRoles().then(function (roles) {
+			$scope.roles = roles;
+		})
+
+		if (personne === -1) {
 			$scope.creation = true;
-			$scope.personne = {};
 		}
-		else
-		{
-			adminPersonnes.getPersonne(personne.id).then(function(personne){
-				Restangular.copy(personne,$scope.personne);
+		else {
+			adminPersonnes.getPersonne(personne.id).then(function (personne) {
+				Restangular.copy(personne, $scope.personne);
+
+				angular.forEach(personne.roles, function (role) {
+					$scope.formRoles[role.id] = true;
+				}, this)
 			});
 		}
 			
-		$scope.save = function (personne) {
-			if ($scope.creation === true)
-			{
-				adminPersonnes.postPersonne(personne)
-				$modalInstance.close(1)
-			}			
-			else
-			{
-				personne.save();
-				$modalInstance.close(0)
-			}			
+		// Fonctions
+		
+		$scope.$watch(function () {
+			return $scope.formRoles;
+		}, function (value) {
+			$scope.personne.roles = [];
+			angular.forEach($scope.formRoles, function (v, k) {
+				v && $scope.personne.roles.push(getRolesById(k));
+			});
+		}, true);
+
+		function getRolesById(id) {
+			for (var i = 0; i < $scope.roles.length; i++) {
+				if ($scope.roles[i].id == id) {
+					return $scope.roles[i];
+				}
+			}
 		};
 		
+		
+		//Traitement différent pour la création car l'objet personne n'est pas objet Restangular dans ce cas et donc n'a pas d'implémentation de la méthode save()
+		$scope.save = function (personne) {
+			if ($scope.creation === true) {
+				adminPersonnes.postPersonne(personne);
+				$modalInstance.close();
+			}
+			else {
+				personne.save();
+				$modalInstance.close();
+			}
+		};
+
 		$scope.cancel = function () {
 			$modalInstance.dismiss('Annuler');
 		};
-		
+
 	});
