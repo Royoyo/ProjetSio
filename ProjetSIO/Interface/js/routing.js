@@ -60,23 +60,6 @@ $stateProvider
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
       }
 	})
-		
-	.state('planification.enseignants.matieres', {
-	url: "/:id/matieres",
-	templateUrl: "view/planification/ListeEnseignantsMatieres.html",
-	controller: "PlanMatieresController",
-	resolve:{
-		personne: function(planService, $stateParams){
-			return planService.getPersonne($stateParams.id);
-		},
-		matieres: function(matiereService){
-			return matiereService.getMatieres();
-		}
-	},
-	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
-      }
-	})
 	
 	.state('planification.periodes', {
 	url: "/periodes",

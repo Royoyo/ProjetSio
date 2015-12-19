@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails {{ classe.nom }} {{ classe.annee }}</div>
+	<div class="panel-heading" ng-show="creation">Création de classe</div>
+	<div class="panel-body">
+		<form novalidate class="form">
+			<div class="form-group">
+				<label>Nom</label>
+				<input type="text" class="form-control" ng-model="classe.nom">
+			</div>
+			<div class="form-group">
+				<label>Date début</label>
+				<div class="input-group">
+					<input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" is-open="pickerDateDebut" ng-model="classe.dateDebut">	
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default" ng-click="openDatePicker(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Date fin</label>
+				<div class="input-group">
+					<input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" is-open="pickerDateFin" ng-model="classe.dateFin">	
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default" ng-click="openDatePicker(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Professeur principal</label>
+				<input type="text" class="form-control">
+			</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2">
+			<input type="submit" class="btn btn-default" ng-click="save(classe)" value="Enregistrer" />
+			<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+		</div>
+	</div>
+	</form>
+</div>
