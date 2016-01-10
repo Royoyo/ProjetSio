@@ -19,6 +19,7 @@ require_once 'model.php';
 require_once 'functions.php';
 require_once 'login.php';
 require_once 'planificateur.php';
+require_once 'enseignant.php';
 require_once 'admin.php';
 
 $app->get('/roles', $authenticateWithRole('administrateur'), function () use ($app) {
@@ -36,5 +37,14 @@ $app->get('/matieres', $authenticateWithRole('planificateur'), function () use (
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($matieres));
 });
+
+$app->get('/:id/:token', function($id, $token) use ($app) {
+    $user = Users::where('id', $id)->firstOrFail();
+    if ($user->token == $token){
+        $user->enabled = 1;
+        $user->save();
+    }
+});
+
 $app->run();
 ?>

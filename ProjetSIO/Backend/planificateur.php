@@ -22,53 +22,14 @@ $app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () u
     })->where(function($q) use($end) {
         $q->where('dateDebut', '<=', $end);
     })->get();
-    $title = '';
-    $cours = array();
-    foreach($cours_obj as $cour) {
-        $title .= $cour->matiere['nom'];
-        $title .= '<br>';
-        $title .= $cour->user['lastName'];
-        $title .= ' ';
-        $title .= $cour->user['firstName'];
-        $title .= '<br>';
-        foreach($cour->classes as $classe) {
-            $title .= $classe['nom'];
-            $title .= '/';
-        }
-        array_push($cours,
-            "cours", $cour,
-            "user", $cour->user,
-            "matiere", $cour->matiere,
-            "classes", $cour->classes,
-            "title", $title
-        );
-    }
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($cours));
+    $app->response->setBody(json_encode($cours_obj));
 });
 
 $app->get('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($id) use ($app) {
     $cours_obj = Cours::with('user', 'matiere', 'classes')->where('id', $id)->firstOrFail();
-    $title = '';
-    $cours = array();
-    $title .= $cours_obj->matiere['nom'];
-    $title .= '<br>';
-    $title .= $cours_obj->user['lastName'];
-    $title .= ' ';
-    $title .= $cours_obj->user['firstName'];
-    $title .= '<br>';
-    foreach($cours_obj->classes as $classe) {
-        $title .= $classe['nom'];
-        $title .= '/';
-    }
-    array_push($cours, 
-        "user", $cours_obj->user,
-        "matiere", $cours_obj->matiere,
-        "classes", $cours_obj->classes,
-        "title", $title
-    );
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($cours));
+    $app->response->setBody(json_encode($cours_obj));
 });
 
 //Enseignants
@@ -82,8 +43,7 @@ $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function()
 });
 
 $app->get('/plan/enseignant/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    //TO DO : rajouter filtre enabled
-    $personne = Users::where('id', $id)->with('matieres')->select('id', 'firstName', 'lastName')->firstOrFail();
+    $personne = Users::where('id', $id)->where('enabled', 1)->with('matieres')->select('id', 'firstName', 'lastName')->firstOrFail();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($personne));
 });
@@ -93,7 +53,7 @@ $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), functi
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         $personne = Users::where('id', $id)->with('matieres')->firstOrFail();
-        
+
         //sync matieres
         $newMatieres = [];
         foreach($data['matieres'] as $matiere){

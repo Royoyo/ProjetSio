@@ -31,40 +31,30 @@ $app->post('/login', function () use ($app) {
                 $id = $_SESSION['id'];
                 $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
             } 
-            if (isset($user_obj)){          /* à tester sans le if */
-                $user_obj->connected = true;
-                $user_obj->save();  ///< to keep the online status in the database
-                $temp_home = array();
-                $role_array = array();
-                foreach($user_obj->roles as $role) {
-                    array_push($temp_home, $role['home']);
-                    array_push($role_array, $role['role']);
+            $user_obj->connected = true;
+            $user_obj->save();  ///< to keep the online status in the database
+            $role_priority = 0;
+            $role_array = [];
+            foreach($user_obj->roles as $role) {
+                array_push($role_array, $role['role']);
+                if ($role['priority'] < $role_priority || $role_priority == 0) {
+                    $role_priority = $role['priority'];
+                    $user_home = $role['home'];
                 }
-                ///< The 7 next line match the user with their roles to their role homepage
-                if(in_array('administration', $temp_home)) {
-                    $user_home = 'administration';
-                } else if(in_array('planification', $temp_home)) {
-                    $user_home = 'planification';
-                } else if(in_array('enseignement', $temp_home)) {
-                    $user_home = 'enseignement';
-                }
-    
-                $user_json = array( ///< stock all the user's information's in the user_json variable
-                    "name"=>$user_obj->login,
-                    "firstName"=>$user_obj->firstName,
-                    "lastName"=>$user_obj->lastName,
-                    "roles"=>$role_array,
-                    "token"=>$token,
-                    "home"=>$user_home,
-                    "id"=>$user_obj->id,
-                    );
-                $app->response->headers->set('Content-Type', 'application/json');
-                $app->response->setBody(json_encode($user_json));
-                ///< The last lines are the errors cases
-            } else {
-                $app->response->headers->set('Content-Type', 'text/html');
-                $app->response->setBody(false);
             }
+
+            $user_json = array( ///< stock all the user's information's in the user_json variable
+                "name"=>$user_obj->login,
+                "firstName"=>$user_obj->firstName,
+                "lastName"=>$user_obj->lastName,
+                "roles"=>$role_array,
+                "token"=>$token,
+                "home"=>$user_home,
+                "id"=>$user_obj->id,
+                );
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setBody(json_encode($user_json));
+            ///< The last lines are the errors cases
         } else {
             $app->response->headers->set('Content-Type', 'text/html');
             $app->response->setBody(false);

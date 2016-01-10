@@ -11,7 +11,7 @@
  */
  
 $app->get('/admin/personnes', $authenticateWithRole('administrateur'), function () use ($app) {
-    /// Looking for all the enabled users (where enabled = 1) and the corresponding role
+    /// Looking for all the users (even the one who aren't enabled) and the corresponding role
     $users = Users::with('roles')->select('id', 'login', 'firstName', 'lastName', 'email', 'enabled', 'connected')->get();
     /// Sending them as JSON then it is readable by AngularJS
     $app->response->headers->set('Content-Type', 'application/json');
@@ -24,17 +24,19 @@ $app->get('/admin/personnes/:id', $authenticateWithRole('administrateur'), funct
     $app->response->setBody(json_encode($personne));
 });
 
-$app->post('/admin/personnes', $authenticateWithRole('administrateur'), function() use ($app) {
+$app->post('/admin/personnes', $authenticateWithRole('administrateur'), function() use ($app, $mailer) {
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
+        $token = uniqid(rand(), true);
         $personne = new Users;
         $personne->login = $data['login'];
         $personne->password = '';
         $personne->firstName = $data['firstName'];
         $personne->lastName = $data['lastName'];
         $personne->email = $data['email'];
-        $personne->enabled = 1;
+        $personne->token = $token;
+        $personne->enabled = 0;
         $personne->connected = 0;
         $personne->save();
         
@@ -46,7 +48,24 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         
         $personne->roles()->sync($newRoles);
         
-        $app->response->setBody(true);
+        // Here I'm fetching my email template from my template directory.
+
+        // Setting all needed info and passing in my email template.
+        $message = Swift_Message::newInstance('Wonderful Subject')
+            ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
+            ->setTo(array($data['email'] => $data['firstName'] + '' + $data['lastName']))
+            ->setBody('')
+            ->setContentType("text/html");
+
+        // Send the message
+        try {
+            $results = $mailer->send($message);
+        }catch(Exception $e) {
+            $results = $e;
+        }
+
+        // Print the results, 1 = message sent!
+        $app->response->setBody(results);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setBody(json_encode($e));

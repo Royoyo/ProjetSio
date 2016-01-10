@@ -14,8 +14,8 @@
 /*$transport = Swift_SmtpTransport::newInstance('localhost', 25);
 
 /// Create Mailer with our Transport.
-$mailer = Swift_Mailer::newInstance($transport);*/
-
+$mailer = Swift_Mailer::newInstance($transport);
+*/
 /*
 // Send email
 $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
@@ -45,39 +45,6 @@ $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
 * \param[in] 	$role_required is a string wich is the title of the role the user must have
 * \return 		a boolean with the state \a  True or an error code 
 */
-require_once 'vendor/swiftmailer/swiftmailer/lib/swift_required.php';
-
-// Create Transport
-$transport = Swift_SmtpTransport::newInstance('aspmx.l.google.com', 25)
-    ->setUsername('test.ifide@gmail.com')
-    ->setPassword('operations123');
-
-// Create Mailer with our Transport.
-$mailer = Swift_Mailer::newInstance($transport);
-
-$app->get('/test-email', function() use ($app, $mailer){
-
-    // Here I'm fetching my email template from my template directory.
-
-    // Setting all needed info and passing in my email template.
-    $message = Swift_Message::newInstance('Wonderful Subject')
-                    ->setFrom(array('test.ifide@gmail.com' => 'Me'))
-                    ->setTo(array('test.ifide@gmail.com' => 'AlsoMe'))
-                    ->setBody('COUCOUSAMARCHE')
-                    ->setContentType("text/html");
-
-    // Send the message
-    try {
-        $results = $mailer->send($message);
-    }catch(Exception $e) {
-        $results = $e;
-    }
-
-    // Print the results, 1 = message sent!
-    print($results);
-
-});
-
 $authenticateWithRole = function ($role_required){ 
     return function () use ( $role_required ) {
         $app = \Slim\Slim::getInstance();
@@ -88,11 +55,11 @@ $authenticateWithRole = function ($role_required){
             $app->halt(401);	
         } else {						///< In this case, we check if the user id is correctly associated with his role, if not, error 401 is sent
             $id = $_SESSION['id'];
-            $role_priority = Roles::where('role', $role_required)->pluck('priority');
             $user = Users::where('id', $id)->with('roles')->firstOrFail();	///<	Matching the current role to the users id
             foreach($user->roles as $role) {
-                if ($role['priority'] <=  $role_priority)
+                if ($role['role'] == $role_required) { ///< Testing if the role is the role the user must have
                     return True;
+                }
             }
             $app->halt(401);
         }
