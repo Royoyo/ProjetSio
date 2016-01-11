@@ -77,7 +77,7 @@ $app->get('/plan/classes', $authenticateWithRole('planificateur'), function() us
 });
 
 $app->get('/plan/classes/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $classe = Classes::where('id', $id)->with('user')->select('id', 'dateDebut', 'dateFin', 'nom')->firstOrFail();
+    $classe = Classes::where('id', $id)->with('user')->firstOrFail();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($classe));
 });
@@ -92,7 +92,7 @@ $app->put('/plan/classes/:id', $authenticateWithRole('planificateur'), function(
         $classe->dateDebut = $data['dateDebut'];
         $classe->dateFin = $data['dateFin'];
         //TO DO : enregistrer le prof principal
-        $classe->id_users = $data['user']['id'];
+        $classe->id_Users = $data['user']['id'];
         $classe->save();
 
         $app->response->setBody(true);
@@ -112,7 +112,7 @@ $app->post('/plan/classes', $authenticateWithRole('planificateur'), function() u
         $classe->dateDebut = $data['dateDebut'];
         $classe->dateFin = $data['dateFin'];
         $classe->id_Users = $data['user']['id'];
-        $classe->push();
+        $classe->save();
 
          
         $app->response->setBody(true);

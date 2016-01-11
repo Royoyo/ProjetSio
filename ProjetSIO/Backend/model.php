@@ -61,7 +61,7 @@ class Classes extends Model {
     public $timestamps = false;
 
     public function user() {
-        return $this->belongsTo('Users', 'id');
+        return $this->belongsTo('Users', 'id_Users');
     }
     
     public function cours() {
