@@ -17,10 +17,10 @@
 $app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () use ($app) {
     $start = $_GET['start'];
     $end = $_GET['end'];
-    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'dateDebut', 'dateFin')->where(function($q) use($start) {
-        $q->where('dateDebut', '>=', $start);
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'start', 'end')->where(function($q) use($start) {
+        $q->where('start', '>=', $start);
     })->where(function($q) use($end) {
-        $q->where('dateDebut', '<=', $end);
+        $q->where('start', '<=', $end);
     })->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($cours_obj));
@@ -71,13 +71,13 @@ $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), functi
 //Classes
 
 $app->get('/plan/classes', $authenticateWithRole('planificateur'), function() use ($app) {
-    $classes = Classes::all();
+    $classes = Classes::with('user')->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($classes));
 });
 
 $app->get('/plan/classes/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $classe = Classes::where('id', $id)->select('id', 'dateDebut', 'dateFin', 'nom')->firstOrFail();
+    $classe = Classes::where('id', $id)->with('user')->select('id', 'dateDebut', 'dateFin', 'nom')->firstOrFail();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($classe));
 });
@@ -91,12 +91,14 @@ $app->put('/plan/classes/:id', $authenticateWithRole('planificateur'), function(
         $classe->nom = $data['nom'];
         $classe->dateDebut = $data['dateDebut'];
         $classe->dateFin = $data['dateFin'];
+        //TO DO : enregistrer le prof principal
+        $classe->id_users = $data['user']['id'];
         $classe->save();
-              
+
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($e));
+        $app->response->setBody($e);
     }
 });
 
@@ -105,18 +107,18 @@ $app->post('/plan/classes', $authenticateWithRole('planificateur'), function() u
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         
-        $classe = new Classes(array(
-                'nom' => $data['nom'],
-                'dateDebut' => $data['dateDebut'],
-                'dateFin' => $data['dateFin']
-        ));
-        
-        $classe->save();
-              
+        $classe = new Classes;
+        $classe->nom = $data['nom'];
+        $classe->dateDebut = $data['dateDebut'];
+        $classe->dateFin = $data['dateFin'];
+        $classe->id_Users = $data['user']['id'];
+        $classe->push();
+
+         
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($e));
+        $app->response->setBody($e);
     }
 });
 ?>

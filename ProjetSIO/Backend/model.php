@@ -46,6 +46,10 @@ class Users extends Model {
     public function matieres() {
         return $this->belongsToMany('Matieres', 'users_matieres', 'id_Users', 'id_Matieres');
     }
+    
+    public function classes() {
+        return $this->hasMany('Classes');
+    }
 }
 
 /**
@@ -56,6 +60,10 @@ class Users extends Model {
 class Classes extends Model {
     public $timestamps = false;
 
+    public function user() {
+        return $this->belongsTo('Users', 'id');
+    }
+    
     public function cours() {
         return $this->belongsToMany('Cours', 'cours_classes', 'id_Classes', 'id_Cours');
     }
