@@ -99,6 +99,9 @@ class Matieres extends Model {
     public function user() {
         return $this->belongsToMany('Users', 'users_matieres', 'id_Matieres', 'id_Users');
     }
+    public function cours() {
+        return $this->hasMany('Cours');
+    }
 }
 
 /**
@@ -106,12 +109,13 @@ class Matieres extends Model {
 * \brief        corresponding to lessons
 */
 class Cours extends Model {
+    public $timestamps = false;
     public function user() {
         return $this->hasOne('Users', 'id')->select('id', 'firstName', 'lastName');
     }
 
     public function matiere() {
-        return $this->hasOne('Matieres', 'id')->select('id', 'nom', 'code');
+        return $this->belongsTo('Matieres', 'id_Matieres');
     }
 
     public function classes() {

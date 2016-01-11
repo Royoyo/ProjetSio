@@ -32,8 +32,60 @@ $app->get('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
     $app->response->setBody(json_encode($cours_obj));
 });
 
-//Enseignants
+$app->post('/plan/cours/', $authenticateWithRole('planificateur'), function () use ($app) {
+    try{
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
 
+        $cours = new Cours;
+        $cours->dateDebut = $data['start'];
+        $cours->dateFin = $data['end'];
+        $cours->id_Matieres = $data['matiere']['id'];
+        if (array_key_exists('user', $data))
+            $cours->id_Users = $data['user']['id'];
+        $cours->save();
+
+        $newClasses = [];
+        foreach($data['classes'] as $classe) {
+            array_push($newClasses, $classe['id']);
+        }
+        
+        $cours->classes()->sync($newClasses);
+        $app->response->setBody(true);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody($e);
+    }
+});
+
+$app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($id) use ($app) {
+    try {
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+
+        $cours = Cours::with('user', 'matiere', 'classes')->where('id', $id)->firstOrFail();
+        $cours->dateDebut = $data['start'];
+        $cours->dateFin = $data['end'];
+        $cours->id_Matieres = $data['matiere']['id'];
+        if (array_key_exists('user', $data))
+            $cours->id_Users = $data['user']['id'];
+        $cours->save();
+
+        $newClasses = [];
+        foreach($data['classes'] as $classe) {
+            array_push($newClasses, $classe['id']);
+        }
+        
+        $cours->classes()->sync($newClasses);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody(1);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody($e);
+    }
+});
+
+//Enseignants
 $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function() use ($app) {
     $users = Users::whereHas('roles', function($q) {
         $q->where('role', 'enseignant');
@@ -64,7 +116,7 @@ $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), functi
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($e));
+        $app->response->setBody($e);
     }
 });
 
