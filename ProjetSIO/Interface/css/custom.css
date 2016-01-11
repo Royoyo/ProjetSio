@@ -17,3 +17,31 @@ body {
 .st-sort-descent:before {
     content: '\25BC';
 }
+
+
+.coursContainer .fc-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coursContainer .fc-bg div {
+    color: black;
+    font-size: 2em;
+    text-align: center;
+}
+/*
+
+.morningContainer {
+    background: #8fdf82;
+    opacity: .3;
+    filter: alpha(opacity=30);
+}
+
+.afternoonContainer {
+    background: #8fdf82;
+    opacity: .3;
+    filter: alpha(opacity=30);
+}
+
+*/
