@@ -62,7 +62,7 @@ webApp.controller('AdminList',
 //Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller('AdminDetails',
-	function ($scope, adminPersonnes, Restangular, personne, $modalInstance, roles) {	
+	function ($scope, adminPersonnes, Restangular, personne, $modalInstance, serviceRoles) {	
 		
 		//Initialisation form
 		
@@ -71,7 +71,7 @@ webApp.controller('AdminDetails',
 		$scope.creation = false;
 		$scope.formRoles = {};
 
-		roles.getRoles().then(function (roles) {
+		serviceRoles.getRoles().then(function (roles) {
 			$scope.roles = roles;
 		})
 

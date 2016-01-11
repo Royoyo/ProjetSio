@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails cours {{ cours.title }}</div>
+	<div class="panel-heading" ng-show="creation">Création de cours</div>
+	<div class="panel-body">
+		<form novalidate class="form">
+            <label>Matière</label>
+            <select class="form-control" ng-model="selectedMatiere">				
+				<option ng-repeat="matiere in matieres" value="{{ matiere.id }}">{{ matiere.nom }}</option>
+			</select>
+            <label>Enseignant</label>
+            <select class="form-control" ng-model="selectedEnseignant">				
+				<option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.lastName }}</option>
+			</select>
+               <div class="form-group">
+				<label>Classes :</label>
+				<label data-ng-repeat="classe in classes" class="checkbox-inline">
+					<input type="checkbox" ng-model="formClasses[classe.id]" id="{{ classe.id }}"> {{ classe.nom }} {{ classe.annee }}
+				</label>
+			</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2">
+			<input type="submit" class="btn btn-default" ng-click="save(classe)" value="Enregistrer" />
+			<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+		</div>
+	</div>
+	</form>
+</div>

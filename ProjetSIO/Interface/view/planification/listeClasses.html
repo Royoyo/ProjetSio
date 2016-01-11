@@ -14,13 +14,13 @@
 			</tr>
 			<tr>
 				<th>
-					<input st-search="Annee" placeholder="recherche Annee" class="input-sm form-control" type="search"/>
+					<input st-search="annee" placeholder="recherche Annee" class="input-sm form-control" type="search"/>
 				</th>
 				<th>
-					<input st-search="Classe" placeholder="recherche Classe" class="input-sm form-control" type="search"/>
+					<input st-search="nom" placeholder="recherche Classe" class="input-sm form-control" type="search"/>
 				</th>
 				<th>
-					<input st-search="ProfPrincipal" placeholder="recherche ProfPrincipal" class="input-sm form-control" type="search"/>
+					<input st-search="user.firstName" placeholder="recherche ProfPrincipal" class="input-sm form-control" type="search"/>
 				</th>
 			</tr>
 		</thead>
@@ -28,7 +28,7 @@
 			<tr ng-repeat="classe in classesView">
 				<td>{{ classe.annee }}</td>
 				<td>{{ classe.nom }}</td>
-				<td></td>
+				<td>{{ classe.user.firstName }} {{ classe.user.lastName }}</td>
 				<td>
 					<div class="btn-group" dropdown keyboard-nav>
 						<button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>

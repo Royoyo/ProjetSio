@@ -34,6 +34,9 @@ webApp.factory('planClasses',
 			getClasse: function(id){
 				return Restangular.one('plan/classes',id).get();
 			},
+            getNewClasse: function(){
+				return Restangular.one('plan/classes');
+			},
 			postClasse: function(classe){
 				Restangular.all('plan/classes').post(classe);
 			},
@@ -52,16 +55,22 @@ webApp.factory('planCours',
 			getCoursSeul: function(id){
 				return Restangular.one('plan/cours',id).get();
 			},
-			postCours: function(personne){
-				Restangular.all('plan/cours').post(personne);
+            getNewCours: function(){
+				return Restangular.one('plan/cours');
 			},
-			deleteCours: function(personne){
-				personne.remove();
+			postCours: function(cours){
+				Restangular.all('plan/cours').post(cours);
+			},
+            putCours: function(cours){
+				Restangular.all('plan/cours').put(cours);
+			},
+			deleteCours: function(cours){
+				cours.remove();
 			}
 		}
 	})
 	
-webApp.factory('roles',
+webApp.factory('serviceRoles',
 	function(Restangular){
 		return {
 			getRoles: function(){
@@ -70,7 +79,7 @@ webApp.factory('roles',
 		}
 	})
 	
-webApp.factory('matieres',
+webApp.factory('serviceMatieres',
 	function(Restangular){
 		return {
 			getMatieres: function(){

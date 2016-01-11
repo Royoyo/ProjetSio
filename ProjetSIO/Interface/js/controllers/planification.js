@@ -1,8 +1,13 @@
 webApp.controller('PlanClassesController',
-	function($scope, planClasses, Restangular, $modal){
+	function($scope, $modal, planClasses, planEnseignants, Restangular){
 		
 		$scope.classes = [];
-		
+        
+		$scope.enseignants = [];     
+        planEnseignants.getEnseignants().then(function(enseignants){
+			angular.copy(enseignants,$scope.enseignants);
+		})
+        
 		updateTable();
 		
 		$scope.openDetails = function (classe) {
@@ -17,6 +22,9 @@ webApp.controller('PlanClassesController',
 				resolve: {
 					classe: function () {
 						return $scope.classe;
+					},
+                    enseignants: function () {
+						return $scope.enseignants;
 					}
 				}
 			});
@@ -38,46 +46,60 @@ webApp.controller('PlanClassesController',
 	});
 
 webApp.controller('ClasseDetails',
-	function($scope, planClasses, Restangular, $modalInstance, classe){
+	function($scope, $timeout, $modalInstance,  planClasses, Restangular, enseignants, classe){
 		
 		$scope.classe = {};
 		$scope.pickerDateDebut = false;
 		$scope.pickerDateFin = false;
-			
+        $scope.selectedEnseignant = "";
+        
+        $scope.enseignants = enseignants;
+        
 		if (classe === -1) 
 		{
 			$scope.creation = true;
 		}
 		else
 		{
-			planClasses.getClasse(classe.id).then(function (classe){
+			$scope.creation = false;
+		}
+        
+        if(!$scope.creation){
+            planClasses.getClasse(classe.id).then(function (classe){
 				Restangular.copy(classe,$scope.classe);
 				$scope.classe.annee = $scope.classe.dateDebut.substr(0,4) + "/" + $scope.classe.dateFin.substr(0,4);
+                $scope.selectedEnseignant = $scope.classe.user.id;
 			});
-		}
+        }
+        else {
+            $scope.classe = planClasses.getNewClasse();
+        }
 		
 		$scope.openDatePicker = function(i){
-			if (i==1)
-			{
-				$scope.pickerDateDebut = true;
-			}
-			else
-			{
-				$scope.pickerDateFin = true;
-			}
+            $timeout(function () {
+                if (i==1)
+                {
+                    $scope.pickerDateDebut = true;
+                }
+                else
+                {
+                    $scope.pickerDateFin = true;
+                }
+            });			
 		}
 		
-		
+		function getObjectById(objects,id) {
+			for (var i = 0; i < objects.length; i++) {
+				if (objects[i].id == id) {
+					return objects[i];
+				}
+			}
+		};
 		
 		$scope.save = function (classe) {
-			if ($scope.creation === true) {
-				planClasses.postClasse(classe);
-				$modalInstance.close();
-			}
-			else {
-				classe.save();
-				$modalInstance.close();
-			}
+            classe.user = getObjectById($scope.enseignants,$scope.selectedEnseignant);
+            classe.save();
+            $modalInstance.close();
 		};
 
 		$scope.cancel = function () {
@@ -155,7 +177,7 @@ webApp.controller('PlanEnseignantsController',
 	});
 
 webApp.controller('ListeMatieresController',
-	function($scope, $modalInstance, matieres, enseignant){
+	function($scope, $modalInstance, serviceMatieres, enseignant){
 		
 		$scope.matieres = [];
 		$scope.matieresChoix = [];
@@ -163,7 +185,7 @@ webApp.controller('ListeMatieresController',
 		
 		angular.copy(enseignant.matieres,$scope.matieresChoix);
 		
-		matieres.getMatieres().then(function(matieres){
+		serviceMatieres.getMatieres().then(function(matieres){
 			angular.copy(matieres,$scope.matieres);
 			$scope.matieresView = [].concat($scope.matieres);
 		})
@@ -201,44 +223,144 @@ webApp.controller('ListeMatieresController',
 webApp.controller('PlanCalendarClasses',
 	function($scope, planClasses, Restangular){
 		$scope.classes =  [];
-		planClasses.getClasses().then(function(classes){		
-			Restangular.copy(classes,$scope.classes);
+		planClasses.getClasses().then(function(classes){					
+            angular.forEach(classes,function(element){
+				element.annee = element.dateDebut.substr(0,4) + "/" + element.dateFin.substr(0,4);
+			})
+            Restangular.copy(classes,$scope.classes);
 		});
 	});
-	
-webApp.controller('PlanCalendar',
-	function($scope,$compile,uiCalendarConfig, Restangular, planCours, id){
 
-		// calendrier google pour les jours fériés
-		$scope.eventsGoogle = {
-			googleCalendarId: 'fr.french#holiday@group.v.calendar.google.com',
-			googleCalendarApiKey: 'AIzaSyAbOYkIfOWcqCnHEs_Mlf0JuT0HJ8TVq1M',
-			className: 'gcal-event',
-			currentTimezone: 'Europe/Paris'
+webApp.controller('CoursDetails',
+	function($scope, $modalInstance, Restangular, event, matieres, enseignants, classes, planCours){
+        
+        $scope.cours = {};   
+            
+        $scope.matieres = matieres;
+        $scope.enseignants = enseignants;
+        $scope.classes = classes;
+        
+        $scope.selectedMatiere = "";
+        $scope.selectedEnseignant = "";
+        $scope.formClasses = {};
+        
+        if(event.title == undefined) {
+            $scope.creation = true;
+        }
+        else {
+            $scope.creation = false;
+        }
+        
+        if (!$scope.creation){
+            planCours.getCoursSeul(event.id).then(
+                function(cours){
+                    Restangular.copy(cours,$scope.cours);
+                    $scope.cours.title = cours.matiere.nom + " | " + cours.user.lastName;         
+                    $scope.selectedMatiere = cours.matiere.id;
+                    $scope.selectedEnseignant = cours.user.id;
+                    listeners();
+                },
+                function(){
+                    alert("Erreur lors du chargement des détails du cours sélectionné.");
+                }
+           );
+        }
+        else {
+            $scope.cours = planCours.getNewCours();
+            $scope.cours.start = event.start.format();
+            $scope.cours.end = event.end.format();
+            listeners();
+        }
+        function listeners(){
+            $scope.$watch(function(){
+                return $scope.selectedMatiere;
+            }, function(value){
+                $scope.enseignants = [];
+                angular.forEach(enseignants,function(enseignant){
+                    if(filtreEnseignants(enseignant))
+                        $scope.enseignants.push(enseignant);
+                });
+            }, true);
+            
+            $scope.$watch(function () {
+			 return $scope.formClasses;
+            }, function (value) {
+                $scope.cours.classes = [];
+                angular.forEach($scope.formClasses, function (v, k) {
+                    v && $scope.cours.classes.push(getObjectById($scope.classes,k));
+                });
+            }, true);
+        
+        };       
+        
+        function filtreEnseignants(enseignant)
+        {
+            if ($scope.selectedMatiere === undefined)
+                return true;
+            
+            var match = false;
+            
+            angular.forEach(enseignant.matieres,function(matiere){
+                if(matiere.id === $scope.selectedMatiere)
+                    match = true;
+            });
+            
+            return match;
+        }
+        
+        
+        
+        function getObjectById(objects,id) {
+			for (var i = 0; i < objects.length; i++) {
+				if (objects[i].id == id) {
+					return objects[i];
+				}
+			}
 		};
+        
+        $scope.save = function(){
+            $scope.cours.user = getObjectById($scope.enseignants,$scope.selectedEnseignant);
+            $scope.cours.matiere = getObjectById($scope.matieres,$scope.selectedMatiere);             
+            $scope.cours.save();           
+			$modalInstance.close()
+		}
 		
-		// évènements pris de la BDD
-		$scope.events = {
-			url: (id == -1 ?'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours' : 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours/' + id)
-		};
-		
-		$scope.contraintes = [
-		{
-			title: "Pause déjeuner",
-			start: '12:15:00',
-			end: '13:15:00',
-			color: 'gray',
-			rendering: 'background',
-			dow: [1,2,3,4,5]
-		}];
-		
+		$scope.cancel = function(){
+			$modalInstance.dismiss('Annuler');
+		}
+	});
+    	
+webApp.controller('PlanCalendar',
+	function($scope, $compile, $modal, uiCalendarConfig, Restangular, planCours, serviceMatieres, planEnseignants, planClasses, id){ 
+        
+        /* Infos pour forms */
+        
+        $scope.matieres = [];
+        serviceMatieres.getMatieres().then(function(matieres){
+			angular.copy(matieres,$scope.matieres);
+		})
+        
+        $scope.enseignants = [];
+        planEnseignants.getEnseignants().then(function(enseignants){
+			angular.copy(enseignants,$scope.enseignants);
+		})
+        
+        $scope.classes = [];
+        planClasses.getClasses().then(function(classes){
+            angular.forEach(classes,function(element){
+				element.annee = element.dateDebut.substr(0,4) + "/" + element.dateFin.substr(0,4);
+			})
+			angular.copy(classes,$scope.classes);
+		})
+        /* Fonctions du calendrier */
+        
 		/* add custom event*/
-		$scope.addEvent = function() {
+		$scope.addEvent = function(event) {
+            //TO DO un appel pour le REST
 			$scope.events.push({
-				title: 'Open Sesame',
-				start: new Date(y, m, 28),
-				end: new Date(y, m, 29),
-				className: ['openSesame']
+				title: event.title,
+				start: event.start,
+				end: event.end
 			});
 		};
 		
@@ -247,28 +369,101 @@ webApp.controller('PlanCalendar',
 			$scope.events.splice(index,1);
 		};
 		
-		/* Change View */
+		
 		$scope.changeView = function(view,calendar) {
 			uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
 		};
 		
-		/* Change View */
+		
 		$scope.renderCalender = function(calendar) {
 			if(uiCalendarConfig.calendars[calendar]){
-				uiCalendarConfig.calendars[calendar].fullCalendar('render');
+				//uiCalendarConfig.calendars[calendar].fullCalendar('render');
 			}
 		};
-		
-		/* Render Tooltip */
-		$scope.eventRender = function( event, element, view ) { 
+        
+		$scope.eventRender = function(event, element, view ) {
+                    
+            if (view.type == "agendaWeek"){
+                if (event.className == "coursContainer"){
+                    element.find('.fc-bg').append("<div>" + event.description + "</div>"); 
+                }
+                else{
+                    event.title = event.matiere.nom + " | " + event.user.lastName;
+                }
+            }
+            /*    
 			element.attr({'tooltip': event.title,
 						'tooltip-append-to-body': true});
 			if (event.title === "Programmation")
 				element.find('.fc-title').append("<br/>Michel Diemer<br/>SIO2"); 
 			$compile(element)($scope);
+            */
+            
 		};
-		
-		/* config object */
+        
+		$scope.eventClick = function(event, jsEvent, view) {
+            if(view.type=="agendaWeek"){
+                $scope.event = event;
+                //openEventDetails(event);
+                var modalDetails = $modal.open({
+                    animation: true,
+                    templateUrl: "modals/coursDetails.html",
+                    controller: "CoursDetails",
+                    size: "md",
+                    resolve: {
+                        event: function () {
+                            return $scope.event;
+                        },
+                        matieres: function () {
+                            return $scope.matieres;
+                        },
+                        enseignants: function () {
+                            return $scope.enseignants;
+                        },
+                        classes: function () {
+                            return $scope.classes;
+                        }
+                    }
+                });
+
+                modalDetails.result.then(function (event) {
+                    // TO DO : mettre à jour calendar sans requete serveur
+                    // $scope.addEvent(event);
+                    //TO DO: voir ligne 307
+                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('refetchEvents');
+                    uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                });
+            }
+		};
+        
+        $scope.viewRender = function(view,element)
+        {
+            $scope.$watch('uiCalendarConfig.calendars.length',function()
+            {
+                if(typeof uiCalendarConfig.calendars.planCalendar != 'undefined'){
+                    if (view.type == "agendaWeek"){
+                        //mettre un $watch sur uiCalendarConfig.calendars.length puis faire la ligne d'en dessous 
+                        uiCalendarConfig.calendars.planCalendar.fullCalendar('addEventSource',$scope.backgroundEvent);
+                        uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                    }
+                }
+            });
+        }
+        
+        $scope.viewDestroy = function(view,element)
+        {
+            $scope.$watch('uiCalendarConfig.calendars.length',function()
+            {
+                if(typeof uiCalendarConfig.calendars.planCalendar != 'undefined'){
+                    if(view.type == "agendaWeek"){
+                        uiCalendarConfig.calendars.planCalendar.fullCalendar('removeEventSource',$scope.backgroundEvent);
+                        uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                    }
+                }
+            });
+        }
+        
+        /* Configuration du calendrier */
 		$scope.uiConfig = {
 			calendar:{
 				height: 540,
@@ -281,6 +476,9 @@ webApp.controller('PlanCalendar',
 				weekends : false,
 				weekNumbers : true,
 				eventRender: $scope.eventRender,
+                eventClick : $scope.eventClick,
+                viewRender : $scope.viewRender,
+                viewDestroy : $scope.viewDestroy,
 				minTime: "08:00:00",
 				maxTime: "17:30:00",
 				//slotDuration: "04:00:00",
@@ -289,9 +487,42 @@ webApp.controller('PlanCalendar',
 				monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"]
 			}
 		};
-
-		/* event sources array*/
-		$scope.eventSources = [$scope.events,$scope.eventsGoogle,$scope.contraintes];
+        
+        /* Données du calendrier */
+        
+		$scope.eventsGoogle = {
+			googleCalendarId: 'fr.french#holiday@group.v.calendar.google.com',
+			googleCalendarApiKey: 'AIzaSyAbOYkIfOWcqCnHEs_Mlf0JuT0HJ8TVq1M',
+			className: 'gcal-event',
+			currentTimezone: 'Europe/Paris'
+		};
+		
+		$scope.events = {
+			url: (id == -1 ? 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours' : 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours/classe/' + id),
+            color: 'green',
+            className: 'coursEvent'
+		};	
+        
+        //Fond clickable pour rajouter les cours
+        $scope.backgroundEvent = [
+            {
+                start : '8:00',
+                end: '12:15',
+                dow:[1,2,3,4,5],
+                className: 'coursContainer',
+                description: "Rajouter un cours"
+            },
+            {
+                start : '13:15',
+                end: '17:30',
+                dow:[1,2,3,4,5],
+                className: 'coursContainer',
+                description: "Rajouter un cours"
+            }
+        ];
+        
+		/* Arrays de avec données de base du calendrier (au chargement de la page) */
+		$scope.eventSources = [$scope.events,$scope.eventsGoogle];
 });
 	
 webApp.controller('InfoPlanificateurController',
