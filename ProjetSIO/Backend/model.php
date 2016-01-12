@@ -46,10 +46,19 @@ class Users extends Model {
     public function matieres() {
         return $this->belongsToMany('Matieres', 'users_matieres', 'id_Users', 'id_Matieres');
     }
-    
+
+    public function indisponibilite() {
+        return $this->hasMany('Indisponibilite', 'id_Users');
+    }
+
+    public function cours() {
+        return $this->hasMany('Cours');
+    }
+
     public function classes() {
         return $this->hasMany('Classes');
     }
+
 }
 
 /**
@@ -85,7 +94,7 @@ class Indisponibilite extends Model {
     public $timestamps = false;
 
     public function user() {
-        return $this->hasOne('Users', 'id');
+        return $this->belongsTo('Users', 'id_Users');
     }
 }
 
@@ -111,7 +120,7 @@ class Matieres extends Model {
 class Cours extends Model {
     public $timestamps = false;
     public function user() {
-        return $this->hasOne('Users', 'id')->select('id', 'firstName', 'lastName');
+        return $this->belongsTo('Users', 'id');
     }
 
     public function matiere() {
@@ -130,7 +139,9 @@ class Cours extends Model {
 */
 class Roles extends Model {
     public $timestamps = false;
-
+    protected $casts = [
+        'priority' => 'int',
+    ];
     public function user() {
         return $this->belongsToMany('Users', 'users_matieres', 'id_Roles', 'id_Users');
     }
