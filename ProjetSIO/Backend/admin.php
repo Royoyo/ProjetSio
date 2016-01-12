@@ -29,8 +29,9 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         $token = uniqid(rand(), true);
+        $username = $data['firstName'][0] . $data['lastName'];
         $personne = new Users;
-        $personne->login = $data['login'];
+        $personne->login = $username;
         $personne->password = '';
         $personne->firstName = $data['firstName'];
         $personne->lastName = $data['lastName'];
@@ -49,12 +50,15 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $personne->roles()->sync($newRoles);
         
         // Here I'm fetching my email template from my template directory.
+        $email = $twig->view('new_user.twig', array(
+                                            'userid' => $personne->id,
+                                            'usertoken' => $personne->token));
 
         // Setting all needed info and passing in my email template.
-        $message = Swift_Message::newInstance('Wonderful Subject')
+        $message = Swift_Message::newInstance('Création de votre compte GPCI')
             ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
             ->setTo(array($data['email'] => $data['firstName'] + '' + $data['lastName']))
-            ->setBody('')
+            ->setBody($email)
             ->setContentType("text/html");
 
         // Send the message

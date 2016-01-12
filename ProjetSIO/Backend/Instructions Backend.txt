@@ -1,3 +1,0 @@
-On va construire une appli php en deux parties :
-- Les modèles objets construits à partir des tableaux de la BDD
-- Une application slim qui va répondre aux requêtes GET, POST et PUT de notre interface (http://www.slimframework.com/)

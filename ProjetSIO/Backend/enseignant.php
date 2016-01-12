@@ -13,40 +13,13 @@
  
 //Cours
 $app->get('/ens/cours/', $authenticateWithRole('enseignant'),  function () use ($app) {
-    $start = $_GET['start'];
-    $end = $_GET['end'];
-    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'dateDebut', 'dateFin')->where(function($q) use($start) {
-        $q->where('dateDebut', '>=', $start);
-    })->where(function($q) use($end) {
-        $q->where('dateDebut', '<=', $end);
-    })->get();
-    $title = '';
-    $cours = array();
-    foreach($cours_obj as $cour) {
-        $title .= $cour->matiere['nom'];
-        $title .= '<br>';
-        $title .= $cour->user['lastName'];
-        $title .= ' ';
-        $title .= $cour->user['firstName'];
-        $title .= '<br>';
-        foreach($cour->classes as $classe) {
-            $title .= $classe['nom'];
-            $title .= '/';
-        }
-        array_push($cours,
-            "cours", $cour,
-            "user", $cour->user,
-            "matiere", $cour->matiere,
-            "classes", $cour->classes,
-            "title", $title
-        );
-    }
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'start', 'end')->where('id', $id)->get();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($cours));
+    $app->response->setBody(json_encode($cours_obj));
 });
 
 $app->get('/ens/cours/:id', $authenticateWithRole('enseignant'),  function ($id) use ($app) {
-    $cours_obj = Cours::with('matiere', 'classes')->select('id', 'dateDebut', 'dateFin')->where('id', $id)->get();
+    $cours_obj = Cours::with('matiere', 'classes')->select('id', 'start', 'end')->where('id', $id)->get();
     $cours = array();
     foreach($cours_obj as $cour) {
         array_push($cours,
@@ -67,16 +40,16 @@ $app->get('/ens/indispo/', $authenticateWithRole('enseignant'),  function () use
 });
 
 $app->post('/ens/indispo/', $authenticateWithRole('enseignant'),  function () use ($app) {
-        $json = $app->request->getBody();
-        $data = json_decode($json, true);
-        
-        $indispo = new Indisponibilite;
-        $indispo->dateDebut = $data['dateDebut'];
-        $indispo->dateFin = $data['dateFin'];
-        $indispo->id_Users = $_SESSION['id'];
-        $indispo->save();
-              
-        $app->response->setBody(true);
+    $json = $app->request->getBody();
+    $data = json_decode($json, true);
+    
+    $indispo = new Indisponibilite;
+    $indispo->dateDebut = $data['dateDebut'];
+    $indispo->dateFin = $data['dateFin'];
+    $indispo->id_Users = $_SESSION['id'];
+    $indispo->save();
+          
+    $app->response->setBody(true);
 });
 
 $app->delete('/ens/indispo/:id', $authenticateWithRole('enseignant'),  function ($id) use ($app) {

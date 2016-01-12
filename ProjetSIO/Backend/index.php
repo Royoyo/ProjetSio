@@ -10,8 +10,13 @@
  * \details     this file contains the includes for the backend
  */
 
+require "vendor/twig/twig/lib/Twig/Autoloader.php";
+Twig_Autoloader::register();
 require 'vendor/autoload.php';
-$app = new \Slim\Slim();
+$app = new \Slim\Slim([
+    'view' => new \Slim\Views\Twig(),
+    'templates.path' => 'templates/'
+    ]);
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
@@ -41,6 +46,9 @@ $app->get('/matieres', $authenticateWithRole('planificateur'), function () use (
 $app->get('/:id/:token', function($id, $token) use ($app) {
     $user = Users::where('id', $id)->firstOrFail();
     if ($user->token == $token){
+        $password = generatePassword();
+        $password_hache = sha1($user->name . $password);
+        $user->password = $password_hache;
         $user->enabled = 1;
         $user->save();
     }
