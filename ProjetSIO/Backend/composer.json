@@ -3,6 +3,5 @@
         "slim/slim": "2.*",
         "illuminate/database": "*",
         "slim/views": "*",
-        "twig/twig": "*"
     }
 }

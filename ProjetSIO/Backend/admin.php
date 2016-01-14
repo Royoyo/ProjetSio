@@ -50,15 +50,24 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $personne->roles()->sync($newRoles);
         
         // Here I'm fetching my email template from my template directory.
-        $email = $twig->view('new_user.twig', array(
-                                            'userid' => $personne->id,
-                                            'usertoken' => $personne->token));
+        $list_var = array(
+                'user_id' => $personne->id,
+                'user_token' => $personne->token,
+                'user_firstname' => $personne->firstName,
+                'user_lastname' => $personne->lastName,
+            );
+
+        $template = file_get_contents("templates/new_user.html", FILE_TEXT);
+
+        foreach($list_var as $cle => $valeur) {
+            $template = str_replace('{{ '.$cle.' }}', $valeur, $template);
+        }     
 
         // Setting all needed info and passing in my email template.
         $message = Swift_Message::newInstance('Création de votre compte GPCI')
             ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
             ->setTo(array($data['email'] => $data['firstName'] + '' + $data['lastName']))
-            ->setBody($email)
+            ->setBody($template, "text/html");
             ->setContentType("text/html");
 
         // Send the message
@@ -72,7 +81,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $app->response->setBody(results);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($e));
+        $app->response->setBody($e);
     }
 });
 

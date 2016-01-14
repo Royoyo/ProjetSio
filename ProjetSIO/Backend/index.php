@@ -10,13 +10,8 @@
  * \details     this file contains the includes for the backend
  */
 
-require "vendor/twig/twig/lib/Twig/Autoloader.php";
-Twig_Autoloader::register();
 require 'vendor/autoload.php';
-$app = new \Slim\Slim([
-    'view' => new \Slim\Views\Twig(),
-    'templates.path' => 'templates/'
-    ]);
+$app = new \Slim\Slim();
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-    <head>    
+    <head>
+    	<meta charset="utf-8">
     	<title>Création de votre compte sur GPCI</title>
     </head>
     <body>
-    	Votre compte a été créer sur le site GPCI.
+    	Bonjour {{ user_firstname }} {{ user_lastname }}.<br>Votre compte a été créer sur le site GPCI.<br><br>
 
     	Pour activer votre compte clicker sur le lien suivant ou copier le et coller le dans la barre d'adresse de votre navigateur. <br>
-    	<a href="http://localhost/ProjetSIO/ProjetSIO/Backend/"{{ userid }}"/"{{ usertoken }}"/"></a><br>
+    	<a href="http://localhost/ProjetSIO/ProjetSIO/Backend/"{{ user_id }}"/"{{ user_token }}"/"></a><br>
 
     	Une fois votre compte activé un mot de passe vous sera généré aléatoirement et envoyer par mail.
 
