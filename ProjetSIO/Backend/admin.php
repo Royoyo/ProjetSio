@@ -29,7 +29,18 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         $token = uniqid(rand(), true);
-        $username = $data['firstName'][0] . $data['lastName'];
+        $username = strtolower($data['firstName'][0] . $data['lastName']);
+        if (Users::where('login', $username)->exists()) {
+            for($i=1; $i < 100; $i++){
+                $username_adjusted = $username . strval($i);
+                if (Users::where('login', $username_adjusted)->exists())
+                    continue;
+                else {
+                    $username = $username_adjusted;
+                    break;
+                }
+            }
+        } 
         $personne = new Users;
         $personne->login = $username;
         $personne->password = '';
@@ -67,7 +78,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $message = Swift_Message::newInstance('Création de votre compte GPCI')
             ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
             ->setTo(array($data['email'] => $data['firstName'] + '' + $data['lastName']))
-            ->setBody($template, "text/html");
+            ->setBody($template, "text/html")
             ->setContentType("text/html");
 
         // Send the message
