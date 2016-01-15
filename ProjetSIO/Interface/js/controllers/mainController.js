@@ -4,7 +4,7 @@ webApp.controller('mainController', function($scope, $rootScope, $modal, Authent
 
 	
 	$scope.modalShown = false;
-	
+    
 	var showLogin = function() {
 		if(!$scope.modalShown){
 			$scope.modalShown = true;
