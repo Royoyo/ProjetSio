@@ -1,10 +1,7 @@
 //Les services permettent de créer des sections de codes accessible par tous les controllers
 
+//Partie admins
 
-// Ce service crée la liste des utilisateurs  manipulable pour la vue admin
-// Bien sûr toutes les fonctions pour la connection avec la BDD ne sont pas encore en place dans cet exemple
-// et le système sera bien différent une fois l'api backend mise en place
-// TO DO : remplacer les infos de la maquette et mettre une connexion avec l'API backend
 webApp.factory('adminPersonnes',
 	function(Restangular){
 		return {
@@ -23,6 +20,8 @@ webApp.factory('adminPersonnes',
 			}
 		}
 	})
+
+//Partie planificateurs
 	
 webApp.factory('planClasses',
 	function(Restangular){
@@ -70,6 +69,55 @@ webApp.factory('planCours',
 		}
 	})
 	
+
+	
+webApp.factory('planEnseignants',
+	function(Restangular){
+		return {
+			getEnseignants: function(){
+				return Restangular.all('plan/enseignant').getList();
+			},
+					
+			getEnseignant: function(id){
+				return Restangular.one('plan/enseignant',id).get();
+			}
+		}
+	})
+
+//Partie enseignants
+
+webApp.factory('ensCours',
+	function(Restangular){
+		return {
+			getCours: function(){
+				return Restangular.all('ens/cours').getList();
+			}         
+		}
+	})
+
+webApp.factory('ensIndisponibilite',
+	function(Restangular){
+		return {			
+            getNewIndispo: function(){
+				return Restangular.one('ens/indispo');
+			},
+            getIndispo: function(id){
+				return Restangular.all('ens/indispo', id).get();
+			},
+            getIndispos: function(){
+				return Restangular.all('ens/indispo').getList();
+			},
+            postIndispo: function(indispo){
+				Restangular.all('ens/indispo').post(indispo);
+			},
+            deleteIndispo: function(indispo){
+				indispo.remove;
+			},
+		}
+	})
+    
+//Partie services
+
 webApp.factory('serviceRoles',
 	function(Restangular){
 		return {
@@ -87,20 +135,7 @@ webApp.factory('serviceMatieres',
 			},
 		}
 	})
-	
-webApp.factory('planEnseignants',
-	function(Restangular){
-		return {
-			getEnseignants: function(){
-				return Restangular.all('plan/enseignant').getList();
-			},
-					
-			getEnseignant: function(id){
-				return Restangular.one('plan/enseignant',id).get();
-			}
-		}
-	})
-
+    
 //Session utilisateur Javascript ( garder au chaud dans la session du navigateur par la factory Authentification)
 webApp.service('Session', function($rootScope, USERS_ROLES) {
 

@@ -85,6 +85,56 @@ $stateProvider
 	})
 	
 	//Partie Enseignant
+	.state('enseignement', {
+	url: "/enseignement",
+	templateUrl: "view/enseignement/navigation.html",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
 	
+	.state('enseignement.cours', {
+	url: "/cours",
+	templateUrl: "view/enseignement/cours.html",
+	controller: "EnsCoursController",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
+
+	.state('enseignement.indisponibilites', {
+	url: "/indisponibilites",
+	templateUrl: "view/enseignement/indisponibilites.html",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
+    
+    .state('enseignement.indisponibilites.liste', {
+	url: "/liste",
+	templateUrl: "view/enseignement/listeIndisponibilites.html",
+	controller: "EnsIndisponibilitesController",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
+    
+    .state('enseignement.indisponibilites.calendar', {
+	url: "/calendar",
+	templateUrl: "view/enseignement/calendarIndisponibilites.html",
+	controller: "EnsCalendarIndisponibilitesController",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
+    
+    .state('enseignement.calendar', {
+	url: "/calendar",
+	templateUrl: "view/enseignement/calendar.html",
+	controller: "EnsCalendarController",
+	data: {
+          authorizedRoles: [USERS_ROLES.enseignant]
+      }
+	})
 	;
 });
