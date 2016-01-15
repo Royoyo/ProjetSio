@@ -9,10 +9,6 @@
 			</ul>			
 		</div>
 		<div class="col-md-10" ui-view>
-			<h1>Bonjour {{ user.name }}</h1>
-			<div ng-controller="InfoPlanificateurController">
-				<alert ng-repeat="message in messages" type="{{message.type}}" close="closeMessage($index)">{{ message.body }}</alert>
-			</div>
 		</div>
 	</div>
 </div>

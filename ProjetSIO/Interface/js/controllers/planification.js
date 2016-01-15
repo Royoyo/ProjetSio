@@ -255,9 +255,17 @@ webApp.controller('CoursDetails',
             planCours.getCoursSeul(event.id).then(
                 function(cours){
                     Restangular.copy(cours,$scope.cours);
-                    $scope.cours.title = cours.matiere.nom + " | " + cours.user.lastName;         
-                    $scope.selectedMatiere = cours.matiere.id;
-                    $scope.selectedEnseignant = cours.user.id;
+                    if(cours.matiere != undefined){
+                        $scope.cours.title = cours.matiere.nom;
+                        $scope.selectedMatiere = cours.matiere.id.toString(); 
+                    }                       
+                    if(cours.user != undefined){
+                        $scope.cours.title += " | " + cours.user.lastName;
+                        $scope.selectedEnseignant = cours.user.id.toString();
+                    }
+                    angular.forEach(cours.classes, function (classe) {
+					   $scope.formClasses[classe.id] = true;
+				    }, this);
                     listeners();
                 },
                 function(){
@@ -271,6 +279,7 @@ webApp.controller('CoursDetails',
             $scope.cours.end = event.end.format();
             listeners();
         }
+        
         function listeners(){
             $scope.$watch(function(){
                 return $scope.selectedMatiere;
@@ -295,13 +304,13 @@ webApp.controller('CoursDetails',
         
         function filtreEnseignants(enseignant)
         {
-            if ($scope.selectedMatiere === undefined)
+            if ($scope.selectedMatiere == "")
                 return true;
             
             var match = false;
             
             angular.forEach(enseignant.matieres,function(matiere){
-                if(matiere.id === $scope.selectedMatiere)
+                if(matiere.id == $scope.selectedMatiere)
                     match = true;
             });
             
@@ -320,14 +329,22 @@ webApp.controller('CoursDetails',
         
         $scope.save = function(){
             $scope.cours.user = getObjectById($scope.enseignants,$scope.selectedEnseignant);
-            $scope.cours.matiere = getObjectById($scope.matieres,$scope.selectedMatiere);             
-            $scope.cours.save();           
-			$modalInstance.close()
-		}
+            $scope.cours.matiere = getObjectById($scope.matieres,$scope.selectedMatiere);
+            $scope.cours.save();
+            angular.copy($scope.cours.matiere,event.matiere);
+            angular.copy($scope.cours.user,event.user);
+            angular.copy($scope.cours.classes,event.classes);
+			$modalInstance.close(false);
+		};
 		
 		$scope.cancel = function(){
 			$modalInstance.dismiss('Annuler');
-		}
+		};
+        
+        $scope.delete = function(){
+            $scope.cours.remove();
+			$modalInstance.close(true);
+		};
 	});
     	
 webApp.controller('PlanCalendar',
@@ -381,16 +398,18 @@ webApp.controller('PlanCalendar',
 			}
 		};
         
-		$scope.eventRender = function(event, element, view ) {
+		$scope.eventRender = function(event, element, view) {
                     
-            if (view.type == "agendaWeek"){
-                if (event.className == "coursContainer"){
+            if (view.type == "agendaWeek")
+                if (event.className == "coursContainer")
                     element.find('.fc-bg').append("<div>" + event.description + "</div>"); 
-                }
-                else{
-                    event.title = event.matiere.nom + " | " + event.user.lastName;
-                }
-            }
+                    
+            if (event.source.className == "coursEvent")
+                if(event.matiere != undefined)
+                    event.title = event.matiere.nom;
+                if(event.user != undefined)
+                    event.title +=  + " | " + event.user.lastName;
+
             /*    
 			element.attr({'tooltip': event.title,
 						'tooltip-append-to-body': true});
@@ -426,12 +445,27 @@ webApp.controller('PlanCalendar',
                     }
                 });
 
-                modalDetails.result.then(function (event) {
+                modalDetails.result.then(function (deleteBool) {
+                    if (deleteBool){
+                        $scope.$watch('uiCalendarConfig.calendars.length',function(){
+                            uiCalendarConfig.calendars.planCalendar.fullCalendar('removeEvents', event.id);
+                            uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                        });
+                    }
+                    else {
+                        $scope.$watch('uiCalendarConfig.calendars.length',function(){
+                            uiCalendarConfig.calendars.planCalendar.fullCalendar('updateEvent', event);
+                            uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                        });
+                    }
                     // TO DO : mettre à jour calendar sans requete serveur
                     // $scope.addEvent(event);
                     //TO DO: voir ligne 307
                     //uiCalendarConfig.calendars.planCalendar.fullCalendar('refetchEvents');
-                    uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('removeEventSource',$scope.events);
+                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('addEventSource',$scope.events);
+                    
+                    
                 });
             }
 		};

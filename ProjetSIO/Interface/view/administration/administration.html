@@ -34,9 +34,8 @@
 					</th>
 					<th>
 						<select st-search="enabled" class="input-sm form-control">
-							<option value="">Tous</option>
-							<!--<option ng-repeat="personne in personnes | unique:'enabled'" value="{{ personne.enabled }}">{{ personne.enabled ? "Actif" : "Désactivé" }}</option>-->
-							<option value="true">Activé</option>
+                            <option value="true">Activé</option>
+							<option value="">Tous</option>							
 							<option value="false">Désactivé</option>
 						</select>
 					</th>
@@ -49,9 +48,7 @@
 					<td>{{ personne.lastName }}</td>
 					<td>{{ personne.email }}</td>
 					<td>
-						<div data-ng-repeat="role in personne.roles">
-							<p>{{ role.role }}<p>
-						</div>
+						<span data-ng-repeat="role in personne.roles"> {{ role.role }} </span>
 					</td>
 					<td><span ng-class="{'glyphicon glyphicon-flash green': personne.enabled, 'glyphicon glyphicon-off red' : !personne.enabled }"></span></td>
 					<td>
