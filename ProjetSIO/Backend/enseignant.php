@@ -12,8 +12,8 @@
  
  
 //Cours
-$app->get('/ens/cours/', $authenticateWithRole('enseignant'),  function () use ($app) {
-    $cours_obj = Cours::with('user', 'matiere', 'classes')->select('id', 'start', 'end')->where('id', $id)->get();
+$app->get('/ens/cours', $authenticateWithRole('enseignant'),  function () use ($app) {
+    $cours_obj = Cours::with('user', 'matiere', 'classes')->where('id_Users', $_SESSION['id'])->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($cours_obj));
 });
@@ -33,7 +33,7 @@ $app->get('/ens/cours/:id', $authenticateWithRole('enseignant'),  function ($id)
 });
 
 //Indisponibilités
-$app->get('/ens/indispo/', $authenticateWithRole('enseignant'),  function () use ($app) {
+$app->get('/ens/indispo', $authenticateWithRole('enseignant'),  function () use ($app) {
     $indispo = Indisponibilite::where('id_Users', $_SESSION['id'])->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($indispo));
