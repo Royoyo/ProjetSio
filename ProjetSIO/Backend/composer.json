@@ -3,5 +3,6 @@
         "slim/slim": "2.*",
         "illuminate/database": "*",
         "slim/views": "*",
+        "swiftmailer/swiftmailer": "^5.4"
     }
 }
