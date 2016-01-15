@@ -42,7 +42,7 @@ $app->get('/plan/cours/classe/:id', $authenticateWithRole('planificateur'), func
 });
 
 
-$app->post('/plan/cours/', $authenticateWithRole('planificateur'), function () use ($app) {
+$app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use ($app) {
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
