@@ -73,7 +73,8 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         foreach($list_var as $cle => $valeur) {
             $template = str_replace('{{ '.$cle.' }}', $valeur, $template);
         }     
-
+        
+        $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
         // Setting all needed info and passing in my email template.
         $message = Swift_Message::newInstance('Création de votre compte GPCI')
             ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
@@ -89,7 +90,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         }
 
         // Print the results, 1 = message sent!
-        $app->response->setBody(results);
+        $app->response->setBody($results);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setBody($e);
