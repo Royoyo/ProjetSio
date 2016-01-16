@@ -18,41 +18,110 @@ webApp.controller('EnsCoursController',
 	});
     
 webApp.controller('EnsIndisponibilitesController',
-	function ($scope, ensIndisponibilite, Restangular) {
+	function ($scope, $modal, ensIndisponibilite, Restangular) {
         
         $scope.indispos = [];
 
 		updateTable();
+        
+        $scope.openDetails = function (indispo) {
+			//Il faut mettre l'idList dans $scope pour qu'il soit accessible dans resolve:
+			$scope.indispo = indispo;
 
+			var modalDetails = $modal.open({
+				animation: true,
+				templateUrl: "modals/indisposDetails.html",
+                controller: "IndisposDetails",
+				size: "md",
+				resolve: {
+					indispo: function () {
+						return $scope.indispo;
+					}
+				}
+			});
+
+			modalDetails.result.then(function () {
+				updateTable();
+			});
+		};
+        
+        $scope.remove  = function(indispo){
+            indispo.remove();
+            updateTable();
+        }
+        
 		function updateTable() {
 			ensIndisponibilite.getIndispos().then(function (indispos) {
+                angular.forEach(indispos, function (element) {
+                    element.start = moment(element.start).format("DD-MM-YYYY");
+                    element.end = moment(element.end).format("DD-MM-YYYY");
+				})
 				Restangular.copy(indispos, $scope.indispos);
 				$scope.indisposView = [].concat($scope.indispos);
 			});
 		}   
         
 	});
+    
 webApp.controller('IndisposDetails',
-	function ($scope, $modalInstance, Restangular, event, ensIndisponibilite) {
+	function ($scope, $timeout, $modalInstance, Restangular,ensIndisponibilite, indispo) {
         
+        $scope.indispo = {};
+        $scope.pickerDateDebut = false;
+		$scope.pickerDateFin = false;
+        
+        if(indispo == -1) {
+            $scope.creation = true;
+        }
+        else {
+            $scope.creation = false;
+        }
+                 
+        if (!$scope.creation){
+            ensIndisponibilite.getIndispo(event.id).then(
+                function(indispo){
+                    Restangular.copy(indispo,$scope.indispo);
+                },
+                function(){
+                    alert("Erreur lors du chargement des détails du cours sélectionné.");
+                }
+           );
+        }
+        else {
+            $scope.indispo = ensIndisponibilite.getNewIndispo();
+        }
+        
+        $scope.openDatePicker = function(i){
+            $timeout(function () {
+                if (i==1)
+                {
+                    $scope.pickerDateDebut = true;
+                }
+                else
+                {
+                    $scope.pickerDateFin = true;
+                }
+            });			
+		}
+        
+        $scope.save = function(){
+            $scope.indispo.save().then(function(){
+			    $modalInstance.close();
+            });
+		};
+		
+		$scope.cancel = function(){
+			$modalInstance.dismiss('Annuler');
+		};
+        
+        $scope.delete = function(){
+            $scope.indispo.remove();
+			$modalInstance.close();
+		};
 	});
    
 webApp.controller('EnsCalendarIndisponibilitesController',
 	function ($scope, $compile, $modal, uiCalendarConfig, Restangular, ensIndisponibilite){ 
-        
-        /* Infos pour forms */
-        
-        /* Fonctions du calendrier */
-        
-		/* add custom event*/
-		$scope.addEvent = function(event) {
-            //TO DO un appel pour le REST
-			$scope.events.push({
-				title: event.title,
-				start: event.start,
-				end: event.end
-			});
-		};
 		
 		/* remove event */
 		$scope.remove = function(index) {
@@ -74,7 +143,7 @@ webApp.controller('EnsCalendarIndisponibilitesController',
                 if(event.matiere != undefined)
                     event.title = event.matiere.nom;
                 if(event.user != undefined)
-                    event.title +=  + " | " + event.user.lastName;           
+                    event.title += " | " + event.user.lastName;           
 		};
         
 		$scope.eventClick = function(event, jsEvent, view) {
