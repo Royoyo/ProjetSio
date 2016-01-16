@@ -1,74 +1,76 @@
 <div class="row">
-	<h1 class="page-header col-md-12">
-		Gestion des utilisateurs
-	</h1>
-</div>
-<div class="row">
 	<div class="col-md-12">
-		<table st-table="personnesView" st-safe-src="personnes"  class="table table-responsive table-hover">
-			<thead>
-				<tr>
-					<th st-sort="login">Login</th>
-					<th st-sort="firstName">Prénom</th>
-					<th st-sort="lastName">Nom</th>
-					<th st-sort="email">Mail</th>
-					<th st-sort="roles.role">Rôles</th>
-					<th st-sort="enabled">Statut</th>
-					<th>Actions</th>
-				</tr>
-				<tr>
-					<th>
-						<input st-search="login" placeholder="recherche Login" class="input-sm form-control" type="search"/>
-					</th>
-					<th>
-						<input st-search="firstName" placeholder="recherche Nom" class="input-sm form-control" type="search"/>
-					</th>
-					<th>
-						<input st-search="lastName" placeholder="recherche Prenom" class="input-sm form-control" type="search"/>
-					</th>
-					<th>
-						<input st-search="email" placeholder="recherche Mail" class="input-sm form-control" type="search"/>
-					</th>
-					<th>
-						<input st-search="roles.role" placeholder="recherche Role" class="input-sm form-control" type="search"/>
-					</th>
-					<th>
-						<select st-search="enabled" class="input-sm form-control">
-                            <option value="true">Activé</option>
-							<option value="">Tous</option>							
-							<option value="false">Désactivé</option>
-						</select>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="personne in personnesView">
-					<td>{{ personne.login }}</td>
-					<td>{{ personne.firstName }}</td>
-					<td>{{ personne.lastName }}</td>
-					<td>{{ personne.email }}</td>
-					<td>
-						<span data-ng-repeat="role in personne.roles"> {{ role.role }} </span>
-					</td>
-					<td><span ng-class="{'glyphicon glyphicon-flash green': personne.enabled, 'glyphicon glyphicon-off red' : !personne.enabled }"></span></td>
-					<td>
-						<div class="btn-group" dropdown keyboard-nav>
-							<button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
-								Actions <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li role="menuitem"><a ng-click="openDetails(personne)">Editer</a></li>
-								<li role="menuitem"><a ng-click="changeState(personne)">{{ personne.enabled ? "Désactiver" : "Activer" }}</a></li>									
-							</ul>
-						</div>
-					</td>
-				</tr>			
-			</tbody>
-		</table>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<button type="submit" class="btn btn-default" ng-click="openDetails(-1)">Créer Utilisateur</button>
-		</div>
-	</div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Gestion des utilisateurs
+                </h3>
+            </div>
+            <table st-table="personnesView" st-safe-src="personnes"  class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th st-sort="login">Login</th>
+                        <th st-sort="firstName">Prénom</th>
+                        <th st-sort="lastName">Nom</th>
+                        <th st-sort="email">Mail</th>
+                        <th st-sort="roles.role">Rôles</th>
+                        <th st-sort="enabled">Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input st-search="login" placeholder="recherche Login" class="input-sm form-control" type="search"/>
+                        </th>
+                        <th>
+                            <input st-search="firstName" placeholder="recherche Nom" class="input-sm form-control" type="search"/>
+                        </th>
+                        <th>
+                            <input st-search="lastName" placeholder="recherche Prenom" class="input-sm form-control" type="search"/>
+                        </th>
+                        <th>
+                            <input st-search="email" placeholder="recherche Mail" class="input-sm form-control" type="search"/>
+                        </th>
+                        <th>
+                            <input st-search="roles.role" placeholder="recherche Role" class="input-sm form-control" type="search"/>
+                        </th>
+                        <th>
+                            <select st-search="enabled" class="input-sm form-control">
+                                <option value="true">Activé</option>
+                                <option value="">Tous</option>							
+                                <option value="false">Désactivé</option>
+                            </select>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="personne in personnesView">
+                        <td>{{ personne.login }}</td>
+                        <td>{{ personne.firstName }}</td>
+                        <td>{{ personne.lastName }}</td>
+                        <td>{{ personne.email }}</td>
+                        <td>
+                            <span data-ng-repeat="role in personne.roles"> {{ role.role }} </span>
+                        </td>
+                        <td><span ng-class="{'glyphicon glyphicon-flash green': personne.enabled, 'glyphicon glyphicon-off red' : !personne.enabled }"></span></td>
+                        <td>
+                            <div class="btn-group" dropdown keyboard-nav>
+                                <button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
+                                    Actions <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="menuitem"><a ng-click="openDetails(personne)">Editer</a></li>
+                                    <li role="menuitem"><a ng-click="changeState(personne)">{{ personne.enabled ? "Désactiver" : "Activer" }}</a></li>									
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>			
+                </tbody>        
+                <tfoot>
+                    <tr>
+                        <td><button type="submit" class="btn btn-default" ng-click="openDetails(-1)">Créer Utilisateur</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
