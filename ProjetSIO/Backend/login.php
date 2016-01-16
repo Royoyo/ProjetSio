@@ -23,15 +23,16 @@ $app->post('/login', function () use ($app) {
         if (isset($data)) {
             if (!isset($_SESSION['id'])) { ///< if the user isn't logged in, this test will match the user's data corresponding to the user's id 
                 $username = $data['name'];
-                $password = sha1($data['name'] . $data['password']);
                 try {
+                    $user_obj = Users::where('login', $username)->firstOrFail();
+                    $password = sha1($user_obj->hash . sha1($data['password']));
                     $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
                     $_SESSION['id'] = $user_obj->id;
                     $_SESSION['token'] = $token;
                 } catch(Exception $e) {
                     $user_obj = '';
                     $app->response->headers->set('Content-Type', 'text/html');
-                    $app->response->setBody($password);
+                    $app->response->setBody($e);
                 }
             } else {    ///< if the user is already logged in, the previous assignement is already done, we can skip it
                 $id = $_SESSION['id'];

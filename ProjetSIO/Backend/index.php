@@ -41,12 +41,38 @@ $app->get('/matieres', $authenticateWithRole('planificateur'), function () use (
 $app->get('/:id/:token', function($id, $token) use ($app) {
     $user = Users::where('id', $id)->firstOrFail();
     if ($user->token == $token){
-        $password = generatePassword();
-        $password_hache = sha1($user->name . $password);
-        $user->password = $password_hache;
         $user->enabled = 1;
         $user->save();
     }
+});
+
+$app->post('/set_firstpassword/:id', function($id) use ($app) {
+    $json = $app->request->getBody();
+    $data = json_decode($json, true);
+    $user = Users::where('id', $id)->firstOrFail();
+    $hash = uniqid(rand(), true);
+    if ($data['password'] == $data['password_confirm']) {
+        $user->hash = $hash;
+        $user->password = sha1($hash . sha1($data['password']));
+        $user->save();
+    }
+});
+
+$app->post('/set_profil/:id', function($id) use ($app) {
+    $json = $app->request->getBody();
+    $data = json_decode($json, true);
+    $user = Users::where('id', $id)->firstOrFail();
+    if (array_key_exists('password_old', $data) && array_key_exists('password', $data) && array_key_exists('password_confirm', $data)){
+        if (sha1($hash . sha1($data['password_old'])) == $user->password && $data['password'] == $data['password_confirm']){
+            $hash = uniqid(rand(), true);
+            $user->hash = $hash;
+            $user->password = sha1($hash . sha1($data['password']));
+        }
+    }
+    if (array_key_exists('email', $data) && array_key_exists('email_confirm', $data)) {
+        $user->email = $data['email'];
+    }
+    $user->save();
 });
 
 $app->run();

@@ -60,7 +60,7 @@ $app->delete('/ens/indispo/:id', $authenticateWithRole('enseignant'),  function 
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($e));
+        $app->response->setBody($e);
     }
 });
 
