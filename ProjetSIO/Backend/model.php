@@ -120,7 +120,7 @@ class Matieres extends Model {
 class Cours extends Model {
     public $timestamps = false;
     public function user() {
-        return $this->belongsTo('Users', 'id_Users');
+        return $this->belongsTo('Users', 'id_Users')->with('matieres')->select('id','firstName','lastName');
     }
 
     public function matiere() {

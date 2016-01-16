@@ -44,8 +44,8 @@ $app->post('/ens/indispo/', $authenticateWithRole('enseignant'),  function () us
     $data = json_decode($json, true);
     
     $indispo = new Indisponibilite;
-    $indispo->dateDebut = $data['dateDebut'];
-    $indispo->dateFin = $data['dateFin'];
+    $indispo->start = $data['start'];
+    $indispo->end = $data['end'];
     $indispo->id_Users = $_SESSION['id'];
     $indispo->save();
           

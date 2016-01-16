@@ -23,12 +23,12 @@
 					<input st-search="matiere.nom" placeholder="recherche nom" class="input-sm form-control" type="search"/>
 				</th>
                 <th>
-					<input st-search="classes" placeholder="recherche classes" class="input-sm form-control" type="search"/>
+					<input st-search="classes.nom" placeholder="recherche classes" class="input-sm form-control" type="search"/>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="cour in cours">
+			<tr ng-repeat="cour in coursView">
 				<td>{{ cour.date }}</td>
 				<td>{{ cour.periode }}</td>
                 <td>{{ cour.matiere.nom }}</td>

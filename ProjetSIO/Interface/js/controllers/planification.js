@@ -108,7 +108,7 @@ webApp.controller('ClasseDetails',
 	});
 
 webApp.controller('PlanMatieresController',
-	function($scope, $modal, planMatieres){
+	function($scope, $modal, $filter, planMatieres){
         
 		$scope.matieres = [];
         
