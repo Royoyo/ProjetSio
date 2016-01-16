@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails {{ matiere.nom }}</div>
+	<div class="panel-heading" ng-show="creation">Création d'utilisateur</div>
+	<div class="panel-body">
+		<form novalidate class="form">
+			<div class="form-group">
+				<label>Code</label>
+				<input type="text" class="form-control" ng-model="matiere.code">
+			</div>
+			<div class="form-group">
+				<label>Nom</label>
+				<input type="text" class="form-control" ng-model="matiere.nom">
+			</div>
+			<div class="form-group">
+			<div class="col-sm-offset-2">
+				<input type="submit" class="btn btn-default" ng-click="save(matiere)" value="Enregistrer"/>
+				<button type="submit" class="btn btn-default" ng-click="delete(matiere)">Supprimer</button>
+                <button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+			</div>
+		  </div>
+		</form>
+	</div>
+</div>

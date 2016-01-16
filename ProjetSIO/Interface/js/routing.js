@@ -52,6 +52,15 @@ $stateProvider
       }
 	})
 
+    .state('planification.matieres', {
+	url: "/matieres",
+	templateUrl: "view/planification/matieres.html",
+	controller: "PlanMatieresController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+      }
+	})
+
 	.state('planification.enseignants', {
 	url: "/enseignants",
 	templateUrl: "view/planification/listeEnseignants.html",

@@ -190,4 +190,66 @@ $app->post('/plan/classes', $authenticateWithRole('planificateur'), function() u
         $app->response->setBody($e);
     }
 });
+
+//Matières
+
+$app->get('/plan/matieres', $authenticateWithRole('planificateur'), function() use ($app) {
+    $classes = Matieres::with('user')->get();
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setBody(json_encode($classes));
+});
+
+$app->get('/plan/matieres/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+    $classe = Matieres::where('id', $id)->with('user')->firstOrFail();
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setBody(json_encode($classe));
+});
+
+$app->put('/plan/matieres/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+    try{
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+        $matiere = Matieres::where('id', $id)->firstOrFail();
+
+        $matiere->code = $data['code'];
+        $matiere->nom = $data['nom'];
+        $matiere->save();
+
+        $app->response->setBody(true);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody($e);
+    }
+});
+
+$app->post('/plan/matieres', $authenticateWithRole('planificateur'), function() use ($app) {
+    try{
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+        
+        $matiere = new Matieres;
+        
+        $matiere->code = $data['code'];
+        $matiere->nom = $data['nom'];
+        $matiere->save();
+
+         
+        $app->response->setBody(true);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody($e);
+    }
+});
+
+$app->delete('/plan/matieres/:id', $authenticateWithRole('planificateur'),  function ($id) use ($app) {
+    try {
+        $matiere = Matieres::where('id', $id)->firstOrFail();
+        $matiere->delete();
+
+        $app->response->setBody(true);
+    } catch(Exception $e) {
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody(json_encode($e));
+    }
+});
 ?>

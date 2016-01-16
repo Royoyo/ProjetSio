@@ -44,6 +44,28 @@ webApp.factory('planClasses',
 			}
 		}
 	})
+
+webApp.factory('planMatieres',
+	function(Restangular){
+		return {
+			getMatieres: function(){
+				return Restangular.all('plan/matieres').getList();
+			},
+			
+			getMatiere: function(id){
+				return Restangular.one('plan/matieres',id).get();
+			},
+            getNewMatiere: function(){
+				return Restangular.one('plan/matieres');
+			},
+			postMatiere: function(classe){
+				Restangular.all('plan/matieres').post(classe);
+			},
+			deleteMatiere: function(classe){
+				classe.remove();
+			}
+		}
+	})
 	
 webApp.factory('planCours',
 	function(Restangular){
