@@ -1,6 +1,6 @@
 <div class="panel panel-default">
 	<div class="panel-heading" ng-hide="creation">Détails {{ personne.firstName }} {{ personne.lastName }}</div>
-	<div class="panel-heading" ng-show="creation">Création d'utilisateur</div>
+	<div class="panel-heading" ng-show="creation">Création d'indisponibilité</div>
 	<div class="panel-body">
 		<form novalidate class="form">
 			<div class="form-group">
@@ -24,7 +24,7 @@
 			<div class="form-group">
                 <div class="col-sm-offset-2">
                     <input type="submit" class="btn btn-default" ng-click="save()" value="Enregistrer"/>
-                    <button type="submit" class="btn btn-default" ng-click="delete()">Supprimer</button>
+                    <button type="submit" class="btn btn-default" ng-click="delete()" ng-hide="creation">Supprimer</button>
                     <button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
                 </div>
 		    </div>

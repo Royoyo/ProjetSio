@@ -478,22 +478,7 @@ webApp.controller('PlanCalendar',
                     
             if (view.type == "agendaWeek")
                 if (event.className == "coursContainer")
-                    element.find('.fc-bg').append("<div>" + event.description + "</div>"); 
-                    
-            if (event.source.className == "coursEvent")
-                if(event.matiere != undefined)
-                    event.title = event.matiere.nom;
-                if(event.user != undefined)
-                    event.title +=  + " | " + event.user.lastName;
-
-            /*    
-			element.attr({'tooltip': event.title,
-						'tooltip-append-to-body': true});
-			if (event.title === "Programmation")
-				element.find('.fc-title').append("<br/>Michel Diemer<br/>SIO2"); 
-			$compile(element)($scope);
-            */
-            
+                    element.find('.fc-bg').append("<div>" + event.description + "</div>");     
 		};
         
 		$scope.eventClick = function(event, jsEvent, view) {
@@ -533,15 +518,7 @@ webApp.controller('PlanCalendar',
                             uiCalendarConfig.calendars.planCalendar.fullCalendar('updateEvent', event);
                             uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
                         });
-                    }
-                    // TO DO : mettre à jour calendar sans requete serveur
-                    // $scope.addEvent(event);
-                    //TO DO: voir ligne 307
-                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('refetchEvents');
-                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('removeEventSource',$scope.events);
-                    //uiCalendarConfig.calendars.planCalendar.fullCalendar('addEventSource',$scope.events);
-                    
-                    
+                    }                           
                 });
             }
 		};
@@ -610,7 +587,15 @@ webApp.controller('PlanCalendar',
 		$scope.events = {
 			url: (id == -1 ? 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours' : 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours/classe/' + id),
             color: 'green',
-            className: 'coursEvent'
+            className: 'coursEvent',
+            eventDataTransform: function (rawEventData) {
+                        return {
+                            id: rawEventData.id,
+                            title: rawEventData.user != undefined ? rawEventData.matiere.nom + " | " + rawEventData.user.lastName : rawEventData.matiere.nom,
+                            start: rawEventData.start,
+                            end: rawEventData.end
+                        };
+                }
 		};	
         
         //Fond clickable pour rajouter les cours

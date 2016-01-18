@@ -137,14 +137,10 @@ webApp.controller('EnsCalendarIndisponibilitesController',
                     
             if (view.type == "agendaWeek")
                 if (event.className == "coursContainer")
-                    element.find('.fc-bg').append("<div>" + event.description + "</div>"); 
-                    
-            if (event.source.className == "coursEvent")
-                if(event.matiere != undefined)
-                    event.title = event.matiere.nom;
-                if(event.user != undefined)
-                    event.title += " | " + event.user.lastName;           
+                    element.find('.fc-bg').append("<div>" + event.description + "</div>");     
 		};
+        
+        /*
         
 		$scope.eventClick = function(event, jsEvent, view) {
             if(view.type=="agendaWeek"){
@@ -178,6 +174,8 @@ webApp.controller('EnsCalendarIndisponibilitesController',
                 });
             }
 		};
+        
+        */
         
         $scope.viewRender = function(view,element)
         {
@@ -241,11 +239,12 @@ webApp.controller('EnsCalendarIndisponibilitesController',
 		
 		$scope.events = {
 			url: 'http://guilaumehaag.ddns.net/SIO/PPEBackend/ens/indispo',
-            color: 'green',
+            color: 'grey',
             className: 'coursEvent'
 		};	
         
         //Fond clickable pour rajouter les cours
+        /*
         $scope.backgroundEvent = [
             {
                 start : '8:00',
@@ -262,7 +261,7 @@ webApp.controller('EnsCalendarIndisponibilitesController',
                 description: "Rajouter une indisponibilité"
             }
         ];
-        
+        */
 		/* Arrays de avec données de base du calendrier (au chargement de la page) */
 		$scope.eventSources = [$scope.events,$scope.eventsGoogle];
 	});
@@ -328,7 +327,15 @@ webApp.controller('EnsCalendarController',
 		$scope.events = {
 			url: 'http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours',
             color: 'green',
-            className: 'coursEvent'
+            className: 'coursEvent',
+            eventDataTransform: function (rawEventData) {
+                        return {
+                            id: rawEventData.id,
+                            title: rawEventData.user != undefined ? rawEventData.matiere.nom + " | " + rawEventData.user.lastName : rawEventData.matiere.nom,
+                            start: rawEventData.start,
+                            end: rawEventData.end
+                        };
+                }
 		};	
         
 		/* Arrays de avec données de base du calendrier (au chargement de la page) */
