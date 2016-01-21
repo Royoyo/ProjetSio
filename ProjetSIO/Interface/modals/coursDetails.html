@@ -2,25 +2,31 @@
 	<div class="panel-heading" ng-hide="creation">Détails cours {{ cours.title }}</div>
 	<div class="panel-heading" ng-show="creation">Création de cours</div>
 	<div class="panel-body">
-		<form novalidate class="form">
-            <label>Matière</label>
-            <select class="form-control" ng-model="selectedMatiere">				
-				<option ng-repeat="matiere in matieres" value="{{ matiere.id }}">{{ matiere.nom }}</option>
-			</select>
-            <label>Enseignant</label>
-            <select class="form-control" ng-model="selectedEnseignant">				
-				<option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.lastName }}</option>
-			</select>
-               <div class="form-group">
-				<label>Classes :</label>
-				<label data-ng-repeat="classe in classes" class="checkbox-inline">
-					<input type="checkbox" ng-model="formClasses[classe.id]" id="{{ classe.id }}"> {{ classe.nom }} {{ classe.annee }}
-				</label>
-			</div>
+		<form novalidate name="form" ng-submit="save()">
+            <div class="form-group">
+                <label>Matière</label>
+                <select class="form-control" name="nom" ng-model="selectedMatiere" required>				
+                    <option ng-repeat="matiere in matieres" value="{{ matiere.id }}">{{ matiere.nom }}</option>
+                </select>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser un nom.</span>
+            </div>
+            <div class="form-group">
+                <label>Enseignant</label>
+                <select class="form-control" name="enseignant" ng-model="selectedEnseignant">				
+                    <option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.lastName }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Classes :</label>
+                <label data-ng-repeat="classe in classes" class="checkbox-inline">
+                    <input type="checkbox" ng-model="formClasses[classe.id]" id="{{ classe.id }}"> {{ classe.nom }} {{ classe.annee }}
+                </label> 
+            </div>
+            <span class="text-danger" ng-show="cours.classes.length==0">Veuillez préciser au moins une classe.</span>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2">
-			<input type="submit" class="btn btn-default" ng-click="save()" value="Enregistrer" />
+			<input type="submit" class="btn btn-success" value="Enregistrer"  ng-disabled="form.$invalid || cours.classes.length==0"/>
             <button type="submit" class="btn btn-default" ng-click="delete()" ng-hide="creation">Supprimer</button>
 			<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
 		</div>

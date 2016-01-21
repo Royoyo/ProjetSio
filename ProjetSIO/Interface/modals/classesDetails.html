@@ -2,39 +2,52 @@
 	<div class="panel-heading" ng-hide="creation">Détails {{ classe.nom }} {{ classe.annee }}</div>
 	<div class="panel-heading" ng-show="creation">Création de classe</div>
 	<div class="panel-body">
-		<form novalidate class="form">
+		<form novalidate name="form" ng-submit="save(classe)">
 			<div class="form-group">
 				<label>Nom</label>
-				<input type="text" class="form-control" ng-model="classe.nom">
+				<input type="text" class="form-control" name="nom" ng-model="classe.nom" required>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser un nom.</span>
 			</div>
 			<div class="form-group">
 				<label>Date début</label>
 				<div class="input-group">
-					<input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" is-open="pickerDateDebut" ng-model="classe.dateDebut">	
+					<input type="text" class="form-control" datepicker-popup="yyyy-MM-dd"
+                           is-open="pickerDateDebut" ng-model="classe.dateDebut"
+                           name="dateDebut" required/>	
 					<span class="input-group-btn">
 						<button type="button" class="btn btn-default" ng-click="openDatePicker(1)"><i class="glyphicon glyphicon-calendar"></i></button>
 					</span>
 				</div>
+                <span class="text-danger" ng-show="form.dateDebut.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.dateDebut.$valid && !form.dateDebut.$error.required">Veuillez préciser une date correcte.</span>
 			</div>
 			<div class="form-group">
 				<label>Date fin</label>
 				<div class="input-group">
-					<input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" is-open="pickerDateFin" ng-model="classe.dateFin">	
+					<input type="text" class="form-control" datepicker-popup="yyyy-MM-dd"
+                           is-open="pickerDateFin" ng-model="classe.dateFin"
+                           name="dateFin" required />	
 					<span class="input-group-btn">
 						<button type="button" class="btn btn-default" ng-click="openDatePicker(2)"><i class="glyphicon glyphicon-calendar"></i></button>
 					</span>
 				</div>
+                <span class="text-danger" ng-show="form.dateFin.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.dateFin.$valid && !form.dateFin.$error.required">Veuillez préciser une date correcte.</span>
+                <span class="text-danger" ng-show="classe.dateDebut > classe.dateFin">La date de fin de ne peut pas être antérieure à la date de début.</span>
 			</div>
-			<label>Enseignant principal</label>
-            <select class="form-control" ng-model="selectedEnseignant">				
-				<option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.firstName }} {{ enseignant.lastName }}</option>
-			</select>
+            <div class="form-group">
+                <label>Enseignant principal</label>
+                <select class="form-control" name="enseignant" ng-model="selectedEnseignant" required>				
+                    <option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.firstName }} {{ enseignant.lastName }}</option>
+                </select>
+                <span class="text-danger" ng-show="form.enseignant.$error.required">Veuillez préciser un enseignant principal.</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2">
+                    <input type="submit" class="btn btn-success" value="Enregistrer" ng-disabled="form.$invalid"/>
+                    <button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+                </div>
+            </div>
+        </form>
 	</div>
-	<div class="form-group">
-		<div class="col-sm-offset-2">
-			<input type="submit" class="btn btn-default" ng-click="save(classe)" value="Enregistrer" />
-			<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
-		</div>
-	</div>
-	</form>
 </div>

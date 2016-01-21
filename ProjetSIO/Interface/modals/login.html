@@ -1,30 +1,22 @@
-<div class="container-fluid">
-	<div class="row">
-		<h1 class="page-header col-md-12">
-			Connexion
-		</h1>
-	</div>
-	<div class="row">
-		<div class="col-sm-6">	
-			<form class="form-horizontal" name="form" method="post" ng-submit="submit()" novalidate>
-				<div class="form-group">
-					<label class="control-label col-md-4">Votre identifiant:</label>
-					<div class="col-md-8">
-						<input type="text" class="form-control" placeholder="Identifiant" ng-model="user.name"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-4">Votre mot de passe:</label>
-					<div class="col-md-8">
-						<input type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password"/>
-					</div>
-				</div>
-				  	<div class="form-group">
-					<div class="col-sm-offset-4 col-sm-8">
-						<button type="submit" class="btn btn-default">Connexion</button>
-					</div>
-				</div>
-			</form>
-		</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Connexion</div>
+	<div class="panel-body">
+        <form name="form" method="post" ng-submit="submit()" novalidate>
+            <div class="form-group">
+                <label>Votre identifiant:</label>
+                <input type="text" class="form-control" placeholder="Identifiant" ng-model="user.name" name="name" required/>
+                <span class="text-danger" ng-show="form.name.$error.required">Veuillez préciser votre identifiant.</span>
+            </div>
+            <div class="form-group">
+                <label>Votre mot de passe:</label>
+                <input type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password" name="password" required/>
+                <span class="text-danger" ng-show="form.password.$error.required">Veuillez préciser votre mot de passe.</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <button type="submit" class="btn btn-default" ng-disabled="form.$invalid">Connexion</button>
+                </div>
+            </div>
+        </form>
 	</div>
 </div>
