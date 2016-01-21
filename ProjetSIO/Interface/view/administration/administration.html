@@ -49,7 +49,7 @@
                         <td>{{ personne.lastName }}</td>
                         <td>{{ personne.email }}</td>
                         <td>
-                            <span data-ng-repeat="role in personne.roles"> {{ role.role }} </span>
+                            <span ng-repeat="role in personne.roles"> {{ role.role }}{{$last ? '' : ', '}} </span>
                         </td>
                         <td><span ng-class="{'glyphicon glyphicon-flash green': personne.enabled, 'glyphicon glyphicon-off red' : !personne.enabled }"></span></td>
                         <td>
