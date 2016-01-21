@@ -1,9 +1,9 @@
 webApp.controller('PlanClassesController',
 	function($scope, $modal, planClasses, planEnseignants, Restangular){
 		
-		$scope.classes = [];
-        
-		$scope.enseignants = [];     
+		$scope.classes = [];    
+		$scope.enseignants = [];
+              
         planEnseignants.getEnseignants().then(function(enseignants){
 			angular.copy(enseignants,$scope.enseignants);
 		})

@@ -67,6 +67,7 @@ webApp.controller('IndisposDetails',
 	function ($scope, $timeout, $modalInstance, Restangular,ensIndisponibilite, indispo) {
         
         $scope.indispo = {};
+        $scope.today = new Date();
         $scope.pickerDateDebut = false;
 		$scope.pickerDateFin = false;
         
@@ -81,9 +82,6 @@ webApp.controller('IndisposDetails',
             ensIndisponibilite.getIndispo(event.id).then(
                 function(indispo){
                     Restangular.copy(indispo,$scope.indispo);
-                },
-                function(){
-                    alert("Erreur lors du chargement des détails du cours sélectionné.");
                 }
            );
         }
@@ -276,18 +274,10 @@ webApp.controller('EnsCalendarController',
 			uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
 		};
         
-		$scope.eventRender = function(event, element, view) {
-                    
+		$scope.eventRender = function(event, element, view) {                    
             if (view.type == "agendaWeek")
                 if (event.className == "coursContainer")
-                    element.find('.fc-bg').append("<div>" + event.description + "</div>"); 
-                    
-            if (event.source.className == "coursEvent")
-                if(event.matiere != undefined)
-                    event.title = event.matiere.nom;
-                if(event.user != undefined)
-                    event.title +=  + " | " + event.user.lastName;
-            
+                    element.find('.fc-bg').append("<div>" + event.description + "</div>");            
 		};
         
         /* Configuration du calendrier */

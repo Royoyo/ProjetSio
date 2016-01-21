@@ -12,7 +12,7 @@ webApp.controller('AdminList',
 
 			var modalDetails = $modal.open({
 				animation: true,
-				templateUrl: "modals/administration.details.html",
+				templateUrl: "modals/personnesDetails.html",
 				controller: "AdminDetails",
 				size: "md",
 				resolve: {
@@ -77,6 +77,7 @@ webApp.controller('AdminDetails',
 
 		if (personne === -1) {
 			$scope.creation = true;
+            listeners();
 		}
 		else {
 			adminPersonnes.getPersonne(personne.id).then(function (personne) {
@@ -86,19 +87,35 @@ webApp.controller('AdminDetails',
 					$scope.formRoles[role.id] = true;
 				}, this)
 			});
+            listeners();
 		}
 			
 		// Fonctions
-		
-		$scope.$watch(function () {
-			return $scope.formRoles;
-		}, function (value) {
-			$scope.personne.roles = [];
-			angular.forEach($scope.formRoles, function (v, k) {
-				v && $scope.personne.roles.push(getRolesById(k));
-			});
-		}, true);
-
+        
+        function listeners() {
+            $scope.$watch(function () {
+                return $scope.personne.firstName;   
+            },function(){
+                if ($scope.personne.firstName != undefined && $scope.personne.lastName != undefined)
+                    changeLogin();
+            }, true);
+            
+            $scope.$watch(function () {
+                return $scope.personne.lastName;   
+            },function(){
+                if ($scope.personne.firstName != undefined && $scope.personne.lastName != undefined)
+                    changeLogin();
+            }, true);
+            
+            $scope.$watch(function () {
+                return $scope.formRoles;
+            }, function (value) {
+                $scope.personne.roles = [];
+                angular.forEach($scope.formRoles, function (v, k) {
+                    v && $scope.personne.roles.push(getRolesById(k));
+                });
+            }, true);
+        }
 		function getRolesById(id) {
 			for (var i = 0; i < $scope.roles.length; i++) {
 				if ($scope.roles[i].id == id) {
@@ -107,6 +124,9 @@ webApp.controller('AdminDetails',
 			}
 		};
 		
+        function changeLogin(){
+            $scope.personne.login = $scope.personne.firstName.substring(0,1).toLowerCase() + $scope.personne.lastName.toLowerCase();
+        }
 		
 		//Traitement différent pour la création car l'objet personne n'est pas objet Restangular dans ce cas et donc n'a pas d'implémentation de la méthode save()
 		$scope.save = function (personne) {

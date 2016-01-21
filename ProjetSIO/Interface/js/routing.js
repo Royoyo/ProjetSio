@@ -23,7 +23,16 @@ $stateProvider
       }
 	})
 	
-	
+    //Page de profil
+	.state('profil', {
+	url: "/profil",
+	templateUrl: "view/profil.html",
+	controller: "ProfilController",
+	data: {
+          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur, USERS_ROLES.enseignant]
+      }
+	})
+    
 	//Partie Administrateur
 	.state('administration', {
 	url: "/administration",
@@ -39,7 +48,7 @@ $stateProvider
 	url: "/planification",
 	templateUrl: "view/planification/navigation.html",
 	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+          authorizedRoles: [USERS_ROLES.planificateur]
       }
 	})
 	
@@ -48,7 +57,7 @@ $stateProvider
 	templateUrl: "view/planification/listeClasses.html",
 	controller: "PlanClassesController",
 	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+          authorizedRoles: [USERS_ROLES.planificateur]
       }
 	})
 
@@ -57,7 +66,7 @@ $stateProvider
 	templateUrl: "view/planification/matieres.html",
 	controller: "PlanMatieresController",
 	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+          authorizedRoles: [USERS_ROLES.planificateur]
       }
 	})
 
@@ -66,10 +75,12 @@ $stateProvider
 	templateUrl: "view/planification/listeEnseignants.html",
 	controller: "PlanEnseignantsController",
 	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+          authorizedRoles: [USERS_ROLES.planificateur]
       }
 	})
-	
+    
+    /* On garde cette route au cas où */
+	/*
 	.state('planification.periodes', {
 	url: "/periodes",
 	templateUrl: "view/planification/listeClassesCalendar.html",
@@ -78,8 +89,8 @@ $stateProvider
           authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
       }
 	})
-	
-	.state('planification.periodes.calendar', {
+	*/
+	.state('planification.calendar', {
 	url: "/periodes/:id",
 	templateUrl: "view/planification/calendar.html",
 	controller: "PlanCalendar",
@@ -89,7 +100,7 @@ $stateProvider
 		}
 	},
 	data: {
-          authorizedRoles: [USERS_ROLES.administrateur, USERS_ROLES.planificateur]
+          authorizedRoles: [USERS_ROLES.planificateur]
       }
 	})
 	
