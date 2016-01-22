@@ -34,6 +34,11 @@ webApp.controller('PlanClassesController',
 			});
 		};
 		
+        $scope.delete = function(classe){
+            classe.remove();
+            updateTable();
+        }
+        
 		function updateTable() {
 			planClasses.getClasses().then(function(classes){
 			$scope.classes = classes;
