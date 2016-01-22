@@ -42,7 +42,7 @@ $app->get('/plan/cours/classe/:id', $authenticateWithRole('planificateur'), func
 });
 
 
-$app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use ($app) {
+$app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use ($app, $mailer) {
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
@@ -123,7 +123,7 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
             // ajout du header pour responsive, css ...
             $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
             // creation du mail
-/*            $message = Swift_Message::newInstance('Assignation d\'un cours à IFIDE SupFormation')
+            $message = Swift_Message::newInstance('Assignation d\'un cours à IFIDE SupFormation')
                 ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
                 ->setTo(array($user->email => $user->firstName + '' + $user->lastName))
                 ->setBody($template, "text/html")
@@ -135,7 +135,7 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
             }catch(Exception $e) {
                 $results = $e;
             }
-            $app->response->setBody($results);*/
+            $app->response->setBody($results);
         } else {
             $app->response->setBody("Non disponible");
         }
@@ -145,7 +145,7 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
     }
 });
 
-$app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($id) use ($app) {
+$app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($id) use ($app, $mailer) {
     try {
         $json = $app->request->getBody();
         $data = json_decode($json, true);
@@ -158,7 +158,7 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
             if ($cours->id_Users != $data['user']['id'] and $cours->id_Users != '') {
                 $old_user_id = $cours->id_Users;
             }
-            try {
+           /* try {
                 // Verification si l'enseignant na aucun autre cours à la même date
                 $cours_user = Cours::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
             } catch(Exception $e) {
@@ -167,10 +167,9 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
                 // Verification s'il n'est pas indisponible
             try {
                 $indispo = Indisponibilite::whereRaw('(dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
-
-            }catch(Exception $e) {
+            } catch(Exception $e) {
                 $indispo = [];
-            }
+            }*/
         }
         $old_cours_start = $cours->start;
         $old_cours_end = $cours->end;
@@ -182,8 +181,6 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
         $date_o = $dt_start_o->format('d/m/Y');
         $time_start_o = $dt_start_o->format('H:i:s');
         $time_end_o = $dt_end_o->format('H:i:s');
-        $cours->start = $data['start'];
-        $cours->end = $data['end'];
         $cours->id_Matieres = $data['matiere']['id'];
         // S'il na pas de cours et qu'il est disponible
         if (empty($cours_user) && empty($indispo)) {
