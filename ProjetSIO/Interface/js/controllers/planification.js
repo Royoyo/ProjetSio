@@ -230,7 +230,7 @@ webApp.controller('PlanEnseignantsController',
 				}		
 			});
 			
-			modalDetails.result.then(function(matieres){
+			modalDetails.result.then(function(){
 				updateTable();
 			})
 		};
@@ -256,10 +256,8 @@ webApp.controller('ListeMatieresController',
 	function($scope, $modalInstance, serviceMatieres, enseignant){
 		
 		$scope.matieres = [];
-		$scope.matieresChoix = [];
+        $scope.enseignant = enseignant;
 		$scope.nom = enseignant.firstName + " " + enseignant.lastName;
-		
-		angular.copy(enseignant.matieres,$scope.matieresChoix);
 		
 		serviceMatieres.getMatieres().then(function(matieres){
 			angular.copy(matieres,$scope.matieres);
@@ -267,14 +265,16 @@ webApp.controller('ListeMatieresController',
 		})
 		
 		$scope.add = function(matiere) {
-			if(!containsObject(matiere,$scope.matieresChoix))
+			if(!containsObject(matiere,$scope.enseignant.matieres))
 			{
-				$scope.matieresChoix.push(matiere);
+				$scope.enseignant.matieres.push(matiere);
 			}				
 		}
 		
 		$scope.save = function(){
-			$modalInstance.close($scope.matieresChoix)
+            $scope.enseignant.save().then(function(){
+                $modalInstance.close()
+            })			
 		}
 		
 		$scope.cancel = function(){
@@ -356,6 +356,15 @@ webApp.controller('CoursDetails',
             listeners();
         }
         
+        angular.forEach(enseignants,function(enseignant){
+            angular.forEach(enseignant.indisponibilite,function(indispo){
+                if(event.start>moment(indispo.start) && event.end< moment(indispo.end))
+                    enseignant.indisponible = true;
+                else
+                    enseignant.indisponible = false;
+            })
+        });
+                
         function listeners(){
             $scope.$watch(function(){
                 return $scope.selectedMatiere;
@@ -374,8 +383,7 @@ webApp.controller('CoursDetails',
                 angular.forEach($scope.formClasses, function (v, k) {
                     v && $scope.cours.classes.push(getObjectById($scope.classes,k));
                 });
-            }, true);
-        
+            }, true);       
         };       
         
         function filtreEnseignants(enseignant)

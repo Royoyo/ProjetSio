@@ -29,7 +29,7 @@
 					<input type="checkbox" ng-model="formRoles[role.id]" id="{{ role.id }}"> {{ role.role }}
 				</label>
 			</div>
-            <div class="form-group">
+            <div class="form-group" ng-hide="creation">
 				<label>Activé :</label>
                 <input type="checkbox" ng-model="personne.enabled" ng-true-value="'1'" ng-false-value="'0'">
 			</div>
