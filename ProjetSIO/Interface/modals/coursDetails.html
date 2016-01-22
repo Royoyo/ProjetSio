@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label>Enseignant</label>
                 <select class="form-control" name="enseignant" ng-model="selectedEnseignant">				
-                    <option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}">{{ enseignant.lastName }}</option>
+                    <option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}" ng-disabled="enseignant.indisponible">{{ enseignant.lastName }} {{ enseignant.indisponible ? '(indisponible)' : ''}}</option>
                 </select>
             </div>
             <div class="form-group">
