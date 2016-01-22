@@ -418,12 +418,21 @@ webApp.controller('CoursDetails',
         
         $scope.save = function(){
             $scope.cours.user = getObjectById($scope.enseignants,$scope.selectedEnseignant);
-            $scope.cours.matiere = getObjectById($scope.matieres,$scope.selectedMatiere);
-            $scope.cours.save();
-            angular.copy($scope.cours.matiere,event.matiere);
+            $scope.cours.matiere = getObjectById($scope.matieres,$scope.selectedMatiere);             
+            $scope.cours.save().then(function(){
+                angular.copy($scope.cours.matiere,event.matiere);
             angular.copy($scope.cours.user,event.user);
             angular.copy($scope.cours.classes,event.classes);
-			$modalInstance.close(false);
+            if($scope.cours.id == undefined){
+                $modalInstance.close(false, true);
+            }
+            else {
+			     $modalInstance.close(false, false);
+            }
+            },function(data){
+                alert("Erreur: " + data)
+            });
+            
 		};
 		
 		$scope.cancel = function(){
@@ -519,7 +528,7 @@ webApp.controller('PlanCalendar',
                     }
                 });
 
-                modalDetails.result.then(function (deleteBool) {
+                modalDetails.result.then(function (deleteBool, newBool) {
                     if (deleteBool){
                         $scope.$watch('uiCalendarConfig.calendars.length',function(){
                             uiCalendarConfig.calendars.planCalendar.fullCalendar('removeEvents', event.id);
@@ -527,10 +536,20 @@ webApp.controller('PlanCalendar',
                         });
                     }
                     else {
-                        $scope.$watch('uiCalendarConfig.calendars.length',function(){
-                            uiCalendarConfig.calendars.planCalendar.fullCalendar('updateEvent', event);
-                            uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
-                        });
+                        if (newBool){
+                            $scope.$watch('uiCalendarConfig.calendars.length',function(){
+                                if(typeof uiCalendarConfig.calendars.planCalendar != 'undefined'){
+                                    uiCalendarConfig.calendars.planCalendar.fullCalendar('refetchEvents');
+                                }
+                            });
+                        }
+                        else {
+                            $scope.$watch('uiCalendarConfig.calendars.length',function(){
+                                uiCalendarConfig.calendars.planCalendar.fullCalendar('updateEvent', event);
+                                uiCalendarConfig.calendars.planCalendar.fullCalendar('rerenderEvents');
+                            });
+                        }
+                        
                     }                           
                 });
             }
