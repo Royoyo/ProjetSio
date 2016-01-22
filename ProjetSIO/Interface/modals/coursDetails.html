@@ -26,9 +26,9 @@
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2">
-			<input type="submit" class="btn btn-success" value="Enregistrer"  ng-disabled="form.$invalid || cours.classes.length==0"/>
-            <button type="submit" class="btn btn-default" ng-click="delete()" ng-hide="creation">Supprimer</button>
-			<button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+			<input type="submit" class="btn btn-success" value="Enregistrer" ng-click="save()" ng-disabled="form.$invalid || cours.classes.length==0"/>
+            <button type="button" class="btn btn-default" ng-click="delete()" ng-hide="creation">Supprimer</button>
+			<button type="button" class="btn btn-default" ng-click="cancel()">Annuler</button>
 		</div>
 	</div>
 	</form>
