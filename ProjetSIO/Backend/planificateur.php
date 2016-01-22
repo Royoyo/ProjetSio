@@ -51,23 +51,28 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
         $cours->start = $data['start'];
         $cours->end = $data['end'];
         $cours->id_Matieres = $data['matiere']['id'];
-        $cours_user = '';
+        $cours_user = [];
         $indispo = [];
         if (array_key_exists('user', $data))
             try {
                 // Verification si l'enseignant na aucun autre cours à la même date
-                $cours_user = Cours::whereRaw('start BETWEEN ? and ? or end BETWEEN ? and ?', [$data['start'], $data['end'], $data['start'], $data['end']])->whereHas('user', function($q) use($data) {
-                    $q->where('id', $data['user']['id']);
-                })->get();
+                $cours_user = Cours::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+            } catch(Exception $e) {
+                $cours_user = [];
+            }
                 // Verification s'il n'est pas indisponible
-                $indispo = Indisponibilite::whereRaw('dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?', [$data['start'], $data['end'], $data['start'], $data['end']])->get();
-            } catch(Exception $e) {}
+            try {
+                $indispo = Indisponibilite::whereRaw('(dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+
+            }catch(Exception $e) {
+                $indispo = [];
+            }
         // S'il na pas de cours et qu'il est disponible
-        if ($cours_user == '' && $indispo == []) {
+        if (empty($cours_user) && empty($indispo)) {
             $cours->id_Users = $data['user']['id'];
             $cours->save();
             $user = Users::where('id', $cours->id_Users)->firstOrFail();
-            $newClasses = [];
+            $newClasses = [];   
             foreach($data['classes'] as $classe) {
                 array_push($newClasses, $classe['id']);
             }
@@ -132,7 +137,7 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
             }
             $app->response->setBody($results);*/
         } else {
-            $app->response->setBody('Non disponible');
+            $app->response->setBody("Non disponible");
         }
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'text/html');
@@ -146,7 +151,7 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
         $data = json_decode($json, true);
 
         $cours = Cours::with('user', 'matiere', 'classes')->where('id', $id)->firstOrFail();
-        $cours_user = '';
+        $cours_user = [];
         $indispo = [];
         $old_user_id = '';
         if (array_key_exists('user', $data)) {
@@ -155,12 +160,17 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
             }
             try {
                 // Verification si l'enseignant na aucun autre cours à la même date
-                $cours_user = Cours::whereRaw('start BETWEEN ? and ? or end BETWEEN ? and ?', [$data['start'], $data['end'], $data['start'], $data['end']])->whereHas('user', function($q) use($data) {
-                    $q->where('id', $data['user']['id']);
-                })->firstOrFail();
+                $cours_user = Cours::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+            } catch(Exception $e) {
+                $cours_user = [];
+            }
                 // Verification s'il n'est pas indisponible
-                $indispo = Indisponibilite::whereRaw('dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?', [$data['start'], $data['end'], $data['start'], $data['end']])->get();
-            } catch(Exception $e) {}
+            try {
+                $indispo = Indisponibilite::whereRaw('(dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+
+            }catch(Exception $e) {
+                $indispo = [];
+            }
         }
         $old_cours_start = $cours->start;
         $old_cours_end = $cours->end;
@@ -176,7 +186,7 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
         $cours->end = $data['end'];
         $cours->id_Matieres = $data['matiere']['id'];
         // S'il na pas de cours et qu'il est disponible
-        if ($cours_user == '' && $indispo == []) {
+        if (empty($cours_user) && empty($indispo)) {
             $cours->id_Users = $data['user']['id'];
             $cours->save();
 
