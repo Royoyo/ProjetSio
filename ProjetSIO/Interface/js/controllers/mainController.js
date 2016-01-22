@@ -28,6 +28,10 @@ webApp.controller('mainController', function($scope, $rootScope, $modal, Authent
 		alert("Zone non autorisé");
 	}
 	
+    $scope.login = function(){
+		showLogin();
+	}
+    
 	$scope.logout = function(){
 		Authentification.logout();
 	}

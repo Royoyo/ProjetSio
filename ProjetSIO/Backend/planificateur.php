@@ -205,7 +205,7 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
                 // ajout du header pour responsive, css ...
                 $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
                 // creation du mail
-                $message = Swift_Message::newInstance('Suppression d'un cours à Ifide SupFormation)
+                $message = Swift_Message::newInstance('Suppression d\'un cours à Ifide SupFormation')
                     ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
                     ->setTo(array($user_old->email => $user_old->firstName + '' + $user_old->lastName))
                     ->setBody($template, "text/html")

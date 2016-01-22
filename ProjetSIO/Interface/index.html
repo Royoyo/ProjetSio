@@ -34,7 +34,8 @@
             <!-- la ligne horizontale s'affiche mais peut rester dans la vue desktop si l'utilisateur change la taille de la fenetre - NIVEAU BUG : faible -->
             <hr ng-show="!navCollapsed">
             <p class="navbar-text">Bonjour <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong></p>
-            <button type="button" class="btn btn-default navbar-btn" ng-click="logout()">Se déconnecter</button>
+            <button type="button" class="btn btn-default navbar-btn" ng-show="currentUser == null" ng-click="login()">Se connecter</button>
+            <button type="button" class="btn btn-default navbar-btn" ng-hide="currentUser == null" ng-click="logout()">Se déconnecter</button>
           </div>
         </div><!--/.nav-collapse -->
       </div>
@@ -76,6 +77,7 @@
     <script src="js/controllers/administration.js"></script>
     <script src="js/controllers/planification.js"></script>
     <script src="js/controllers/enseignants.js"></script>
+    <script src="js/controllers/activation.js"></script>
 
 
     <!-- Services -->

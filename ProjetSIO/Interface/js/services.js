@@ -49,17 +49,17 @@ webApp.factory('planMatieres',
 	function(Restangular){
 		return {
 			getMatieres: function(){
-				return Restangular.all('plan/matieres').getList();
+				return Restangular.all('plan/matiere').getList();
 			},
 			
 			getMatiere: function(id){
-				return Restangular.one('plan/matieres',id).get();
+				return Restangular.one('plan/matiere',id).get();
 			},
             getNewMatiere: function(){
-				return Restangular.one('plan/matieres');
+				return Restangular.one('plan/matiere');
 			},
 			postMatiere: function(classe){
-				Restangular.all('plan/matieres').post(classe);
+				Restangular.all('plan/matiere').post(classe);
 			},
 			deleteMatiere: function(classe){
 				classe.remove();
@@ -157,7 +157,19 @@ webApp.factory('serviceMatieres',
 			},
 		}
 	})
-    
+
+webApp.factory('serviceActivation',
+	function(Restangular){
+		return {
+			Activation: function(id,token){
+				return Restangular.one('activation',id).one('token',token).get();
+			},
+            SetFirstPassword: function(user){
+				return Restangular.all('set_firstpassword').post(user);
+			},
+		}
+	})
+      
 //Session utilisateur Javascript ( garder au chaud dans la session du navigateur par la factory Authentification)
 webApp.service('Session', function($rootScope, USERS_ROLES) {
 

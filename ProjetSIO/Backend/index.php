@@ -38,23 +38,31 @@ $app->get('/matieres', $authenticateWithRole('planificateur'), function () use (
     $app->response->setBody(json_encode($matieres));
 });
 
-$app->get('/:id/:token', function($id, $token) use ($app) {
+$app->get('/activation/:id/token/:token', function($id, $token) use ($app) {
     $user = Users::where('id', $id)->firstOrFail();
     if ($user->token == $token){
         $user->enabled = 1;
         $user->save();
+        $app->response->setBody(true);
+    }
+    else{
+        $app->response->setBody(false);
     }
 });
 
-$app->post('/set_firstpassword/:id', function($id) use ($app) {
+$app->post('/set_firstpassword', function() use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
-    $user = Users::where('id', $id)->firstOrFail();
+    $user = Users::where('id', $data['id'])->firstOrFail();
     $hash = uniqid(rand(), true);
     if ($data['password'] == $data['password_confirm']) {
         $user->hash = $hash;
         $user->password = sha1($hash . sha1($data['password']));
         $user->save();
+        $app->response->setBody(true);
+    }
+    else{
+        $app->response->setBody(false);
     }
 });
 

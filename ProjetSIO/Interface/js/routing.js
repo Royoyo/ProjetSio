@@ -23,6 +23,21 @@ $stateProvider
       }
 	})
 	
+    //Page activation de compte
+    .state('activation', {
+	url: "/activation/:id/:token",
+	templateUrl: "view/activation.html",
+	controller: "ActivationController",
+    resolve:{
+		id: function($stateParams){
+			return $stateParams.id
+		},
+        token: function($stateParams){
+			return $stateParams.token
+		}
+	},
+	})
+    
     //Page de profil
 	.state('profil', {
 	url: "/profil",
