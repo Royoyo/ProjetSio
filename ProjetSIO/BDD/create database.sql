@@ -1,9 +1,9 @@
-﻿-- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 25 Septembre 2015 à 16:14
+-- Généré le :  Ven 26 Février 2016 à 09:21
 -- Version du serveur :  5.6.20
 -- Version de PHP :  5.5.15
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `ppe`
+-- Base de données :  `gpci`
 --
 
 -- --------------------------------------------------------
@@ -27,18 +27,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `classes` (
-`id` int(11) NOT NULL,
-  `dateDebut` date NOT NULL,
-  `dateFin` date NOT NULL,
+`id` int(250) NOT NULL,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
   `nom` varchar(25) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `classes`
---
-
-INSERT INTO `classes` (`id`, `dateDebut`, `dateFin`, `nom`) VALUES
-(1, '2015-09-06', '2016-05-28', 'SIO2');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -47,19 +40,12 @@ INSERT INTO `classes` (`id`, `dateDebut`, `dateFin`, `nom`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `cours` (
-`id` int(11) NOT NULL,
-  `dateDebut` datetime NOT NULL,
-  `dateFin` datetime NOT NULL,
-  `id_Matieres` int(11) NOT NULL,
-  `id_Users` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `cours`
---
-
-INSERT INTO `cours` (`id`, `dateDebut`, `dateFin`, `id_Matieres`, `id_Users`) VALUES
-(1, '2015-09-24 08:00:00', '2015-09-24 19:00:00', 1, 1);
+`id` int(250) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `id_Matieres` int(11) DEFAULT NULL,
+  `id_Users` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -68,8 +54,8 @@ INSERT INTO `cours` (`id`, `dateDebut`, `dateFin`, `id_Matieres`, `id_Users`) VA
 --
 
 CREATE TABLE IF NOT EXISTS `cours_classes` (
-  `id_Cours` int(11) NOT NULL,
-  `id_Classes` int(11) NOT NULL
+  `id_Cours` int(250) NOT NULL,
+  `id_Classes` int(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -79,17 +65,10 @@ CREATE TABLE IF NOT EXISTS `cours_classes` (
 --
 
 CREATE TABLE IF NOT EXISTS `fermetures` (
-`id` int(11) NOT NULL,
-  `dateDebut` datetime NOT NULL,
-  `dateFin` datetime NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `fermetures`
---
-
-INSERT INTO `fermetures` (`id`, `dateDebut`, `dateFin`) VALUES
-(1, '2015-10-01 23:00:00', '2015-10-14 09:18:15');
+`id` int(100) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -98,18 +77,11 @@ INSERT INTO `fermetures` (`id`, `dateDebut`, `dateFin`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `indisponibilites` (
-`id` int(11) NOT NULL,
-  `dateDebut` datetime NOT NULL,
-  `dateFin` datetime NOT NULL,
+`id` int(100) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
   `id_Users` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `indisponibilites`
---
-
-INSERT INTO `indisponibilites` (`id`, `dateDebut`, `dateFin`, `id_Users`) VALUES
-(1, '2015-09-26 23:59:59', '2015-09-28 00:00:30', 2);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -120,15 +92,8 @@ INSERT INTO `indisponibilites` (`id`, `dateDebut`, `dateFin`, `id_Users`) VALUES
 CREATE TABLE IF NOT EXISTS `matieres` (
 `id` int(11) NOT NULL,
   `nom` varchar(25) NOT NULL,
-  `code` varchar(25) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `matieres`
---
-
-INSERT INTO `matieres` (`id`, `nom`, `code`) VALUES
-(1, 'prog', 'pr');
+  `code` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -138,18 +103,19 @@ INSERT INTO `matieres` (`id`, `nom`, `code`) VALUES
 
 CREATE TABLE IF NOT EXISTS `roles` (
 `id` int(11) NOT NULL,
-  `role` varchar(25) DEFAULT NULL
-  `home` varchar(50) NOT NULL,
+  `role` varchar(25) DEFAULT NULL,
+  `home` varchar(25) NOT NULL,
+  `priority` int(10) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `roles`
 --
 
-INSERT INTO `roles` (`id`, `role`) VALUES
-(1, 'administrateur'),
-(2, 'planificateur'),
-(3, 'enseignant');
+INSERT INTO `roles` (`id`, `role`, `home`, `priority`) VALUES
+(1, 'administrateur', 'administration', 1),
+(2, 'planificateur', 'planification', 25),
+(3, 'enseignant', 'enseignement', 50);
 
 -- --------------------------------------------------------
 
@@ -159,23 +125,17 @@ INSERT INTO `roles` (`id`, `role`) VALUES
 
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `firstName` varchar(50) NOT NULL,
-  `lastName` varchar(50) NOT NULL,
+  `login` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `hash` int(11) NOT NULL,
+  `firstName` varchar(20) NOT NULL,
+  `lastName` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `enable` tinyint(1) NOT NULL,
-  `token` varchar(50) DEFAULT NULL,
-  `tokenCDate` datetime DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Contenu de la table `users`
---
-
-INSERT INTO `users` (`id`, `login`, `password`, `firstName`, `lastName`, `email`, `enable`, `token`, `tokenCDate`) VALUES
-(1, 'testbiscuit', 'Ptptt42S', 'premier', 'test', 'test@biscuit.fr', 1, NULL, NULL),
-(2, 'jardinbus', 'Tract0Pl', 'jardin', 'raisin', 'raisin@biscuit.fr', 1, NULL, NULL);
+  `token` varchar(20) DEFAULT NULL,
+  `tokenCDate` datetime DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -188,14 +148,6 @@ CREATE TABLE IF NOT EXISTS `users_matieres` (
   `id_Matieres` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Contenu de la table `users_matieres`
---
-
-INSERT INTO `users_matieres` (`id_Users`, `id_Matieres`) VALUES
-(1, 1),
-(2, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -206,14 +158,6 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
   `id_Roles` int(11) NOT NULL,
   `id_Users` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `users_roles`
---
-
-INSERT INTO `users_roles` (`id_Roles`, `id_Users`) VALUES
-(2, 1),
-(1, 2);
 
 --
 -- Index pour les tables exportées
@@ -259,7 +203,7 @@ ALTER TABLE `matieres`
 -- Index pour la table `roles`
 --
 ALTER TABLE `roles`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `priority` (`priority`);
 
 --
 -- Index pour la table `users`
@@ -287,27 +231,27 @@ ALTER TABLE `users_roles`
 -- AUTO_INCREMENT pour la table `classes`
 --
 ALTER TABLE `classes`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(250) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `cours`
 --
 ALTER TABLE `cours`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(250) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `fermetures`
 --
 ALTER TABLE `fermetures`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `indisponibilites`
 --
 ALTER TABLE `indisponibilites`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `matieres`
 --
 ALTER TABLE `matieres`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `roles`
 --
@@ -317,7 +261,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
