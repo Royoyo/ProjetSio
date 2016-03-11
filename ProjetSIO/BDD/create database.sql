@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 26 Février 2016 à 09:21
+-- Généré le :  Mer 09 Mars 2016 à 16:58
 -- Version du serveur :  5.6.20
 -- Version de PHP :  5.5.15
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `gpci`
+-- Base de données :  `GPCI`
 --
 
 -- --------------------------------------------------------
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `classes` (
-`id` int(250) NOT NULL,
+`id` int(11) NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
   `nom` varchar(25) NOT NULL
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `classes` (
 --
 
 CREATE TABLE IF NOT EXISTS `cours` (
-`id` int(250) NOT NULL,
+`id` int(11) NOT NULL,
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   `id_Matieres` int(11) DEFAULT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `cours` (
 --
 
 CREATE TABLE IF NOT EXISTS `cours_classes` (
-  `id_Cours` int(250) NOT NULL,
-  `id_Classes` int(250) NOT NULL
+  `id_Cours` int(11) NOT NULL,
+  `id_Classes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `fermetures` (
 --
 
 CREATE TABLE IF NOT EXISTS `indisponibilites` (
-`id` int(100) NOT NULL,
+`id` int(11) NOT NULL,
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   `id_Users` int(11) NOT NULL
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
   `login` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
-  `hash` int(11) NOT NULL,
+  `hash` int(50) NOT NULL,
   `firstName` varchar(20) NOT NULL,
   `lastName` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -231,12 +231,12 @@ ALTER TABLE `users_roles`
 -- AUTO_INCREMENT pour la table `classes`
 --
 ALTER TABLE `classes`
-MODIFY `id` int(250) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `cours`
 --
 ALTER TABLE `cours`
-MODIFY `id` int(250) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `fermetures`
 --
@@ -246,7 +246,7 @@ MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `indisponibilites`
 --
 ALTER TABLE `indisponibilites`
-MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `matieres`
 --
