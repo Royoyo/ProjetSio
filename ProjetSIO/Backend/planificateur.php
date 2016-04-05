@@ -62,7 +62,7 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
             }
                 // Verification s'il n'est pas indisponible
             try {
-                $indispo = Indisponibilite::whereRaw('(dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+                $indispo = Indisponibilite::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
 
             }catch(Exception $e) {
                 $indispo = [];
@@ -391,7 +391,7 @@ $app->put('/plan/matiere/:id', $authenticateWithRole('planificateur'), function(
 $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function() use ($app) {
     $users = Users::whereHas('roles', function($q) {
         $q->where('role', 'enseignant');
-    })->with('matieres', 'indisponibilite')->get();
+    })->with('matieres', 'indisponibilite', 'cours')->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($users));
 });

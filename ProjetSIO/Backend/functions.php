@@ -91,11 +91,13 @@ $app->get('/test-email', function() use ($app, $mailer){
 });
 
 $authenticateWithRole = function ($role_required){ 
-    return function () use ( $role_required ) {
+    return function () use ($role_required ) {
         $app = \Slim\Slim::getInstance();
         try{
             session_start();
-        } catch(Exception $e) {}		///< We try to open the users session
+        } catch(Exception $e) {
+
+		}		///< We try to open the users session
         if (!isset($_SESSION['id'])) {	///< If the session ID isn't recognized, error 401 is sent
             $app->halt(401);	
         } else {						///< In this case, we check if the user id is correctly associated with his role, if not, error 401 is sent

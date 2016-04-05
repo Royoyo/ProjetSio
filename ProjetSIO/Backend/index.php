@@ -21,6 +21,7 @@ require_once 'login.php';
 require_once 'planificateur.php';
 require_once 'enseignant.php';
 require_once 'admin.php';
+require_once 'profil.php';
 
 $app->get('/roles', $authenticateWithRole('administrateur'), function () use ($app) {
 
@@ -64,23 +65,6 @@ $app->post('/set_firstpassword', function() use ($app) {
     else{
         $app->response->setBody(false);
     }
-});
-
-$app->post('/set_profil/:id', function($id) use ($app) {
-    $json = $app->request->getBody();
-    $data = json_decode($json, true);
-    $user = Users::where('id', $id)->firstOrFail();
-    if (array_key_exists('password_old', $data) && array_key_exists('password', $data) && array_key_exists('password_confirm', $data)){
-        if (sha1($hash . sha1($data['password_old'])) == $user->password && $data['password'] == $data['password_confirm']){
-            $hash = uniqid(rand(), true);
-            $user->hash = $hash;
-            $user->password = sha1($hash . sha1($data['password']));
-        }
-    }
-    if (array_key_exists('email', $data) && array_key_exists('email_confirm', $data)) {
-        $user->email = $data['email'];
-    }
-    $user->save();
 });
 
 $app->run();

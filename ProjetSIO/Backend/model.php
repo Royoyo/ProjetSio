@@ -14,9 +14,9 @@
 $settings = array(
     'driver' => 'mysql',
     'host' => '127.0.0.1',
-    'database' => 'test',
+    'database' => '',
     'username' => 'root',
-    'password' => '020395',
+    'password' => '',
     'collation' => 'utf8_general_ci',
     'charset' => 'utf8',
     'prefix' => ''
@@ -52,11 +52,11 @@ class Users extends Model {
     }
 
     public function cours() {
-        return $this->hasMany('Cours');
+        return $this->hasMany('Cours', 'id_Users');
     }
 
     public function classes() {
-        return $this->hasMany('Classes');
+        return $this->hasMany('Classes', 'id_Users');
     }
 
 }
