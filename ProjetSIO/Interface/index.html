@@ -1,17 +1,21 @@
 ﻿<!doctype html>
-<html lang='fr'>
+<html lang="fr" ng-app="webApp" ng-controller="mainController">
 <head>
+    <title>GPCI - Gestion des Planning</title>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="css/bootstrap/normalize.css">
-	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
-	<link rel="stylesheet" href="css/custom.css">
-  <link rel="stylesheet" href="css/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="css/custom.css">    
 </head>
-<body ng-app="webApp" ng-controller="mainController">
+<body>
 	<nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+          <button type="button" class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -19,21 +23,22 @@
           </button>
           <a class="navbar-brand" href="#">
           Ifide
-          <!-- TO DO :changer le css pour faire que l'image s'affiche correctement
-          <img alt="Ifide" src="img/logo.png">
-          -->
 		  </a>
         </div>
         <div class="navbar-collapse collapse" collapse="navCollapsed">
           <ul class="nav navbar-nav">
-            <li ui-sref-active="active" ui-sref="administration" ng-show="(currentUser.roles.indexOf('administrateur') > -1)"><a>Administration</a></li>
-            <li ui-sref-active="active" ui-sref="planification" ng-show="(currentUser.roles.indexOf('planificateur') > -1)"><a>Planification</a></li>
-            <li ui-sref-active="active" ui-sref="enseignement" ng-show="(currentUser.roles.indexOf('enseignant') > -1)"><a>Enseignement</a></li>
+            <li class="clickable" ui-sref-active="active" ui-sref="administration" ng-show="(currentUser.roles.indexOf('administrateur') > -1)"><a>Administration</a></li>
+            <li class="clickable" ui-sref-active="active" ui-sref="planification" ng-show="(currentUser.roles.indexOf('planificateur') > -1)"><a>Planification</a></li>
+            <li class="clickable" ui-sref-active="active" ui-sref="enseignement" ng-show="(currentUser.roles.indexOf('enseignant') > -1)"><a>Enseignement</a></li>
           </ul>
           <div class="navbar-right">
             <!-- la ligne horizontale s'affiche mais peut rester dans la vue desktop si l'utilisateur change la taille de la fenetre - NIVEAU BUG : faible -->
             <hr ng-show="!navCollapsed">
-            <p class="navbar-text">Bonjour <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong></p>
+              <p class="navbar-text">Bonjour <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
+              </p>
+              <ul class="nav navbar-nav">
+                  <li class="clickable" ui-sref-active="active" ui-sref="profil"><a>Gérer vos informations</a></li>
+              </ul>
             <button type="button" class="btn btn-default navbar-btn" ng-show="currentUser == null" ng-click="login()">Se connecter</button>
             <button type="button" class="btn btn-default navbar-btn" ng-hide="currentUser == null" ng-click="logout()">Se déconnecter</button>
           </div>
@@ -43,46 +48,62 @@
 	<div ui-view class="container-fluid"></div>
 
     <!-- librairies -->
-    <script src="lib/lodash.min.js"></script>
-    <script src="lib/calendar/jquery.min.js"></script>
-    <script src="lib/calendar/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
 
-    <script src="lib/angular.js"></script>
-    <script src="lib/restangular.min.js"></script>
-    <script src="lib/angular-ui-router.min.js"></script>
-    <script src="lib/ui-bootstrap-tpls.min.js"></script>
-    <script src="lib/smart-table.min.js"></script>
-    <script src="lib/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.7/smart-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular-animate.min.js"></script>
 
-    <script src="lib/calendar/fullcalendar.min.js"></script>
-    <script src="lib/calendar/fr.js"></script>
-    <script src="lib/calendar/gcal.js"></script>
-    <script src="lib/calendar/calendar.js"></script>
-
-    <!-- Base de l'application -->
-    <script src="js/app.js"></script>
-    <script src="js/routing.js"></script>
-    <script src="js/fonctionGlobale.js"></script>
-
-    <!-- directives -->
-    <script src="js/directives.js"></script>
-
-    <!-- factories -->
-    <script src="js/intercepteurHttp.js"></script>
-
-
-    <!-- controllers -->
-    <script src="js/controllers/mainController.js"></script>
-    <script src="js/controllers/login.js"></script>
-    <script src="js/controllers/administration.js"></script>
-    <script src="js/controllers/planification.js"></script>
-    <script src="js/controllers/enseignants.js"></script>
-    <script src="js/controllers/activation.js"></script>
-
-
-    <!-- Services -->
-    <script src="js/authentification.js"></script>
-    <script src="js/services.js"></script> 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/lang/fr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/gcal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-calendar/1.0.0/calendar.min.js"></script>
+    
+    <!-- inject:js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/fonctionGlobale.js"></script>
+    <script src="scripts/routing.js"></script>
+    <script src="scripts/services/activation.js"></script>
+    <script src="scripts/services/helper.js"></script>
+    <script src="scripts/services/matieres.js"></script>
+    <script src="scripts/services/profil.js"></script>
+    <script src="scripts/services/roles.js"></script>
+    <script src="scripts/services/session.js"></script>
+    <script src="scripts/services/administration/personnes.js"></script>
+    <script src="scripts/services/enseignement/calendar.js"></script>
+    <script src="scripts/services/enseignement/cours.js"></script>
+    <script src="scripts/services/enseignement/indispos.js"></script>
+    <script src="scripts/services/login/authentification.js"></script>
+    <script src="scripts/services/login/intercepteurHttp.js"></script>
+    <script src="scripts/services/planification/classes.js"></script>
+    <script src="scripts/services/planification/cours.js"></script>
+    <script src="scripts/services/planification/enseignants.js"></script>
+    <script src="scripts/services/planification/matieres.js"></script>
+    <script src="scripts/filters/unique.js"></script>
+    <script src="scripts/controllers/activation.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/mainController.js"></script>
+    <script src="scripts/controllers/profil.js"></script>
+    <script src="scripts/controllers/administration/Details.js"></script>
+    <script src="scripts/controllers/administration/List.js"></script>
+    <script src="scripts/controllers/enseignement/calendarController.js"></script>
+    <script src="scripts/controllers/enseignement/coursController.js"></script>
+    <script src="scripts/controllers/enseignement/indisposController.js"></script>
+    <script src="scripts/controllers/enseignement/periodeModal.js"></script>
+    <script src="scripts/controllers/planification/calendar.js"></script>
+    <script src="scripts/controllers/planification/calendarClasses.js"></script>
+    <script src="scripts/controllers/planification/calendarCours.js"></script>
+    <script src="scripts/controllers/planification/classes.js"></script>
+    <script src="scripts/controllers/planification/classesDetails.js"></script>
+    <script src="scripts/controllers/planification/enseignants.js"></script>
+    <script src="scripts/controllers/planification/enseignantsMatieres.js"></script>
+    <script src="scripts/controllers/planification/matieres.js"></script>
+    <script src="scripts/controllers/planification/matieresDetails.js"></script>
+    <!-- endinject -->
 </body>
 </html>

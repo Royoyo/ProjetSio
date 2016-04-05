@@ -16,6 +16,7 @@
                 <div class="col-sm-offset-4 col-sm-8">
                     <button type="submit" class="btn btn-default" ng-disabled="form.$invalid">Connexion</button>
                 </div>
+                <span class="text-danger" ng-show="errorMessage">{{ errorMessage }}</span>
             </div>
         </form>
 	</div>

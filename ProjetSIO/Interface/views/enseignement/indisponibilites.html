@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Gestion des indisponibilités</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!--<button class="btn btn-default btn-lg" ng-click="addIndisposRec()">Ajouter indisponibilités récurrentes</button>-->
+        <button class="btn btn-default btn-lg" ng-click="addPeriod()">Ajouter période d'indisponibilité</button>
+        <button class="btn btn-success btn-lg" ng-show="isModified" ng-click="saveChanges()">Sauvegarder modifications</button>
+        <button class="btn btn-danger btn-lg" ng-show="isModified" ng-click="cancelChanges()">Annuler modifications</button>
+    </div>
+</div>
+<div class="row top10">
+    <div class="col-md-12">
+        <div ui-calendar="calendarConfig.calendar" ng-model="eventSource" calendar="indisposCalendar"></div>
+    </div>
+</div>
+<div class="row top10">
+    <div class="col-md-6">
+        <ul class="list-unstyled">
+            <li>
+                <p><strong>Légende:</strong>
+                </p></li>
+            <li><i class="fa fa-square" style="color: #2ECC40"></i> : Période de disponibilité</li>
+            <li><i class="fa fa-square" style="color: #FF4136"></i> : Indisponible la journée entière</li>
+            <li><i class="fa fa-square" style="color: #FFDC00"></i> : Indisponible le matin</li>
+            <li><i class="fa fa-square" style="color: #FF851B"></i> : Indisponible l'après-midi</li>
+            <li><i class="fa fa-square" style="color: #AAAAAA"></i> : Jour faisant parti d'une période d'indisponibilité</li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <p><strong>Aide à l'utilisation:</strong>
+        </p>
+        <p>Vous pouvez changer vos indisponibilités en cliquant sur les jours concernés</p>
+    </div>
+</div>

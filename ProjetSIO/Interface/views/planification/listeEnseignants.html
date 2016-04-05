@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-md-3">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					Gestion des enseignants
+				</h3>
+			</div>
+			<table st-table="enseignantsView" st-safe-src="enseignants"  class="table table-responsive table-hover">
+				<thead>
+					<tr>
+						<th st-sort="firstName">Enseignants</th>
+					</tr>
+					<tr>
+						<th>
+							<input st-search="fullName" placeholder="filtre..." class="input-sm form-control" type="search"/>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="enseignant in enseignantsView">
+						<td ng-click="select(enseignant)">{{ enseignant.firstName }} {{ enseignant.lastName}}</td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-md-5" ng-show="showMatieresTable">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					Matières pour {{ selectedEnseignant.firstName }} {{ selectedEnseignant.lastName }}
+				</h3>
+			</div>
+			<table st-table="matieresView" st-safe-src="selectedEnseignant.matieres"  class="table table-responsive table-hover">
+				<tbody>
+					<tr ng-repeat="matiere in matieresView">
+						<td>{{ matiere.nom }}</td>
+						<td><span class="glyphicon glyphicon-remove red" ng-click="removeMatiere(matiere.id)"></span></td>
+					</tr>			
+				</tbody>
+				<tfoot>
+					<tr>
+						<td><button type="button" class="btn btn-default" ng-click="showAddForm()">Rajouter Matières</button></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>		
+	</div>
+</div>

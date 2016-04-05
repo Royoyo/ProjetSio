@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div class="panel-heading" ng-hide="indispo.isNew">Gestion de la période</div>
+    <div class="panel-heading" ng-show="indispo.isNew">Création d'une nouvelle période</div>
+    <div class="panel-body">
+        <form novalidate name="form" ng-submit="save()">
+            <div class="form-group">
+                <label>Date de début</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy"
+                           is-open="pickerDateDebut.opened" ng-model="indispo.start"
+                           name="dateDebut" required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openPickerDebut()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <span class="text-danger" ng-show="form.dateDebut.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.dateDebut.$valid && !form.dateDebut.$error.required">Veuillez préciser une date correcte.</span>
+            </div>
+            <div class="form-group">
+                <label>Date de fin</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy"
+                           is-open="pickerDateFin.opened" ng-model="indispo.end"
+                           name="dateFin" required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <span class="text-danger" ng-show="form.dateFin.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.dateFin.$valid && !form.dateFin.$error.required">Veuillez préciser une date correcte.</span>
+                <span class="text-danger" ng-show="indispo.start > indispo.end">La date de fin ne peut pas être antérieure à la date de début.</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2">
+                    <input type="submit" class="btn btn-success" ng-disabled="form.$invalid || indispo.start > indispo.end" value="Sauvegarder modifications"/>
+                    <button class="btn btn-danger" ng-click="delete()" ng-hide="indispo.isNew">Supprimer période</button>
+                    <button class="btn btn-default" ng-click="dismiss()">Annuler</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
