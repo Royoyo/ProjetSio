@@ -14,30 +14,25 @@ $app->post('/login', function () use ($app) {
     try {
         try{    ///< If the session is already on, then session_start will return an error signal
             session_start();
-        } catch(Exception $e) {
-
+        }
+		catch(Exception $e) {
+		  $app->halt(400);
         }
         $json = $app->request->getBody(); ///< getBody get the request sent by the log in form
         $data = json_decode($json, true);
         $token = uniqid(rand(), true);
         if (isset($data)) {
-            if (!isset($_SESSION['id'])) { ///< if the user isn't logged in, this test will match the user's data corresponding to the user's id 
-                $username = $data['name'];
-                try {
-                    $user_obj = Users::where('login', $username)->firstOrFail();
-                    $password = sha1($user_obj->hash . sha1($data['password']));
-                    $user_obj = Users::whereRaw('login = ? and password = ?', [$username, $password])->with('roles')->firstOrFail();
-                    $_SESSION['id'] = $user_obj->id;
-                    $_SESSION['token'] = $token;
-                } catch(Exception $e) {
-                    $user_obj = '';
-                    $app->response->headers->set('Content-Type', 'text/html');
-                    $app->response->setBody($e);
-                }
+            if (!isset($_SESSION['id'])) { ///< if the user isn't logged in, this test will match the user's data corresponding to the user's id
+				$userTemp = Users::where('login', $data['name'])->firstOrFail();
+				$password = sha1($userTemp->hash . sha1($data['password']));
+				$user_obj = Users::whereRaw('login = ? and password = ?', [$data['name'], $password])->with('roles')->firstOrFail();
+				$_SESSION['id'] = $user_obj->id;
+				$_SESSION['token'] = $token;
             } else {    ///< if the user is already logged in, the previous assignement is already done, we can skip it
                 $id = $_SESSION['id'];
                 $user_obj = Users::where('id', $id)->with('roles')->firstOrFail();
-            } 
+			}
+
             if ($user_obj) {
                 $user_obj->connected = true;
                 $user_obj->save();  ///< to keep the online status in the database
@@ -59,17 +54,31 @@ $app->post('/login', function () use ($app) {
                     "token"=>$token,
                     "home"=>$user_home,
                     "id"=>$user_obj->id,
+					"email"=>$user_obj->email
                     );
                 $app->response->headers->set('Content-Type', 'application/json');
                 $app->response->setBody(json_encode($user_json));
             }
             ///< The last lines are the errors cases
         } else {
-            $app->response->headers->set('Content-Type', 'text/html');
-            $app->response->setBody(false);
+            $app->response->setStatus(400);
         }
     } catch(Exception $e) {
-        $app->response->headers->set('Content-Type', 'text/html');
+        $app->response->setStatus(400);
+    }
+});
+
+//Un logout, car si on ne détruit pas la session, on ne peut plus que se logger qu'avec le dernier compte connecté
+//TO DO : Revoir le fonctionnement d'une session PHP
+$app->post('/logout', function () use ($app) {
+    try {
+		session_start();
+        $user_obj = Users::where('id', $_SESSION['id'])->update([ "connected" => 0]);
+		session_destroy();
+    }
+	catch(Exception $e) {
+		$app->response->setStatus(400);
+		$app->response->headers->set('Content-Type', 'application/json');
         $app->response->setBody($e);
     }
 });
