@@ -1,46 +1,50 @@
 <div class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">
-			Gestion des matières
-		</h3>
-	</div>
-	<table st-table="matieresView" st-safe-src="matieres"  class="table table-responsive table-hover">
-		<thead>
-			<tr>
-				<th st-sort="code">Code</th>
-				<th st-sort="nom">Nom</th>
-				<th>Actions</th>
-			</tr>
-			<tr>
-				<th>
-					<input st-search="code" placeholder="recherche code" class="input-sm form-control" type="search"/>
-				</th>
-				<th>
-					<input st-search="nom" placeholder="recherche nom" class="input-sm form-control" type="search"/>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="matiere in matieresView">
-				<td>{{ matiere.code }}</td>
-				<td>{{ matiere.nom }}</td>
-				<td>
-					<div class="btn-group" dropdown keyboard-nav>
-						<button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
-							Actions <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li role="menuitem"><a ng-click="openDetails(matiere)">Editer</a></li>
-							<li role="menuitem"><a ng-click="delete(matiere)">Supprimer</a></li>									
-						</ul>
-					</div>
-				</td>
-			</tr>				
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="4"><button type="submit" class="btn btn-default" ng-click="openDetails(-1)">Créer une matière</button></td>
-			</tr>
-		</tfoot>
-	</table>
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Gestion des matières
+        </h3>
+    </div>
+    <table st-table="matieresView" st-safe-src="matieres" class="table table-responsive table-hover">
+        <thead>
+        <tr>
+            <th st-sort="code">Code</th>
+            <th st-sort="nom">Nom</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <th>
+                <input st-search="code" placeholder="recherche code" class="input-sm form-control" type="search"/>
+            </th>
+            <th>
+                <input st-search="nom" placeholder="recherche nom" class="input-sm form-control" type="search"/>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="matiere in matieresView">
+            <td>{{ matiere.code }}</td>
+            <td>{{ matiere.nom }}</td>
+            <td>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="open(matiere)">Editer</button>
+                    <button type="button" class="btn btn-default" ng-click="remove(matiere)">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3" class="text-center">
+                <div st-pagination st-items-by-page="15" st-displayed-pages="7"></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" class="btn btn-default" ng-click="open()">Créer une matière</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 </div>

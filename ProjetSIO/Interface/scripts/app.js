@@ -1,4 +1,4 @@
-var webApp = angular.module("webApp", ["ui.router","ui.bootstrap","smart-table","ngAnimate","restangular","ui.calendar"]);
+var webApp = angular.module("webApp", ["ui.router","ui.bootstrap","smart-table","ngAnimate","toastr","restangular","ui.calendar"]);
 
 //TO DO : prendre ces constantes du serveur
 webApp.constant("USERS_ROLES", {
@@ -15,6 +15,15 @@ webApp.constant("AUTH_EVENTS", {
     sessionTimeout: "auth-sessionTimeout",
     notAuthenticated: "auth-notAuthenticated",
     notAuthorized: "auth-notAuthorized"
+});
+
+//Config de toastr
+webApp.config(function (toastrConfig) {
+    angular.extend(toastrConfig, {
+        positionClass: "toast-bottom-right",
+        //Limité à un à cause de la mise à jour 1.4.7 d'angular-animate
+        maxOpened: 1
+    });
 });
 
 // Rajout d'un intercepteur de toutes les requêtes http pour vérifier le login

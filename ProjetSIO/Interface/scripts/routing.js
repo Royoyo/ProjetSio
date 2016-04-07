@@ -62,6 +62,7 @@ webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, 
         .state("planification", {
             url: "/planification",
             templateUrl: "views/planification/navigation.html",
+            controller: "planificationController",
             data: {
                 authorizedRoles: [USERS_ROLES.planificateur]
             }
@@ -127,11 +128,6 @@ webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, 
             data: {
                 authorizedRoles: [USERS_ROLES.enseignant]
             }
-            //views: {
-            //    "": { templateUrl: "views/enseignement/indispos/indisponibilites.html" },
-            //    "read@enseignement.indisponibilites": { templateUrl: "views/enseignement/indispos/read.html" },
-            //    "modify@enseignement.indisponibilites": { templateUrl: "views/enseignement/indispos/modify.html" }
-            //}
         })
         .state("enseignement.calendar", {
             url: "/calendar",

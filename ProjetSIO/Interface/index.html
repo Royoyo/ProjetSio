@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="fr" ng-app="webApp" ng-controller="mainController">
 <head>
     <title>GPCI - Gestion des Planning</title>
@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
     <link rel="stylesheet" href="css/custom.css">    
 </head>
 <body>
@@ -53,6 +54,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
+    <script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap-tpls.min.js"></script>
@@ -70,7 +72,9 @@
     <script src="scripts/routing.js"></script>
     <script src="scripts/services/activation.js"></script>
     <script src="scripts/services/helper.js"></script>
+    <script src="scripts/services/initializers.js"></script>
     <script src="scripts/services/matieres.js"></script>
+    <script src="scripts/services/notifications.js"></script>
     <script src="scripts/services/profil.js"></script>
     <script src="scripts/services/roles.js"></script>
     <script src="scripts/services/session.js"></script>
@@ -80,6 +84,7 @@
     <script src="scripts/services/enseignement/indispos.js"></script>
     <script src="scripts/services/login/authentification.js"></script>
     <script src="scripts/services/login/intercepteurHttp.js"></script>
+    <script src="scripts/services/planification/calendar.js"></script>
     <script src="scripts/services/planification/classes.js"></script>
     <script src="scripts/services/planification/cours.js"></script>
     <script src="scripts/services/planification/enseignants.js"></script>
@@ -95,15 +100,15 @@
     <script src="scripts/controllers/enseignement/coursController.js"></script>
     <script src="scripts/controllers/enseignement/indisposController.js"></script>
     <script src="scripts/controllers/enseignement/periodeModal.js"></script>
-    <script src="scripts/controllers/planification/calendar.js"></script>
-    <script src="scripts/controllers/planification/calendarClasses.js"></script>
-    <script src="scripts/controllers/planification/calendarCours.js"></script>
-    <script src="scripts/controllers/planification/classes.js"></script>
-    <script src="scripts/controllers/planification/classesDetails.js"></script>
-    <script src="scripts/controllers/planification/enseignants.js"></script>
-    <script src="scripts/controllers/planification/enseignantsMatieres.js"></script>
-    <script src="scripts/controllers/planification/matieres.js"></script>
-    <script src="scripts/controllers/planification/matieresDetails.js"></script>
+    <script src="scripts/controllers/planification/planification.js"></script>
+    <script src="scripts/controllers/planification/calendar/calendar.js"></script>
+    <script src="scripts/controllers/planification/calendar/calendarCours.js"></script>
+    <script src="scripts/controllers/planification/classes/classes.js"></script>
+    <script src="scripts/controllers/planification/classes/classesDetails.js"></script>
+    <script src="scripts/controllers/planification/enseignants/enseignants.js"></script>
+    <script src="scripts/controllers/planification/enseignants/enseignantsMatieres.js"></script>
+    <script src="scripts/controllers/planification/matieres/matieres.js"></script>
+    <script src="scripts/controllers/planification/matieres/matieresDetails.js"></script>
     <!-- endinject -->
 </body>
 </html>

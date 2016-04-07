@@ -19,7 +19,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="enseignant in enseignantsView">
-						<td ng-click="select(enseignant)">{{ enseignant.firstName }} {{ enseignant.lastName}}</td>
+						<td class="clickable" ng-click="select(enseignant)">{{ enseignant.fullName }}</td>
 					</tr>				
 				</tbody>
 			</table>
@@ -29,14 +29,14 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<h3 class="panel-title">
-					Matières pour {{ selectedEnseignant.firstName }} {{ selectedEnseignant.lastName }}
+					Matières pour {{ selectedEnseignant.fullName }}
 				</h3>
 			</div>
 			<table st-table="matieresView" st-safe-src="selectedEnseignant.matieres"  class="table table-responsive table-hover">
 				<tbody>
 					<tr ng-repeat="matiere in matieresView">
 						<td>{{ matiere.nom }}</td>
-						<td><span class="glyphicon glyphicon-remove red" ng-click="removeMatiere(matiere.id)"></span></td>
+					    <td><button ng-click="removeMatiere(matiere.id)"><i class="fa fa-remove red"></i></button></td>
 					</tr>			
 				</tbody>
 				<tfoot>

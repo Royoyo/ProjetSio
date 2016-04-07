@@ -30,7 +30,7 @@ webApp.controller("loginController",
 			//2ème paramètre = fonction de succès
 			$uibModalInstance.close();
 			if (user)
-			$state.go(user.home);
+			    $state.go(user.home);
 		}, function() {
 			//3ème paramètre fonction d'echec
 		    $scope.errorMessage = "Le serveur n'a pas accepté vos identifiants";

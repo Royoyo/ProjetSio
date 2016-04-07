@@ -2,7 +2,7 @@
 	<div class="panel-heading" ng-hide="creation">Détails {{ matiere.nom }}</div>
 	<div class="panel-heading" ng-show="creation">Création de matière</div>
 	<div class="panel-body">
-		<form novalidate name="form" ng-submit="save(matiere)">
+		<form novalidate name="form" ng-submit="save()">
 			<div class="form-group">
 				<label>Code</label>
 				<input type="text" class="form-control" name="code" ng-model="matiere.code" required>
@@ -16,8 +16,8 @@
 			<div class="form-group">
 			<div class="col-sm-offset-2">
 				<input type="submit" class="btn btn-success" value="Enregistrer" ng-disabled="form.$invalid"/>
-				<button type="submit" class="btn btn-default" ng-click="delete(matiere)" ng-hide="creation">Supprimer</button>
-                <button type="submit" class="btn btn-default" ng-click="cancel()">Annuler</button>
+				<button type="button" class="btn btn-default" ng-click="remove()" ng-hide="creation">Supprimer</button>
+                <button type="button" class="btn btn-default" ng-click="cancel()">Annuler</button>
 			</div>
 		  </div>
 		</form>

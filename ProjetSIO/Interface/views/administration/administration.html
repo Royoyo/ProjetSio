@@ -53,14 +53,9 @@
                         </td>
                         <td><span ng-class="{'glyphicon glyphicon-flash green': personne.enabled, 'glyphicon glyphicon-off red' : !personne.enabled }"></span></td>
                         <td>
-                            <div class="btn-group" dropdown keyboard-nav>
-                                <button id="simple-btn-keyboard-nav" type="button" class="btn btn-default" dropdown-toggle>
-                                    Actions <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li role="menuitem"><a ng-click="openDetails(personne)">Editer</a></li>
-                                    <li role="menuitem"><a ng-click="changeState(personne)">{{ personne.enabled ? "Désactiver" : "Activer" }}</a></li>									
-                                </ul>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default" ng-click="openDetails(personne)"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="btn btn-default" ng-click="changeState(personne)"><i ng-class="{'glyphicon glyphicon-off red': personne.enabled, 'glyphicon glyphicon-flash green' : !personne.enabled }"></i></button>
                             </div>
                         </td>
                     </tr>			

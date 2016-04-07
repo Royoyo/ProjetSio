@@ -5,16 +5,12 @@
         <div class="panel-body">
             <div class="form-group">
                 <label>Matière</label>
-                <select class="form-control" name="nom" ng-model="selectedMatiere" required>
-                    <option ng-repeat="matiere in matieres" value="{{ matiere.id }}">{{ matiere.nom }}</option>
-                </select>
-                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser un nom.</span>
+                <select class="form-control" name="nom" ng-model="cours.id_Matieres" ng-options="matiere.id as matiere.nom for matiere in matieres" required></select>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser une matière.</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-show="cours.id_Matieres">
                 <label>Enseignant</label>
-                <select class="form-control" name="enseignant" ng-model="selectedEnseignant">
-                    <option ng-repeat="enseignant in enseignants" value="{{ enseignant.id }}" ng-disabled="enseignant.indisponible">{{ enseignant.lastName }} {{ enseignant.indisponible ? '(indisponible)' : ''}}</option>
-                </select>
+                <select class="form-control" name="enseignant" ng-model="cours.id_Users" ng-options="enseignant.id as enseignant.viewName disable when enseignant.indisponible for enseignant in enseignants"></select>
             </div>
             <div class="form-group">
                 <label>Classes :</label>
