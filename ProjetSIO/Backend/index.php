@@ -17,6 +17,7 @@ ini_set('display_startup_errors',1);
 error_reporting(-1);
 require_once 'model.php';
 require_once 'functions.php';
+require_once 'mailing.php';
 require_once 'login.php';
 require_once 'planificateur.php';
 require_once 'enseignant.php';
