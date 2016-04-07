@@ -3,6 +3,7 @@
 function mailAssignationCours($cours){
 
 
+	// Conversion date pour extraire Date de Heure séparement
     $dt_start = new DateTime($cours->start);
     $dt_end = new DateTime($cours->end);
 
@@ -14,6 +15,7 @@ function mailAssignationCours($cours){
     $liste_classe = '';
     $i = 0;
     $len = count($cours->classes);
+    // Création liste de classe pour template
     foreach ($cours->classes as $classe) {
         if ($len <= 1) {
             $liste_classe .= 'la classe ';
@@ -28,6 +30,7 @@ function mailAssignationCours($cours){
     }
     $matiere = Matieres::where('id', $cours->id_Matieres)->firstOrFail();
 
+    // Liste variable a utilisé dans le template
     $list_var = array(
         'user_firstname' => $cours->user->firstName,
         'user_lastname' => $cours->user->lastName,
@@ -49,6 +52,7 @@ function mailAssignationCours($cours){
     $template = file_get_contents("templates/header.html", FILE_TEXT) . $template;
 
     // creation du mail
+    $message = Swift_Message::newInstance('Assignation d\'un cours à IFIDE SupFormation')
         ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
         ->setTo(array($cours->user->email => $cours->user->firstName + '' + $cours->user->lastName))
         ->setBody($template, "text/html")
