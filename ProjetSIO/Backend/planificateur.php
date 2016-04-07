@@ -9,9 +9,7 @@
  *
  * \details     this file contains all the routes for "planificateur" role
  */
- 
- //TO DO : revoir la logique appliquée au date
- 
+
 
 //Cours
 $app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () use ($app) {
@@ -50,98 +48,29 @@ $app->post('/plan/cours/', $authenticateWithRole('enseignant'), function () use 
         $cours = new Cours;
         $cours->start = $data['start'];
         $cours->end = $data['end'];
-        $cours->id_Matieres = $data['matiere']['id'];
+        $cours->id_Matieres = $data['id_Matieres'];
         $cours_user = [];
         $indispo = [];
-        if (array_key_exists('user', $data))
-            try {
-                // Verification si l'enseignant na aucun autre cours à la même date
-                $cours_user = Cours::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
-            } catch(Exception $e) {
-                $cours_user = [];
-            }
-                // Verification s'il n'est pas indisponible
-            try {
-                $indispo = Indisponibilite::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
+        if (!empty($data['id_Users'])){
+			$cours->id_Users = $data['id_Users'];
+			// Verification si l'enseignant na aucun autre cours à la même date
+			$coursExists = Cours::whereRaw('(start >= ? AND end <= ?) and id_Users = ?', [$data['start'], $data['end'], $data['id_Users']])->count();
+			  // Verification s'il n'est pas indisponible
+			$indispoExists = Indisponibilite::whereRaw('(start >= ? AND end <= ?) and id_Users = ?', [$data['start'], $data['end'], $data['id_Users']])->count();
 
-            }catch(Exception $e) {
-                $indispo = [];
-            }
-        // S'il na pas de cours et qu'il est disponible
-        if (empty($cours_user) && empty($indispo)) {
-            $cours->id_Users = $data['user']['id'];
-            $cours->save();
-            $user = Users::where('id', $cours->id_Users)->firstOrFail();
-            $newClasses = [];   
-            foreach($data['classes'] as $classe) {
-                array_push($newClasses, $classe['id']);
-            }
-            // Sauvegarde classe database
-            $cours->classes()->sync($newClasses);
-
-            // Conversion date pour extraire Date de Heure séparement
-            $dt_start = new DateTime($cours->start);
-            $dt_end = new DateTime($cours->end);
-            // Extraction date et heure
-            $date = $dt_start->format('d/m/Y');
-            $time_start = $dt_start->format('H:i:s');
-            $time_end = $dt_end->format('H:i:s');
-
-            $liste_classe = '';
-            $i = 0;
-            $len = count($cours->classes);
-            // Création liste de classe pour template
-            foreach ($cours->classes as $classe) {
-                if ($len <= 1) {
-                    $liste_classe .= 'la classe ';
-                } else {
-                    $liste_classe .= 'les classes ';
-                }
-                $liste_classe .= $classe['nom'];
-                if ($i != $len - 1) {
-                    $liste_classe .= ',';
-                }
-                $i++;
-            }      
-            $matiere = Matieres::where('id', $cours->id_Matieres)->firstOrFail();
-            // Liste variable a utilisé dans le template
-            $list_var = array(
-                'user_firstname' => $user->firstName,
-                'user_lastname' => $user->lastName,
-                'cours_date' => $date,
-                'cours_start' => $time_start,
-                'cours_end' => $time_end,
-                'classe' => $liste_classe,
-                'matiere' => $matiere['nom']
-            );
-
-            $template = file_get_contents("templates/assignation_cours.html", FILE_TEXT);
-            // ajout des valeur des variables dans le template
-            foreach($list_var as $cle => $valeur) {
-                $template = str_replace('{{ '.$cle.' }}', $valeur, $template);
-            }     
-            // ajout du header pour responsive, css ...
-            $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
-            // creation du mail
-            $message = Swift_Message::newInstance('Assignation d\'un cours à IFIDE SupFormation')
-                ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
-                ->setTo(array($user->email => $user->firstName + '' + $user->lastName))
-                ->setBody($template, "text/html")
-                ->setContentType("text/html");
-
-            // envoie
-            try {
-                $results = $mailer->send($message);
-            }catch(Exception $e) {
-                $results = $e;
-            }
-            $app->response->setBody($results);
-        } else {
-            $app->response->setBody("Non disponible");
-        }
+			if ($coursExists == 0  && $indispoExists == 0){
+				saveCours($cours, $data['classes']);
+			} else {
+				$app->response->headers->set('Content-Type', 'application/json');
+				$app->response->setStatus(400);
+				$app->response->setBody(json_encode(array("message"=>"Cet enseignant est indisponible!")));
+			}
+		} else {
+			saveCours($cours, $data['classes']);
+		}
     } catch(Exception $e) {
-        $app->response->headers->set('Content-Type', 'text/html');
-        $app->response->setBody($e);
+		$app->response->setStatus(400);
+		$app->response->setBody($e);
     }
 });
 
@@ -150,172 +79,45 @@ $app->put('/plan/cours/:id', $authenticateWithRole('planificateur'), function ($
         $json = $app->request->getBody();
         $data = json_decode($json, true);
 
-        $cours = Cours::with('user', 'matiere', 'classes')->where('id', $id)->firstOrFail();
+        $cours = Cours::where('id', $id)->firstOrFail();
+		$cours->start = $data['start'];
+        $cours->end = $data['end'];
+        $cours->id_Matieres = $data['id_Matieres'];
         $cours_user = [];
         $indispo = [];
-        $old_user_id = '';
-        if (array_key_exists('user', $data)) {
-            if ($cours->id_Users != $data['user']['id'] and $cours->id_Users != '') {
-                $old_user_id = $cours->id_Users;
-            }
-           /* try {
-                // Verification si l'enseignant na aucun autre cours à la même date
-                $cours_user = Cours::whereRaw('(start BETWEEN ? and ? or end BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
-            } catch(Exception $e) {
-                $cours_user = [];
-            }
-                // Verification s'il n'est pas indisponible
-            try {
-                $indispo = Indisponibilite::whereRaw('(dateDebut BETWEEN ? and ? or dateFin BETWEEN ? and ?) and ?', [$data['start'], $data['end'], $data['start'], $data['end'], $data['user']['id']])->firstOrFail();
-            } catch(Exception $e) {
-                $indispo = [];
-            }*/
-        }
-        $old_cours_start = $cours->start;
-        $old_cours_end = $cours->end;
-        $old_classes = $cours->classes;
-        $old_matieres_id = $cours->id_Matieres;
-        $dt_start_o = new DateTime($old_cours_start);
-        $dt_end_o = new DateTime($old_cours_end);
-        // Extraction date et heure
-        $date_o = $dt_start_o->format('d/m/Y');
-        $time_start_o = $dt_start_o->format('H:i:s');
-        $time_end_o = $dt_end_o->format('H:i:s');
-        $cours->id_Matieres = $data['matiere']['id'];
-        // S'il na pas de cours et qu'il est disponible
-        if (empty($cours_user) && empty($indispo)) {
-            $cours->id_Users = $data['user']['id'];
-            $cours->save();
+        if (!empty($data['id_Users'])){
+			$cours->id_Users = $data['id_Users'];
+			// Verification si l'enseignant na aucun autre cours à la même date
+			$coursExists = Cours::whereRaw('(start >= ? AND end <= ?) and id_Users = ? and id != ?', [$data['start'], $data['end'], $data['id_Users'], $id])->count();
+			  // Verification s'il n'est pas indisponible
+			$indispoExists = Indisponibilite::whereRaw('(start >= ? AND end <= ?) and id_Users = ?', [$data['start'], $data['end'], $data['id_Users']])->count();
 
-            $newClasses = [];
-            foreach($data['classes'] as $classe) {
-                array_push($newClasses, $classe['id']);
-            }
-            
-            $cours->classes()->sync($newClasses);
-            // Si l'enseignant a changé on lui envoie un mail pour le prévenir
-            if ($old_user_id != '') {
-                $user_old = Users::where('id', $old_user_id)->firstOrFail();
-                $list_var = array(
-                    'user_firstname' => $user_old->firstName,
-                    'user_lastname' => $user_old->lastName,
-                    'cours_date' => $date_o,
-                    'cours_start' => $time_start_o,
-                    'cours_end' => $time_end_o
-                );
-
-                $template = file_get_contents("templates/supression_cours.html", FILE_TEXT);
-                // ajout des valeur des variables dans le template
-                foreach($list_var as $cle => $valeur) {
-                    $template = str_replace('{{ '.$cle.' }}', $valeur, $template);
-                }     
-                // ajout du header pour responsive, css ...
-                $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
-                // creation du mail
-                $message = Swift_Message::newInstance('Suppression d\'un cours à Ifide SupFormation')
-                    ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
-                    ->setTo(array($user_old->email => $user_old->firstName + '' + $user_old->lastName))
-                    ->setBody($template, "text/html")
-                    ->setContentType("text/html");
-
-                // envoie
-                try {
-                    $results = $mailer->send($message);
-                }catch(Exception $e) {
-                    $results = $e;
-                }
-                $app->response->setBody($results);
-            }
-
-            // Conversion date pour extraire Date de Heure séparement
-            $dt_start = new DateTime($cours->start);
-            $dt_end = new DateTime($cours->end);
-            // Extraction date et heure
-            $date = $dt_start->format('d/m/Y');
-            $time_start = $dt_start->format('H:i:s');
-            $time_end = $dt_end->format('H:i:s');
-
-            $liste_classe_old = '';
-            $i = 0;
-            $len = count($cours->classes);
-            // Création liste de classe pour template
-            foreach ($old_classes as $classe) {
-                if ($len <= 1) {
-                    $liste_classe_old .= 'la classe ';
-                } else {
-                    $liste_classe_old .= 'les classes ';
-                }
-                $liste_classe_old .= $classe['nom'];
-                if ($i != $len - 1) {
-                    $liste_classe_old .= ',';
-                }
-                $i++;
-            }
-            $matiere_old = Matieres::where('id', $old_matieres_id)->firstOrFail();
-            $liste_classe = '';
-            $i = 0;
-            $len = count($cours->classes);
-            // Création liste de classe pour template
-            foreach ($cours->classes as $classe) {
-                if ($len <= 1) {
-                    $liste_classe .= 'la classe ';
-                } else {
-                    $liste_classe .= 'les classes ';
-                }
-                $liste_classe .= $classe['nom'];
-                if ($i != $len - 1) {
-                    $liste_classe .= ',';
-                }
-                $i++;
-            }
-            $user = Users::where('id', $cours->id_Users)->firstOrFail();
-            $matiere = Matieres::where('id', $old_matieres_id)->firstOrFail();
-            // Liste variable a utilisé dans le template
-            $list_var = array(
-                'user_firstname' => $user->firstName,
-                'user_lastname' => $user->lastName,
-                'cours_date_old' => $date_o,
-                'cours_start_old' => $time_start_o,
-                'cours_end_old' => $time_end_o,
-                'classe_old' => $liste_classe_old,
-                'matiere_old' => $matiere_old['nom'],
-                'cours_date' => $date,
-                'cours_start' => $time_start,
-                'cours_end' => $time_end,
-                'classe' => $liste_classe,
-                'matiere' => $matiere['nom']
-            );
-
-            $template = file_get_contents("templates/modification_cours.html", FILE_TEXT);
-            // ajout des valeur des variables dans le template
-            foreach($list_var as $cle => $valeur) {
-                $template = str_replace('{{ '.$cle.' }}', $valeur, $template);
-            }     
-            // ajout du header pour responsive, css ...
-            $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
-            // creation du mail
-            $message = Swift_Message::newInstance('Modification d\'un cours à IFIDE SupFormation')
-                ->setFrom(array('test.ifide@gmail.com' => 'IFIDE SupFormation'))
-                ->setTo(array($user->email => $user->firstName + '' + $user->lastName))
-                ->setBody($template, "text/html")
-                ->setContentType("text/html");
-
-            // envoie
-            try {
-                $results = $mailer->send($message);
-            }catch(Exception $e) {
-                $results = $e;
-            }
-            $app->response->setBody($results);
-        } else {
-            $app->response->headers->set('Content-Type', 'application/json');
-            $app->response->setBody('Non disponible');
-        }
-    } catch(Exception $e) {
-        $app->response->headers->set('Content-Type', 'text/html');
+			if ($coursExists == 0  && $indispoExists == 0){
+				saveCours($cours, $data['classes']);
+			} else {
+				$app->response->headers->set('Content-Type', 'application/json');
+				$app->response->setStatus(400);
+				$app->response->setBody(json_encode(array("message"=>"Cet enseignant est indisponible!")));
+			}
+		} else {
+			saveCours($cours, $data['classes']);
+		}
+	} catch(Exception $e) {
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
-    }
+	}
 });
+
+function saveCours($cours, $classes){
+	$cours->save();
+	$newClasses = [];
+	foreach($classes as $classe) {
+		array_push($newClasses, $classe['id']);
+	}
+	// Sauvegarde classe database
+	$cours->classes()->sync($newClasses);
+}
 
 $app->delete('/plan/cours/:id', $authenticateWithRole('planificateur'),  function ($id) use ($app) {
     try {
@@ -329,26 +131,33 @@ $app->delete('/plan/cours/:id', $authenticateWithRole('planificateur'),  functio
     }
 });
 
-//Cours d'une classe
-$app->get('/plan/classe/cours/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $cours = Cours::whereHas('cours', function($q) use($id) {
-        $q->where('id', $id);
-    })->get();
-    $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($cours));
+//Message d'assignation à tous les enseignants dans une fourchette de temps
+$app->get('/plan/cours/validation', $authenticateWithRole('planificateur'), function($id) use ($app, $mailer) {
+	try{
+		$start = $_GET['start'];
+		$end = $_GET['end'];
+		$cours = Cours::with('user')->whereRaw("start >= ? AND end <= ?",[$start, $end])->get();
+
+		foreach($cours as $cour) {
+			mailAssignationCours($cour);
+		}
+	}
+	catch(Exception $e){
+		$app->response->setStatus(400);
+	}
 });
 
 //Matières
 $app->get('/plan/matiere', $authenticateWithRole('planificateur'), function() use ($app) {
     $matiere = Matieres::with('user')->get();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($matiere));
+    $app->response->setBody($matiere->toJson());
 });
 
 $app->get('/plan/matiere/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $matiere = Matieres::where('id', $id)->firstOrFail();
+    $matiere = Matieres::where('id', $id)->first();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($matiere));
+    $app->response->setBody($matiere->toJson());
 });
 
 $app->post('/plan/matiere/', $authenticateWithRole('planificateur'), function() use ($app) {
@@ -360,11 +169,9 @@ $app->post('/plan/matiere/', $authenticateWithRole('planificateur'), function() 
         $matiere->nom = $data['nom'];
         $matiere->code = $data['code'];
         $matiere->save();
-
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
     }
 });
@@ -378,28 +185,51 @@ $app->put('/plan/matiere/:id', $authenticateWithRole('planificateur'), function(
         $matiere->nom = $data['nom'];
         $matiere->code = $data['code'];
         $matiere->save();
-
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
     }
+});
+
+$app->delete('/plan/matiere/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+	try{
+		$cours = Matieres::where('id', $id)->has('cours')->count();
+		if($cours == 0){
+			Matieres::find($id)->delete();
+		} else {
+			$app->response->headers->set('Content-Type', 'application/json');
+			$app->response->setBody(json_encode(array("message"=>"Vous ne pouvez pas supprimer une matiere avec des cours!")));
+			$app->response->setStatus(400);
+		}
+	} catch(Exception $e){
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
+        $app->response->setBody($e);
+	}
 });
 
 //Enseignants
 $app->get('/plan/enseignant', $authenticateWithRole('planificateur'), function() use ($app) {
     $users = Users::whereHas('roles', function($q) {
         $q->where('role', 'enseignant');
-    })->with('matieres', 'indisponibilite', 'cours')->get();
+    })
+	->where("enabled",1)
+	->with('matieres', 'indisponibilite', 'cours')
+	->select('id','firstName','lastName')
+	->get();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($users));
+    $app->response->setBody($users->toJson());
 });
 
 $app->get('/plan/enseignant/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $personne = Users::where('id', $id)->where('enabled', 1)->with('matieres')->select('id', 'firstName', 'lastName')->firstOrFail();
+    $personne = Users::where('id', $id)
+		->where('enabled', 1)
+		->with('matieres')
+		->select('id', 'firstName', 'lastName')
+		->first();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($personne));
+    $app->response->setBody($personne->toJson());
 });
 
 $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
@@ -407,72 +237,88 @@ $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), functi
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         $personne = Users::where('id', $id)->with('matieres')->firstOrFail();
-
         //sync matieres
         $newMatieres = [];
         foreach($data['matieres'] as $matiere){
             array_push($newMatieres, $matiere['id']);
         }        
         $personne->matieres()->sync($newMatieres);
-        
-        $app->response->setBody(true);
+
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
     }
 });
 
 //Classes
 
-$app->get('/plan/classes', $authenticateWithRole('planificateur'), function() use ($app) {
+$app->get('/plan/classe', $authenticateWithRole('planificateur'), function() use ($app) {
     $classes = Classes::with('user')->get();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($classes));
+    $app->response->setBody($classes->toJson());
 });
 
-$app->get('/plan/classes/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
-    $classe = Classes::where('id', $id)->with('user')->firstOrFail();
+$app->get('/plan/classe/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+    $classe = Classes::where("id",$id)->with('user')->first();
     $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setBody(json_encode($classe));
+    $app->response->setBody($classe->toJson());
 });
 
-$app->put('/plan/classes/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+$app->put('/plan/classe/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         $classe = Classes::where('id', $id)->firstOrFail();
 
         $classe->nom = $data['nom'];
-        $classe->dateDebut = $data['dateDebut'];
-        $classe->dateFin = $data['dateFin'];
-        //TO DO : enregistrer le prof principal
-        $classe->id_Users = $data['user']['id'];
+        $classe->start = $data['start'];
+        $classe->end = $data['end'];
+        $classe->id_Users = $data['id_Users'];
         $classe->save();
 
         $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
     }
 });
 
-$app->post('/plan/classes', $authenticateWithRole('planificateur'), function() use ($app) {
+$app->post('/plan/classe', $authenticateWithRole('planificateur'), function() use ($app) {
     try{
         $json = $app->request->getBody();
         $data = json_decode($json, true);
         
         $classe = new Classes;
         $classe->nom = $data['nom'];
-        $classe->dateDebut = $data['dateDebut'];
-        $classe->dateFin = $data['dateFin'];
-        $classe->id_Users = $data['user']['id'];
+        $classe->start = $data['start'];
+        $classe->end = $data['end'];
+        $classe->id_Users = $data['id_Users'];
         $classe->save();
-
-         
-        $app->response->setBody(true);
     } catch(Exception $e) {
         $app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setStatus(400);
         $app->response->setBody($e);
+    }
+});
+
+$app->delete('/plan/classe/:id', $authenticateWithRole('planificateur'), function($id) use ($app) {
+    try{
+        $nbCours = Classes::where("id",$id)->has('cours')->count();
+        if($nbCours == 0){
+             Classes::find($id)->delete();
+        }
+        else{
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setBody(json_encode(array("message"=>"Vous ne pouvez pas supprimer une classe avec des cours!")));
+            $app->response->setStatus(400);
+        }
+		
+    } catch(Exception $e) {
+      $app->response->headers->set('Content-Type', 'application/json');
+      $app->response->setStatus(400);
+      $app->response->setBody($e);
     }
 });
 ?>

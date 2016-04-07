@@ -105,7 +105,7 @@ $app->put('/admin/personnes/:id', $authenticateWithRole('administrateur'), funct
         $personne->firstName = $data['firstName'];
         $personne->lastName = $data['lastName'];
         $personne->email = $data['email'];
-        $personne->enabled = ($data['enabled']=="true" ? 1 : 0);
+        $personne->enabled = $data['enabled'];
         $personne->save();
         
         //sync roles

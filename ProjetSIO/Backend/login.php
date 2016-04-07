@@ -62,9 +62,13 @@ $app->post('/login', function () use ($app) {
             ///< The last lines are the errors cases
         } else {
             $app->response->setStatus(400);
+			$app->response->headers->set('Content-Type', 'application/json');
+			$app->response->setBody($e);
         }
     } catch(Exception $e) {
         $app->response->setStatus(400);
+		$app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody($e);
     }
 });
 
