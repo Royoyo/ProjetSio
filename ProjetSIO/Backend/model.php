@@ -70,7 +70,7 @@ class Classes extends Model {
     public $timestamps = false;
 
     public function user() {
-        return $this->belongsTo('Users', 'id_Users');
+        return $this->belongsTo('Users', 'id_Users')->select("firstName", "lastName", "id");
     }
     
     public function cours() {
@@ -109,7 +109,7 @@ class Matieres extends Model {
         return $this->belongsToMany('Users', 'users_matieres', 'id_Matieres', 'id_Users');
     }
     public function cours() {
-        return $this->hasMany('Cours');
+        return $this->hasMany('Cours', 'id_Matieres');
     }
 }
 
