@@ -48,14 +48,24 @@ webApp.factory("planCalendarService",
             }
         };
 
+        var sendAssignations = function(){
+            var view = uiCalendarConfig.calendars.planCalendar.fullCalendar("getView");
+            coursService.sendAssignations(view.intervalStart.format(), view.intervalEnd.format());
+        };
 
         /* Configuration du calendrier */
         var config = {
             calendar: {
                 height: 540,
                 editable: false,
+                customButtons: {
+                    sendMail: {
+                        text: "Envoyer mails d'assignations",
+                        click: sendAssignations
+                    }
+                },
                 header: {
-                    left: "title",
+                    left: "title, sendMail",
                     center: "month,agendaWeek",
                     right: "today prev,next"
                 },

@@ -20,6 +20,15 @@ webApp.factory("notifService", function (toastr) {
         toastr.success("Suppression terminée!");
     };
 
+    function sending() {
+        toastr.clear();
+        toastr.info("Envoi des assignations en cours...");
+    };
+
+    function sent() {
+        toastr.clear();
+        toastr.success("Assignations envoyées!");
+    };
     function error(message) {
         toastr.clear();
         toastr.error(message,"Erreur");
@@ -30,6 +39,8 @@ webApp.factory("notifService", function (toastr) {
         saved: saved,
         deleting: deleting,
         deleted: deleted,
-        error: error
+        error: error,
+        sending: sending,
+        sent: sent
     }
 });

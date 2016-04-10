@@ -44,7 +44,20 @@ webApp.factory("coursService",
 	                reject();
 	            });
 	        });
-	    }
+	    };
+        
+        function sendAssignations(start,end) {
+            return $q(function(resolve, reject){
+                notifService.sending();
+                Restangular.one("plan/cours").customGET("assignation", {start: start, end: end}).then(function(){
+                    notifService.sent();
+                    resolve();
+                },function(response){
+                    notifService.error(response.data.message);
+                    reject();
+                })
+            })
+        };
 
 	    return {
 
@@ -54,6 +67,8 @@ webApp.factory("coursService",
 
 	        save: save,
 
-	        remove: remove
+	        remove: remove,
+            
+            sendAssignations: sendAssignations
 	    }
 	})
