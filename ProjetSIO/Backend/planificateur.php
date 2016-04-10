@@ -10,6 +10,40 @@
  * \details     this file contains all the routes for "planificateur" role
  */
 
+$app->post('/theme', $authenticateWithRole('enseignant'), function() use ($app) {
+	try{
+        $user = Users::where('id', $_SESSION['id'])->first();
+        $json = $app->request->getBody();
+        $data = json_decode($json, true);
+        $user->theme = $data["theme"];
+        $user->save();
+        
+	}
+	catch(Exception $e){
+        $app->response->headers->set('Content-Type', 'text/html');
+        $app->response->setBody($e);
+		$app->response->setStatus(400);
+	}
+});
+//Message d'assignation à tous les enseignants dans une fourchette de temps
+$app->get('/plan/cours/assignation', $authenticateWithRole('planificateur'), function() use ($app) {
+	try{
+        $start = $_GET['start'];
+        $end = $_GET['end'];
+		$cours = Cours::with('user')->whereRaw("start >= ? AND end <= ?",[$start, $end])->get();
+
+		foreach($cours as $cour) {
+            if(!empty($cours->user)){
+                mailAssignationCours($cour);
+            }
+		}
+	}
+	catch(Exception $e){
+        $app->response->headers->set('Content-Type', 'text/html');
+        $app->response->setBody($e);
+		$app->response->setStatus(400);
+	}
+});
 
 //Cours
 $app->get('/plan/cours/', $authenticateWithRole('planificateur'),  function () use ($app) {
@@ -129,22 +163,6 @@ $app->delete('/plan/cours/:id', $authenticateWithRole('planificateur'),  functio
         $app->response->headers->set('Content-Type', 'text/html');
         $app->response->setBody($e);
     }
-});
-
-//Message d'assignation à tous les enseignants dans une fourchette de temps
-$app->get('/plan/cours/validation', $authenticateWithRole('planificateur'), function($id) use ($app, $mailer) {
-	try{
-		$start = $_GET['start'];
-		$end = $_GET['end'];
-		$cours = Cours::with('user')->whereRaw("start >= ? AND end <= ?",[$start, $end])->get();
-
-		foreach($cours as $cour) {
-			mailAssignationCours($cour);
-		}
-	}
-	catch(Exception $e){
-		$app->response->setStatus(400);
-	}
 });
 
 //Matières
