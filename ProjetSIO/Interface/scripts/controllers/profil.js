@@ -1,5 +1,5 @@
 webApp.controller("ProfilController",
-	function ($scope, profilService, Session) {
+	function ($scope, profilService, Session, themes) {
 
 	    $scope.emails = {};
 	    $scope.passwords = {};
@@ -33,4 +33,12 @@ webApp.controller("ProfilController",
 	            $scope.errorPassword = message;
 	        });
 	    }
+        
+        $scope.theme = "";
+        $scope.changeTheme = function(choice){
+          themes.select(choice);  
+        };
+        $scope.changeButton = function(choice){
+            themes.selectButton(choice);
+        }
 	});

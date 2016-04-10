@@ -54,7 +54,8 @@ $app->post('/login', function () use ($app) {
                     "token"=>$token,
                     "home"=>$user_home,
                     "id"=>$user_obj->id,
-					"email"=>$user_obj->email
+					"email"=>$user_obj->email,
+                    "theme"=>$user_obj->theme
                     );
                 $app->response->headers->set('Content-Type', 'application/json');
                 $app->response->setBody(json_encode($user_json));

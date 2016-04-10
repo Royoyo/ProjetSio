@@ -47,3 +47,11 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-4">
+            <div class="form-group">
+                <label>Choix du thème</label>
+                <select class="form-control" ng-model="theme" ng-options="theme for theme in themes" ng-change="changeTheme(theme)"></select>
+            </div>
+    </div>
+</div>

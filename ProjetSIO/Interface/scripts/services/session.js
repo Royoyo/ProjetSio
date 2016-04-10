@@ -10,6 +10,8 @@ webApp.service("Session", function($rootScope, USERS_ROLES) {
 		this.home = user.home;
 		this.id = user.id;
 		this.email = user.email;
+        this.theme = user.theme;
+        $rootScope.theme = user.theme; 
 	};
 	this.destroy = function() {
 		this.user = null;
@@ -20,6 +22,7 @@ webApp.service("Session", function($rootScope, USERS_ROLES) {
 		this.home = null;
 		this.id = null;
 	    this.email = null;
+        this.theme = null;
 	};
 	return this;
 });
