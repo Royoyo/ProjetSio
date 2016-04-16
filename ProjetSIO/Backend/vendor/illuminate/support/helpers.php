@@ -51,8 +51,6 @@ if (! function_exists('array_build')) {
      * @param  array  $array
      * @param  callable  $callback
      * @return array
-     *
-     * @deprecated since version 5.2.
      */
     function array_build($array, callable $callback)
     {
@@ -64,7 +62,7 @@ if (! function_exists('array_collapse')) {
     /**
      * Collapse an array of arrays into a single array.
      *
-     * @param  array  $array
+     * @param  array|\ArrayAccess  $array
      * @return array
      */
     function array_collapse($array)
@@ -114,18 +112,49 @@ if (! function_exists('array_except')) {
     }
 }
 
+if (! function_exists('array_fetch')) {
+    /**
+     * Fetch a flattened array of a nested array element.
+     *
+     * @param  array   $array
+     * @param  string  $key
+     * @return array
+     *
+     * @deprecated since version 5.1. Use array_pluck instead.
+     */
+    function array_fetch($array, $key)
+    {
+        return Arr::fetch($array, $key);
+    }
+}
+
 if (! function_exists('array_first')) {
     /**
      * Return the first element in an array passing a given truth test.
      *
      * @param  array  $array
-     * @param  callable|null  $callback
+     * @param  callable  $callback
      * @param  mixed  $default
      * @return mixed
      */
-    function array_first($array, callable $callback = null, $default = null)
+    function array_first($array, callable $callback, $default = null)
     {
         return Arr::first($array, $callback, $default);
+    }
+}
+
+if (! function_exists('array_last')) {
+    /**
+     * Return the last element in an array passing a given truth test.
+     *
+     * @param  array  $array
+     * @param  callable  $callback
+     * @param  mixed  $default
+     * @return mixed
+     */
+    function array_last($array, $callback, $default = null)
+    {
+        return Arr::last($array, $callback, $default);
     }
 }
 
@@ -134,12 +163,11 @@ if (! function_exists('array_flatten')) {
      * Flatten a multi-dimensional array into a single level.
      *
      * @param  array  $array
-     * @param  int  $depth
      * @return array
      */
-    function array_flatten($array, $depth = INF)
+    function array_flatten($array)
     {
-        return Arr::flatten($array, $depth);
+        return Arr::flatten($array);
     }
 }
 
@@ -161,7 +189,7 @@ if (! function_exists('array_get')) {
     /**
      * Get an item from an array using "dot" notation.
      *
-     * @param  \ArrayAccess|array  $array
+     * @param  array   $array
      * @param  string  $key
      * @param  mixed   $default
      * @return mixed
@@ -176,28 +204,13 @@ if (! function_exists('array_has')) {
     /**
      * Check if an item exists in an array using "dot" notation.
      *
-     * @param  \ArrayAccess|array  $array
+     * @param  array   $array
      * @param  string  $key
      * @return bool
      */
     function array_has($array, $key)
     {
         return Arr::has($array, $key);
-    }
-}
-
-if (! function_exists('array_last')) {
-    /**
-     * Return the last element in an array passing a given truth test.
-     *
-     * @param  array  $array
-     * @param  callable|null  $callback
-     * @param  mixed  $default
-     * @return mixed
-     */
-    function array_last($array, callable $callback = null, $default = null)
-    {
-        return Arr::last($array, $callback, $default);
     }
 }
 
@@ -220,28 +233,13 @@ if (! function_exists('array_pluck')) {
      * Pluck an array of values from an array.
      *
      * @param  array   $array
-     * @param  string|array  $value
-     * @param  string|array|null  $key
+     * @param  string  $value
+     * @param  string  $key
      * @return array
      */
     function array_pluck($array, $value, $key = null)
     {
         return Arr::pluck($array, $value, $key);
-    }
-}
-
-if (! function_exists('array_prepend')) {
-    /**
-     * Push an item onto the beginning of an array.
-     *
-     * @param  array  $array
-     * @param  mixed  $value
-     * @param  mixed  $key
-     * @return array
-     */
-    function array_prepend($array, $value, $key = null)
-    {
-        return Arr::prepend($array, $value, $key);
     }
 }
 
@@ -378,21 +376,6 @@ if (! function_exists('collect')) {
     }
 }
 
-if (! function_exists('data_fill')) {
-    /**
-     * Fill in data where it's missing.
-     *
-     * @param  mixed   $target
-     * @param  string|array  $key
-     * @param  mixed  $value
-     * @return mixed
-     */
-    function data_fill(&$target, $key, $value)
-    {
-        return data_set($target, $key, $value, false);
-    }
-}
-
 if (! function_exists('data_get')) {
     /**
      * Get an item from an array or object using "dot" notation.
@@ -410,79 +393,27 @@ if (! function_exists('data_get')) {
 
         $key = is_array($key) ? $key : explode('.', $key);
 
-        while (($segment = array_shift($key)) !== null) {
-            if ($segment === '*') {
-                if ($target instanceof Collection) {
-                    $target = $target->all();
-                } elseif (! is_array($target)) {
+        foreach ($key as $segment) {
+            if (is_array($target)) {
+                if (! array_key_exists($segment, $target)) {
                     return value($default);
                 }
 
-                $result = Arr::pluck($target, $key);
-
-                return in_array('*', $key) ? Arr::collapse($result) : $result;
-            }
-
-            if (Arr::accessible($target) && Arr::exists($target, $segment)) {
                 $target = $target[$segment];
-            } elseif (is_object($target) && isset($target->{$segment})) {
+            } elseif ($target instanceof ArrayAccess) {
+                if (! isset($target[$segment])) {
+                    return value($default);
+                }
+
+                $target = $target[$segment];
+            } elseif (is_object($target)) {
+                if (! isset($target->{$segment})) {
+                    return value($default);
+                }
+
                 $target = $target->{$segment};
             } else {
                 return value($default);
-            }
-        }
-
-        return $target;
-    }
-}
-
-if (! function_exists('data_set')) {
-    /**
-     * Set an item on an array or object using dot notation.
-     *
-     * @param  mixed  $target
-     * @param  string|array  $key
-     * @param  mixed  $value
-     * @param  bool  $overwrite
-     * @return mixed
-     */
-    function data_set(&$target, $key, $value, $overwrite = true)
-    {
-        $segments = is_array($key) ? $key : explode('.', $key);
-
-        if (($segment = array_shift($segments)) === '*') {
-            if (! Arr::accessible($target)) {
-                $target = [];
-            }
-
-            if ($segments) {
-                foreach ($target as &$inner) {
-                    data_set($inner, $segments, $value, $overwrite);
-                }
-            } elseif ($overwrite) {
-                foreach ($target as &$inner) {
-                    $inner = $value;
-                }
-            }
-        } elseif (Arr::accessible($target)) {
-            if ($segments) {
-                if (! Arr::exists($target, $segment)) {
-                    $target[$segment] = [];
-                }
-
-                data_set($target[$segment], $segments, $value, $overwrite);
-            } elseif ($overwrite || ! Arr::exists($target, $segment)) {
-                $target[$segment] = $value;
-            }
-        } elseif (is_object($target)) {
-            if ($segments) {
-                if (! isset($target->{$segment})) {
-                    $target->{$segment} = [];
-                }
-
-                data_set($target->{$segment}, $segments, $value, $overwrite);
-            } elseif ($overwrite || ! isset($target->{$segment})) {
-                $target->{$segment} = $value;
             }
         }
 
@@ -511,7 +442,7 @@ if (! function_exists('e')) {
     /**
      * Escape HTML entities in a string.
      *
-     * @param  \Illuminate\Contracts\Support\Htmlable|string  $value
+     * @param  \Illuminate\Support\Htmlable|string  $value
      * @return string
      */
     function e($value)
@@ -744,36 +675,6 @@ if (! function_exists('str_replace_array')) {
     }
 }
 
-if (! function_exists('str_replace_first')) {
-    /**
-     * Replace the first occurrence of a given value in the string.
-     *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $subject
-     * @return string
-     */
-    function str_replace_first($search, $replace, $subject)
-    {
-        return Str::replaceFirst($search, $replace, $subject);
-    }
-}
-
-if (! function_exists('str_replace_last')) {
-    /**
-     * Replace the last occurrence of a given value in the string.
-     *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $subject
-     * @return string
-     */
-    function str_replace_last($search, $replace, $subject)
-    {
-        return Str::replaceLast($search, $replace, $subject);
-    }
-}
-
 if (! function_exists('str_singular')) {
     /**
      * Get the singular form of an English word.
@@ -856,18 +757,6 @@ if (! function_exists('value')) {
     function value($value)
     {
         return $value instanceof Closure ? $value() : $value;
-    }
-}
-
-if (! function_exists('windows_os')) {
-    /**
-     * Determine whether the current envrionment is Windows based.
-     *
-     * @return bool
-     */
-    function windows_os()
-    {
-        return strtolower(substr(PHP_OS, 0, 3)) === 'win';
     }
 }
 

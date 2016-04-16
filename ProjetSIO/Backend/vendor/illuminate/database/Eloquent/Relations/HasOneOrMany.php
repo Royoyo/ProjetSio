@@ -55,37 +55,33 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
-     * Add the constraints for a relationship query.
+     * Add the constraints for a relationship count query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parent
-     * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationQuery(Builder $query, Builder $parent, $columns = ['*'])
+    public function getRelationCountQuery(Builder $query, Builder $parent)
     {
         if ($parent->getQuery()->from == $query->getQuery()->from) {
-            return $this->getRelationQueryForSelfRelation($query, $parent, $columns);
+            return $this->getRelationCountQueryForSelfRelation($query, $parent);
         }
 
-        return parent::getRelationQuery($query, $parent, $columns);
+        return parent::getRelationCountQuery($query, $parent);
     }
 
     /**
-     * Add the constraints for a relationship query on the same table.
+     * Add the constraints for a relationship count query on the same table.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parent
-     * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationQueryForSelfRelation(Builder $query, Builder $parent, $columns = ['*'])
+    public function getRelationCountQueryForSelfRelation(Builder $query, Builder $parent)
     {
-        $query->select($columns);
+        $query->select(new Expression('count(*)'));
 
         $query->from($query->getModel()->getTable().' as '.$hash = $this->getRelationCountHash());
-
-        $query->getModel()->setTable($hash);
 
         $key = $this->wrap($this->getQualifiedParentKeyName());
 

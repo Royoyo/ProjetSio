@@ -3,7 +3,7 @@
 namespace Illuminate\Support\Facades;
 
 /**
- * @see \Illuminate\Contracts\Bus\Dispatcher
+ * @see \Illuminate\Bus\Dispatcher
  */
 class Bus extends Facade
 {

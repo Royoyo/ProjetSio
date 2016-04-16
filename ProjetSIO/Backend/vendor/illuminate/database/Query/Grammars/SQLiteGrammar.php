@@ -74,18 +74,6 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
-     * Compile a "where date" clause.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function whereDate(Builder $query, $where)
-    {
-        return $this->dateBasedWhere('%Y-%m-%d', $query, $where);
-    }
-
-    /**
      * Compile a "where day" clause.
      *
      * @param  \Illuminate\Database\Query\Builder  $query

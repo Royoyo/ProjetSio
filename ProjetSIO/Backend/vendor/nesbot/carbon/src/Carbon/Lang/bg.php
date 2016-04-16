@@ -11,6 +11,7 @@
 /**
  * Translation messages.  See http://symfony.com/doc/current/book/translation.html
  * for possible formats.
+ *
  */
 /**
  * Extracted from https://github.com/jenssegers/laravel-date/blob/master/src/lang/bg/date.php

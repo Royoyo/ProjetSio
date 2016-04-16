@@ -2,7 +2,6 @@
 
 namespace Illuminate\Database;
 
-use PDO;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -261,26 +260,6 @@ class DatabaseManager implements ConnectionResolverInterface
     public function setDefaultConnection($name)
     {
         $this->app['config']['database.default'] = $name;
-    }
-
-    /**
-     * Get all of the support drivers.
-     *
-     * @return array
-     */
-    public function supportedDrivers()
-    {
-        return ['mysql', 'pgsql', 'sqlite', 'sqlsrv'];
-    }
-
-    /**
-     * Get all of the drivers that are actually available.
-     *
-     * @return array
-     */
-    public function availableDrivers()
-    {
-        return array_intersect($this->supportedDrivers(), str_replace('dblib', 'sqlsrv', PDO::getAvailableDrivers()));
     }
 
     /**

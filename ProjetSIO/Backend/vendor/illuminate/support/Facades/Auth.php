@@ -4,9 +4,7 @@ namespace Illuminate\Support\Facades;
 
 /**
  * @see \Illuminate\Auth\AuthManager
- * @see \Illuminate\Contracts\Auth\Factory
- * @see \Illuminate\Contracts\Auth\Guard
- * @see \Illuminate\Contracts\Auth\StatefulGuard
+ * @see \Illuminate\Auth\Guard
  */
 class Auth extends Facade
 {

@@ -2,9 +2,6 @@
 
 namespace Illuminate\Database\Query;
 
-use Closure;
-use InvalidArgumentException;
-
 class JoinClause
 {
     /**
@@ -51,34 +48,15 @@ class JoinClause
     /**
      * Add an "on" clause to the join.
      *
-     * On clauses can be chained, e.g.
-     *
-     *  $join->on('contacts.user_id', '=', 'users.id')
-     *       ->on('contacts.info_id', '=', 'info.id')
-     *
-     * will produce the following SQL:
-     *
-     * on `contacts`.`user_id` = `users`.`id`  and `contacts`.`info_id` = `info`.`id`
-     *
-     * @param  \Closure|string  $first
-     * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  string  $first
+     * @param  string  $operator
+     * @param  string  $second
      * @param  string  $boolean
      * @param  bool  $where
      * @return $this
-     *
-     * @throws \InvalidArgumentException
      */
-    public function on($first, $operator = null, $second = null, $boolean = 'and', $where = false)
+    public function on($first, $operator, $second, $boolean = 'and', $where = false)
     {
-        if ($first instanceof Closure) {
-            return $this->nest($first, $boolean);
-        }
-
-        if (func_num_args() < 3) {
-            throw new InvalidArgumentException('Not enough arguments for the on clause.');
-        }
-
         if ($where) {
             $this->bindings[] = $second;
         }
@@ -87,9 +65,7 @@ class JoinClause
             $second = count($second);
         }
 
-        $nested = false;
-
-        $this->clauses[] = compact('first', 'operator', 'second', 'boolean', 'where', 'nested');
+        $this->clauses[] = compact('first', 'operator', 'second', 'boolean', 'where');
 
         return $this;
     }
@@ -97,12 +73,12 @@ class JoinClause
     /**
      * Add an "or on" clause to the join.
      *
-     * @param  \Closure|string  $first
-     * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  string  $first
+     * @param  string  $operator
+     * @param  string  $second
      * @return \Illuminate\Database\Query\JoinClause
      */
-    public function orOn($first, $operator = null, $second = null)
+    public function orOn($first, $operator, $second)
     {
         return $this->on($first, $operator, $second, 'or');
     }
@@ -110,13 +86,13 @@ class JoinClause
     /**
      * Add an "on where" clause to the join.
      *
-     * @param  \Closure|string  $first
-     * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  string  $first
+     * @param  string  $operator
+     * @param  string  $second
      * @param  string  $boolean
      * @return \Illuminate\Database\Query\JoinClause
      */
-    public function where($first, $operator = null, $second = null, $boolean = 'and')
+    public function where($first, $operator, $second, $boolean = 'and')
     {
         return $this->on($first, $operator, $second, $boolean, true);
     }
@@ -124,12 +100,12 @@ class JoinClause
     /**
      * Add an "or on where" clause to the join.
      *
-     * @param  \Closure|string  $first
-     * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  string  $first
+     * @param  string  $operator
+     * @param  string  $second
      * @return \Illuminate\Database\Query\JoinClause
      */
-    public function orWhere($first, $operator = null, $second = null)
+    public function orWhere($first, $operator, $second)
     {
         return $this->on($first, $operator, $second, 'or', true);
     }
@@ -226,28 +202,5 @@ class JoinClause
     public function orWhereNotIn($column, array $values)
     {
         return $this->on($column, 'not in', $values, 'or', true);
-    }
-
-    /**
-     * Add a nested where statement to the query.
-     *
-     * @param  \Closure  $callback
-     * @param  string   $boolean
-     * @return \Illuminate\Database\Query\JoinClause
-     */
-    public function nest(Closure $callback, $boolean = 'and')
-    {
-        $join = new static($this->type, $this->table);
-
-        $callback($join);
-
-        if (count($join->clauses)) {
-            $nested = true;
-
-            $this->clauses[] = compact('nested', 'join', 'boolean');
-            $this->bindings = array_merge($this->bindings, $join->bindings);
-        }
-
-        return $this;
     }
 }

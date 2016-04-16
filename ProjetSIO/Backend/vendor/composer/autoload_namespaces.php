@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Slim' => array($vendorDir . '/slim/slim'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
+    'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
 );

@@ -11,6 +11,7 @@
 /**
  * Translation messages.  See http://symfony.com/doc/current/book/translation.html
  * for possible formats.
+ *
  */
 return array(
     'year'      => '0 gadiem|:count gada|:count gadiem',

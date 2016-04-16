@@ -12,6 +12,7 @@
 /**
  * Translation messages.  See http://symfony.com/doc/current/book/translation.html
  * for possible formats.
+ *
  */
 return array(
     'year'      => '1 år|:count år',

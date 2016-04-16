@@ -10,8 +10,9 @@
 /**
  * Translation messages.  See http://symfony.com/doc/current/book/translation.html
  * for possible formats.
+ *
  */
-/**
+ /**
  * Extracted from https://github.com/The-Hasanov/laravel-date/blob/1006f37c431178b5c7219d02c93579c9690ae546/src/Lang/az.php
  */
 return array(

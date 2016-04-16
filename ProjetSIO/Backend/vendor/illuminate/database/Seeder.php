@@ -5,7 +5,7 @@ namespace Illuminate\Database;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 
-abstract class Seeder
+class Seeder
 {
     /**
      * The container instance.
@@ -26,7 +26,10 @@ abstract class Seeder
      *
      * @return void
      */
-    abstract public function run();
+    public function run()
+    {
+        //
+    }
 
     /**
      * Seed the given connection from the given path.

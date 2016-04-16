@@ -54,9 +54,7 @@ class SQLiteGrammar extends Grammar
     {
         $columns = implode(', ', $this->getColumns($blueprint));
 
-        $sql = $blueprint->temporary ? 'create temporary' : 'create';
-
-        $sql .= ' table '.$this->wrapTable($blueprint)." ($columns";
+        $sql = 'create table '.$this->wrapTable($blueprint)." ($columns";
 
         // SQLite forces primary keys to be added when the table is initially created
         // so we will need to check for a primary key commands and add the columns
@@ -170,9 +168,7 @@ class SQLiteGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        $index = $this->wrap($command->index);
-
-        return "create unique index {$index} on {$table} ({$columns})";
+        return "create unique index {$command->index} on {$table} ({$columns})";
     }
 
     /**
@@ -188,9 +184,7 @@ class SQLiteGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        $index = $this->wrap($command->index);
-
-        return "create index {$index} on {$table} ({$columns})";
+        return "create index {$command->index} on {$table} ({$columns})";
     }
 
     /**
@@ -261,9 +255,7 @@ class SQLiteGrammar extends Grammar
      */
     public function compileDropUnique(Blueprint $blueprint, Fluent $command)
     {
-        $index = $this->wrap($command->index);
-
-        return "drop index {$index}";
+        return "drop index {$command->index}";
     }
 
     /**
@@ -275,9 +267,7 @@ class SQLiteGrammar extends Grammar
      */
     public function compileDropIndex(Blueprint $blueprint, Fluent $command)
     {
-        $index = $this->wrap($command->index);
-
-        return "drop index {$index}";
+        return "drop index {$command->index}";
     }
 
     /**
@@ -445,7 +435,7 @@ class SQLiteGrammar extends Grammar
      */
     protected function typeBoolean(Fluent $column)
     {
-        return 'tinyint(1)';
+        return 'tinyint';
     }
 
     /**
@@ -547,10 +537,6 @@ class SQLiteGrammar extends Grammar
      */
     protected function typeTimestamp(Fluent $column)
     {
-        if ($column->useCurrent) {
-            return 'datetime default CURRENT_TIMESTAMP';
-        }
-
         return 'datetime';
     }
 
@@ -562,10 +548,6 @@ class SQLiteGrammar extends Grammar
      */
     protected function typeTimestampTz(Fluent $column)
     {
-        if ($column->useCurrent) {
-            return 'datetime default CURRENT_TIMESTAMP';
-        }
-
         return 'datetime';
     }
 
@@ -578,39 +560,6 @@ class SQLiteGrammar extends Grammar
     protected function typeBinary(Fluent $column)
     {
         return 'blob';
-    }
-
-    /**
-     * Create the column definition for a uuid type.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeUuid(Fluent $column)
-    {
-        return 'varchar';
-    }
-
-    /**
-     * Create the column definition for an IP address type.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeIpAddress(Fluent $column)
-    {
-        return 'varchar';
-    }
-
-    /**
-     * Create the column definition for a MAC address type.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeMacAddress(Fluent $column)
-    {
-        return 'varchar';
     }
 
     /**

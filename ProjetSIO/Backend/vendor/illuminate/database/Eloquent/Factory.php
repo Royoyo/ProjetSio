@@ -44,7 +44,15 @@ class Factory implements ArrayAccess
     {
         $pathToFactories = $pathToFactories ?: database_path('factories');
 
-        return (new static($faker))->load($pathToFactories);
+        $factory = new static($faker);
+
+        if (is_dir($pathToFactories)) {
+            foreach (Finder::create()->files()->in($pathToFactories) as $file) {
+                require $file->getRealPath();
+            }
+        }
+
+        return $factory;
     }
 
     /**
@@ -96,25 +104,6 @@ class Factory implements ArrayAccess
     public function createAs($class, $name, array $attributes = [])
     {
         return $this->of($class, $name)->create($attributes);
-    }
-
-    /**
-     * Load factories from path.
-     *
-     * @param  string  $path
-     * @return $this
-     */
-    public function load($path)
-    {
-        $factory = $this;
-
-        if (is_dir($path)) {
-            foreach (Finder::create()->files()->in($path) as $file) {
-                require $file->getRealPath();
-            }
-        }
-
-        return $factory;
     }
 
     /**

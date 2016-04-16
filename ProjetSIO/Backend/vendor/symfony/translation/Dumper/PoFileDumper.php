@@ -23,7 +23,7 @@ class PoFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    public function format(MessageCatalogue $messages, $domain = 'messages')
     {
         $output = 'msgid ""'."\n";
         $output .= 'msgstr ""'."\n";

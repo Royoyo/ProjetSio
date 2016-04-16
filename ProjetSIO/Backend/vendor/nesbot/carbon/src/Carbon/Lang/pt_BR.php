@@ -10,6 +10,7 @@
 /**
  * Translation messages.  See http://symfony.com/doc/current/book/translation.html
  * for possible formats.
+ *
  */
 return array(
     'year'      => '1 ano|:count anos',
@@ -21,6 +22,6 @@ return array(
     'second'    => '1 segundo|:count segundos',
     'ago'       => 'há :time',
     'from_now'  => 'dentro de :time',
-    'after'     => 'após :time',
-    'before'    => ':time atrás',
+    'after'     => ':time depois',
+    'before'    => ':time antes',
 );

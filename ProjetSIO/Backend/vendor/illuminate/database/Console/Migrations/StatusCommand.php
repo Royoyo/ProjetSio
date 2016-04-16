@@ -3,7 +3,6 @@
 namespace Illuminate\Database\Console\Migrations;
 
 use Illuminate\Database\Migrations\Migrator;
-use Symfony\Component\Console\Input\InputOption;
 
 class StatusCommand extends BaseCommand
 {
@@ -52,19 +51,11 @@ class StatusCommand extends BaseCommand
             return $this->error('No migrations found.');
         }
 
-        $this->migrator->setConnection($this->input->getOption('database'));
-
-        if (! is_null($path = $this->input->getOption('path'))) {
-            $path = $this->laravel->basePath().'/'.$path;
-        } else {
-            $path = $this->getMigrationPath();
-        }
-
         $ran = $this->migrator->getRepository()->getRan();
 
         $migrations = [];
 
-        foreach ($this->getAllMigrationFiles($path) as $migration) {
+        foreach ($this->getAllMigrationFiles() as $migration) {
             $migrations[] = in_array($migration, $ran) ? ['<info>Y</info>', $migration] : ['<fg=red>N</fg=red>', $migration];
         }
 
@@ -78,25 +69,10 @@ class StatusCommand extends BaseCommand
     /**
      * Get all of the migration files.
      *
-     * @param  string  $path
      * @return array
      */
-    protected function getAllMigrationFiles($path)
+    protected function getAllMigrationFiles()
     {
-        return $this->migrator->getMigrationFiles($path);
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
-
-            ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to use.'],
-        ];
+        return $this->migrator->getMigrationFiles($this->getMigrationPath());
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Illuminate\Database\Query\Grammars;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 
 class PostgresGrammar extends Grammar
@@ -32,71 +31,6 @@ class PostgresGrammar extends Grammar
         }
 
         return $value ? 'for update' : 'for share';
-    }
-
-    /**
-     * Compile a "where date" clause.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function whereDate(Builder $query, $where)
-    {
-        $value = $this->parameter($where['value']);
-
-        return $this->wrap($where['column']).'::date '.$where['operator'].' '.$value;
-    }
-
-    /**
-     * Compile a "where day" clause.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function whereDay(Builder $query, $where)
-    {
-        return $this->dateBasedWhere('day', $query, $where);
-    }
-
-    /**
-     * Compile a "where month" clause.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function whereMonth(Builder $query, $where)
-    {
-        return $this->dateBasedWhere('month', $query, $where);
-    }
-
-    /**
-     * Compile a "where year" clause.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function whereYear(Builder $query, $where)
-    {
-        return $this->dateBasedWhere('year', $query, $where);
-    }
-
-    /**
-     * Compile a date based where clause.
-     *
-     * @param  string  $type
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $where
-     * @return string
-     */
-    protected function dateBasedWhere($type, Builder $query, $where)
-    {
-        $value = $this->parameter($where['value']);
-
-        return 'extract('.$type.' from '.$this->wrap($where['column']).') '.$where['operator'].' '.$value;
     }
 
     /**
@@ -146,7 +80,7 @@ class PostgresGrammar extends Grammar
      * Compile the "from" clause for an update with a join.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return string|null
+     * @return string
      */
     protected function compileUpdateFrom(Builder $query)
     {
@@ -242,60 +176,5 @@ class PostgresGrammar extends Grammar
     public function compileTruncate(Builder $query)
     {
         return ['truncate '.$this->wrapTable($query->from).' restart identity' => []];
-    }
-
-    /**
-     * Wrap a single string in keyword identifiers.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    protected function wrapValue($value)
-    {
-        if ($value === '*') {
-            return $value;
-        }
-
-        if (Str::contains($value, '->')) {
-            return $this->wrapJsonSelector($value);
-        }
-
-        return '"'.str_replace('"', '""', $value).'"';
-    }
-
-    /**
-     * Wrap the given JSON selector.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    protected function wrapJsonSelector($value)
-    {
-        $path = explode('->', $value);
-
-        $field = array_shift($path);
-
-        $wrappedPath = $this->wrapJsonPathAttributes($path);
-
-        $attribute = array_pop($wrappedPath);
-
-        if (! empty($wrappedPath)) {
-            return $field.'->'.implode('->', $wrappedPath).'->>'.$attribute;
-        }
-
-        return $field.'->>'.$attribute;
-    }
-
-    /**
-     * Wrap the attributes of the give JSON path.
-     *
-     * @param  array  $path
-     * @return array
-     */
-    protected function wrapJsonPathAttributes($path)
-    {
-        return array_map(function ($attribute) {
-            return "'$attribute'";
-        }, $path);
     }
 }

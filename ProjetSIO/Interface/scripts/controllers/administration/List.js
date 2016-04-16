@@ -1,15 +1,11 @@
-﻿//Ce controller utilise le service AdminController pour récupérer une liste des utilisateurs du serveur
-webApp.controller("AdminController",
-	function($scope, $uibModal, Restangular, adminService){
-        
+﻿//Ce controller utilise le service AdminList pour récupérer une liste des utilisateurs du serveur
+webApp.controller("AdminList",
+	function ($scope, $filter, adminPersonnes, $uibModal, Restangular) {
+
 		$scope.personnes = [];
 
-	    adminService.getList().then(function(data) {
-	        $scope.personnes = data;
-	        $scope.personnesView = [].concat($scope.personnes);
-	    });
-		
 		updateTable();
+
 		$scope.openDetails = function (personne) {
 			//Il faut mettre l'idList dans $scope pour qu'il soit accessible dans resolve:
 			$scope.personne = personne;
@@ -26,45 +22,38 @@ webApp.controller("AdminController",
 				}
 			});
 
-			modalDetails.result.then(function (personneP) {
-                if (personneP.toDelete) {
-                    $scope.remove(personneP);
-                } else {
-                    adminService.save(personneP).then(function () {
-                        updateTable();
-                    });
-                }
+			modalDetails.result.then(function () {
+				updateTable();
 			});
 		};
 
-		$scope.remove = function (personne) {
-		    adminService.remove(personne).then(function() {
-		        updateTable();
-		    });
-		};
-
 		function updateTable() {
-		    adminService.updateList().then(function () {
-		        adminService.getList().then(function(personnes) {
-					angular.forEach(personnes, function (element) {
-						if (element.enabled == 1) {
-							element.enabled = true;
-						}
-						else {
-							element.enabled = false;
-						}
-					})
-					Restangular.copy(personnes, $scope.personnes);
-					$scope.personnesView = [].concat($scope.personnes);
-		        });	        
-		    });
+			adminPersonnes.getPersonnes().then(function (personnes) {
+				angular.forEach(personnes, function (element) {
+					if (element.enabled == 1) {
+						element.enabled = true;
+					}
+					else {
+						element.enabled = false;
+					}
+				})
+				Restangular.copy(personnes, $scope.personnes);
+				$scope.personnesView = [].concat($scope.personnes);
+			});
 		}
 
 		$scope.changeState = function (personne) {
-			adminService.getOne(personne.id).then(function (per) {
+
+			adminPersonnes.getPersonne(personne.id).then(function (per) {
 				per.enabled = personne.enabled ? "false" : "true";
 				per.save();
 				updateTable();
-			})
-		};
+			})			
+			// lignes qui suivent à garder au chaud
+			//personne.remove().then(function(){
+			//var index = $scope.personnes.indexOf(personne);
+			//if (index > -1)
+			//  $scope.personnes.splice(index, 1);				
+			//})
+		}
 	});
