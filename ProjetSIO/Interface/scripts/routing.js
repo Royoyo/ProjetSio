@@ -2,7 +2,7 @@
 webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES) {
 
 //Mise en place de l'url de base pour restangular
-    RestangularProvider.setBaseUrl("http://guilaumehaag.ddns.net/SIO/PPEBackend");
+    RestangularProvider.setBaseUrl("http://localhost/ProjetSIO/ProjetSIO/Backend");
 
 
 //Cette ligne force toute les routes autres que celles déclarées vers "/"
@@ -52,7 +52,7 @@ webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, 
         .state("administration", {
             url: "/administration",
             templateUrl: "views/administration/administration.html",
-            controller: "AdminList",
+            controller: "AdminController",
             data: {
                 authorizedRoles: [USERS_ROLES.administrateur]
             }

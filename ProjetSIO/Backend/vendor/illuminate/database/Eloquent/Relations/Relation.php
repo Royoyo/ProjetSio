@@ -3,6 +3,7 @@
 namespace Illuminate\Database\Eloquent\Relations;
 
 use Closure;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
@@ -144,7 +145,20 @@ abstract class Relation
      */
     public function getRelationCountQuery(Builder $query, Builder $parent)
     {
-        $query->select(new Expression('count(*)'));
+        return $this->getRelationQuery($query, $parent, new Expression('count(*)'));
+    }
+
+    /**
+     * Add the constraints for a relationship query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $parent
+     * @param  array|mixed $columns
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getRelationQuery(Builder $query, Builder $parent, $columns = ['*'])
+    {
+        $query->select($columns);
 
         $key = $this->wrap($this->getQualifiedParentKeyName());
 
@@ -166,9 +180,11 @@ abstract class Relation
         // When resetting the relation where clause, we want to shift the first element
         // off of the bindings, leaving only the constraints that the developers put
         // as "extra" on the relationships, and not original relation constraints.
-        $results = call_user_func($callback);
-
-        static::$constraints = $previous;
+        try {
+            $results = call_user_func($callback);
+        } finally {
+            static::$constraints = $previous;
+        }
 
         return $results;
     }
@@ -280,7 +296,7 @@ abstract class Relation
     }
 
     /**
-     * Set the morph map for polymorphic relations.
+     * Set or get the morph map for polymorphic relations.
      *
      * @param  array|null  $map
      * @param  bool  $merge
@@ -288,11 +304,32 @@ abstract class Relation
      */
     public static function morphMap(array $map = null, $merge = true)
     {
+        $map = static::buildMorphMapFromModels($map);
+
         if (is_array($map)) {
             static::$morphMap = $merge ? array_merge(static::$morphMap, $map) : $map;
         }
 
         return static::$morphMap;
+    }
+
+    /**
+     * Builds a table-keyed array from model class names.
+     *
+     * @param  string[]|null  $models
+     * @return array|null
+     */
+    protected static function buildMorphMapFromModels(array $models = null)
+    {
+        if (is_null($models) || Arr::isAssoc($models)) {
+            return $models;
+        }
+
+        $tables = array_map(function ($model) {
+            return (new $model)->getTable();
+        }, $models);
+
+        return array_combine($tables, $models);
     }
 
     /**
@@ -311,5 +348,15 @@ abstract class Relation
         }
 
         return $result;
+    }
+
+    /**
+     * Force a clone of the underlying query builder when cloning.
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        $this->query = clone $this->query;
     }
 }

@@ -87,7 +87,9 @@ class SqlServerGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} add constraint {$command->index} primary key ({$columns})";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} add constraint {$index} primary key ({$columns})";
     }
 
     /**
@@ -103,7 +105,9 @@ class SqlServerGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        return "create unique index {$command->index} on {$table} ({$columns})";
+        $index = $this->wrap($command->index);
+
+        return "create unique index {$index} on {$table} ({$columns})";
     }
 
     /**
@@ -119,7 +123,9 @@ class SqlServerGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        return "create index {$command->index} on {$table} ({$columns})";
+        $index = $this->wrap($command->index);
+
+        return "create index {$index} on {$table} ({$columns})";
     }
 
     /**
@@ -173,7 +179,9 @@ class SqlServerGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} drop constraint {$command->index}";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} drop constraint {$index}";
     }
 
     /**
@@ -187,7 +195,9 @@ class SqlServerGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "drop index {$command->index} on {$table}";
+        $index = $this->wrap($command->index);
+
+        return "drop index {$index} on {$table}";
     }
 
     /**
@@ -201,7 +211,9 @@ class SqlServerGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "drop index {$command->index} on {$table}";
+        $index = $this->wrap($command->index);
+
+        return "drop index {$index} on {$table}";
     }
 
     /**
@@ -215,7 +227,9 @@ class SqlServerGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} drop constraint {$command->index}";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} drop constraint {$index}";
     }
 
     /**
@@ -482,6 +496,10 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeTimestamp(Fluent $column)
     {
+        if ($column->useCurrent) {
+            return 'datetime default CURRENT_TIMESTAMP';
+        }
+
         return 'datetime';
     }
 
@@ -495,6 +513,10 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeTimestampTz(Fluent $column)
     {
+        if ($column->useCurrent) {
+            return 'datetimeoffset(0) default CURRENT_TIMESTAMP';
+        }
+
         return 'datetimeoffset(0)';
     }
 
@@ -507,6 +529,39 @@ class SqlServerGrammar extends Grammar
     protected function typeBinary(Fluent $column)
     {
         return 'varbinary(max)';
+    }
+
+    /**
+     * Create the column definition for a uuid type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeUuid(Fluent $column)
+    {
+        return 'uniqueidentifier';
+    }
+
+    /**
+     * Create the column definition for an IP address type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeIpAddress(Fluent $column)
+    {
+        return 'nvarchar(45)';
+    }
+
+    /**
+     * Create the column definition for a MAC address type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeMacAddress(Fluent $column)
+    {
+        return 'nvarchar(17)';
     }
 
     /**

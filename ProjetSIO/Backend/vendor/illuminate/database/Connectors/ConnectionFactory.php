@@ -57,7 +57,9 @@ class ConnectionFactory
      */
     protected function createSingleConnection(array $config)
     {
-        $pdo = $this->createConnector($config)->connect($config);
+        $pdo = function () use ($config) {
+            return $this->createConnector($config)->connect($config);
+        };
 
         return $this->createConnection($config['driver'], $pdo, $config['database'], $config['prefix'], $config);
     }
@@ -97,6 +99,12 @@ class ConnectionFactory
     protected function getReadConfig(array $config)
     {
         $readConfig = $this->getReadWriteConfig($config, 'read');
+
+        if (isset($readConfig['host']) && is_array($readConfig['host'])) {
+            $readConfig['host'] = count($readConfig['host']) > 1
+                ? $readConfig['host'][array_rand($readConfig['host'])]
+                : $readConfig['host'][0];
+        }
 
         return $this->mergeReadWriteConfig($config, $readConfig);
     }
@@ -139,7 +147,7 @@ class ConnectionFactory
      */
     protected function mergeReadWriteConfig(array $config, array $merge)
     {
-        return array_except(array_merge($config, $merge), ['read', 'write']);
+        return Arr::except(array_merge($config, $merge), ['read', 'write']);
     }
 
     /**
@@ -193,7 +201,7 @@ class ConnectionFactory
      * Create a new connection instance.
      *
      * @param  string   $driver
-     * @param  \PDO     $connection
+     * @param  \PDO|\Closure     $connection
      * @param  string   $database
      * @param  string   $prefix
      * @param  array    $config
@@ -201,7 +209,7 @@ class ConnectionFactory
      *
      * @throws \InvalidArgumentException
      */
-    protected function createConnection($driver, PDO $connection, $database, $prefix = '', array $config = [])
+    protected function createConnection($driver, $connection, $database, $prefix = '', array $config = [])
     {
         if ($this->container->bound($key = "db.connection.{$driver}")) {
             return $this->container->make($key, [$connection, $database, $prefix, $config]);

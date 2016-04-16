@@ -82,6 +82,8 @@ abstract class Grammar extends BaseGrammar
     {
         $table = $this->wrapTable($blueprint);
 
+        $index = $this->wrap($command->index);
+
         $on = $this->wrapTable($command->on);
 
         // We need to prepare several of the elements of the foreign key definition
@@ -91,7 +93,7 @@ abstract class Grammar extends BaseGrammar
 
         $onColumns = $this->columnize((array) $command->references);
 
-        $sql = "alter table {$table} add constraint {$command->index} ";
+        $sql = "alter table {$table} add constraint {$index} ";
 
         $sql .= "foreign key ({$columns}) references {$on} ({$onColumns})";
 
@@ -277,6 +279,8 @@ abstract class Grammar extends BaseGrammar
      * @param  \Illuminate\Support\Fluent  $command
      * @param  \Illuminate\Database\Connection $connection
      * @return array
+     *
+     * @throws \RuntimeException
      */
     public function compileChange(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
@@ -393,6 +397,9 @@ abstract class Grammar extends BaseGrammar
             case 'longtext':
                 $type = 'text';
                 break;
+            case 'binary':
+                $type = 'blob';
+                break;
         }
 
         return Type::getType($type);
@@ -422,7 +429,7 @@ abstract class Grammar extends BaseGrammar
      * Get the matching Doctrine option for a given Fluent attribute name.
      *
      * @param  string  $attribute
-     * @return string
+     * @return string|null
      */
     protected function mapFluentOptionToDoctrine($attribute)
     {
