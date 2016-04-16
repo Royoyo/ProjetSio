@@ -1,14 +1,12 @@
-﻿//Ce controller utilise le service AdminList ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
+﻿//Ce controller utilise le service AdminController ainsi que le service pré-installé $filter ET le paramètre passé par l'URL
 // pour récupérer un utilisateur en particulier
 webApp.controller("AdminDetails",
-	function ($scope, adminPersonnes, Restangular, personne, $uibModalInstance, serviceRoles) {	
+	function($scope, $timeout, $uibModalInstance,  adminService, personne, serviceRoles, Restangular){
 		
-		//Initialisation form
-		
-		$scope.personne = {};
+	    $scope.personne = {};
 		$scope.roles = {};
-		$scope.creation = false;
 		$scope.formRoles = {};
+	    $scope.creation = personne ? false : true;
 
 		serviceRoles.getRoles().then(function (roles) {
 			$scope.roles = roles;
@@ -19,7 +17,7 @@ webApp.controller("AdminDetails",
             listeners();
 		}
 		else {
-			adminPersonnes.getPersonne(personne.id).then(function (personne) {
+			adminService.getOne(personne.id).then(function (personne) {
 				Restangular.copy(personne, $scope.personne);
 
 				angular.forEach(personne.roles, function (role) {
@@ -62,25 +60,39 @@ webApp.controller("AdminDetails",
 				}
 			}
 		};
-		
+		// Fonctions
+		function getRolesById(id) {
+			for (var i = 0; i < $scope.roles.length; i++) {
+				if ($scope.roles[i].id == id) {
+					return $scope.roles[i];
+				}
+			}
+		};
+
         function changeLogin(){
             $scope.personne.login = $scope.personne.firstName.substring(0,1).toLowerCase() + $scope.personne.lastName.toLowerCase();
         }
-		
-		//Traitement différent pour la création car l'objet personne n'est pas objet Restangular dans ce cas et donc n'a pas d'implémentation de la méthode save()
-		$scope.save = function (personne) {
-			if ($scope.creation === true) {
-				adminPersonnes.postPersonne(personne);
-				$uibModalInstance.close();
-			}
-			else {
-				personne.save();
-				$uibModalInstance.close();
-			}
-		};
 
+        if(!$scope.creation){
+            adminService.getOne(personne.id).then(function (data) {
+                $scope.personne = data;
+            });
+        }
+        else {
+            $scope.personne = adminService.getNew();
+        }
+        
+		$scope.save = function () {
+		    $scope.personne.toDelete = false;
+            $uibModalInstance.close($scope.personne);
+		};
+        
+        $scope.remove = function () {
+            $scope.personne.toDelete = true;
+            $uibModalInstance.close($scope.personne);
+		};
+        
 		$scope.cancel = function () {
 			$uibModalInstance.dismiss("Annuler");
-		};
-
+		};        
 	});

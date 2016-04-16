@@ -10,17 +10,8 @@
  * \details     this file contains all the models built with slim framework
  */
 
-// Connexion à la BDD
-$settings = array(
-    'driver' => 'mysql',
-    'host' => '127.0.0.1',
-    'database' => '',
-    'username' => 'root',
-    'password' => '',
-    'collation' => 'utf8_general_ci',
-    'charset' => 'utf8',
-    'prefix' => ''
-);
+
+require_once 'database.php';
 
 $container = new \Illuminate\Container\Container;
 $connFactory = new \Illuminate\Database\Connectors\ConnectionFactory($container);

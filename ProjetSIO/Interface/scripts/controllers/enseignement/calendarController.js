@@ -49,7 +49,7 @@
 		};
 		
 		$scope.events = {
-			url: "http://guilaumehaag.ddns.net/SIO/PPEBackend/plan/cours",
+			url: "http://localhost/ProjetSIO/ProjetSIO/Backend/plan/cours",
             color: "green",
             className: "coursEvent",
             eventDataTransform: function (rawEventData) {
