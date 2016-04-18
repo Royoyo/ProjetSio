@@ -2,7 +2,7 @@
 // pour récupérer un utilisateur en particulier
 webApp.controller("AdminDetails",
 	function($scope, $timeout, $uibModalInstance,  adminService, personne, serviceRoles, Restangular){
-		
+
 	    $scope.personne = {};
 		$scope.roles = {};
 		$scope.formRoles = {};
@@ -26,9 +26,8 @@ webApp.controller("AdminDetails",
 			});
             listeners();
 		}
-			
+
 		// Fonctions
-        
         function listeners() {
             $scope.$watch(function () {
                 return $scope.personne.firstName;   
@@ -36,14 +35,14 @@ webApp.controller("AdminDetails",
                 if ($scope.personne.firstName != undefined && $scope.personne.lastName != undefined)
                     changeLogin();
             }, true);
-            
+
             $scope.$watch(function () {
                 return $scope.personne.lastName;   
             },function(){
                 if ($scope.personne.firstName != undefined && $scope.personne.lastName != undefined)
                     changeLogin();
             }, true);
-            
+
             $scope.$watch(function () {
                 return $scope.formRoles;
             }, function (value) {
@@ -81,18 +80,18 @@ webApp.controller("AdminDetails",
         else {
             $scope.personne = adminService.getNew();
         }
-        
+
 		$scope.save = function () {
 		    $scope.personne.toDelete = false;
             $uibModalInstance.close($scope.personne);
 		};
-        
+
         $scope.remove = function () {
             $scope.personne.toDelete = true;
             $uibModalInstance.close($scope.personne);
 		};
-        
+
 		$scope.cancel = function () {
 			$uibModalInstance.dismiss("Annuler");
-		};        
+		};
 	});

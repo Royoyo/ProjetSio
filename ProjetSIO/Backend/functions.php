@@ -42,7 +42,7 @@ $app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
 /**
 * 				\b function
 * \brief 		Get the role the user must have and save it in #$authenticateWithRole variable
-* \param[in] 	$role_required is a string wich is the title of the role the user must have
+* \param[in] 	$role_required is a string wich is the title of the role the user must havege
 * \return 		a boolean with the state \a  True or an error code 
 */
 require_once 'vendor/swiftmailer/swiftmailer/lib/swift_required.php';
@@ -115,4 +115,23 @@ $authenticateWithRole = function ($role_required){
 
 
 
+function getDateList($week, $year) {
+    $date = array();
+    for($day=1; $day<=5; $day++)
+    {
+        array_push($date, date('Y-m-d', strtotime($year . "W" . $week . $day)));
+    }
+    return $date;
+}
+
+
+function getStartAndEndDate($week, $year) {
+    $time = strtotime("1 January $year", time());
+    $day = date('w', $time);
+    $time += ((7*$week)+1-$day)*24*3600;
+    $return[0] = date('Y-n-j', $time);
+    $time += 6*24*3600;
+    $return[1] = date('Y-n-j', $time);
+    return $return;
+}
 ?>

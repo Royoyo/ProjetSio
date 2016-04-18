@@ -22,7 +22,6 @@ webApp.factory("adminService",
                 if (list) {
                     resolve(list);
                 } else {
-                    console.log(list);
                     updateList().then(function() {
                         resolve(list);
                     });

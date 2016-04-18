@@ -23,6 +23,7 @@ require_once 'planificateur.php';
 require_once 'enseignant.php';
 require_once 'admin.php';
 require_once 'profil.php';
+use Dompdf\Dompdf;
 
 $app->get('/roles', $authenticateWithRole('administrateur'), function () use ($app) {
 

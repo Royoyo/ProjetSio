@@ -1,8 +1,8 @@
-﻿//Ici on utilise la méthode config pour déclarer le routage de l'application
+//Ici on utilise la méthode config pour déclarer le routage de l'application
 webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES) {
 
 //Mise en place de l'url de base pour restangular
-    RestangularProvider.setBaseUrl("http://localhost/ProjetSIO/ProjetSIO/Backend");
+RestangularProvider.setBaseUrl("http://localhost/ProjetSIO/ProjetSIO/Backend");
 
 
 //Cette ligne force toute les routes autres que celles déclarées vers "/"
@@ -71,6 +71,14 @@ webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, 
             url: "/classes",
             templateUrl: "views/planification/listeClasses.html",
             controller: "PlanClassesController",
+            data: {
+                authorizedRoles: [USERS_ROLES.planificateur]
+            }
+        })
+        .state("planification.annee", {
+            url: "/annee",
+            templateUrl: "views/planification/listeAnnee.html",
+            controller: "PlanAnneeController",
             data: {
                 authorizedRoles: [USERS_ROLES.planificateur]
             }

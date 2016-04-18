@@ -19,15 +19,36 @@ webApp.factory("classesService",
 	        });
 	    };
 
+	    function updateCurrentNextList(year) {
+	        return $q(function (resolve, reject) {
+	            //TO DO Lancer toastr chargement
+	            Restangular.one("plan/current_next_classe", year).getList().then(function (data) {
+	                angular.forEach(data, function(element) {
+	                    element.annee = element.start.substr(0, 4) + "/" + element.end.substr(0, 4);
+	                });
+	                list = [].concat(data.plain());
+	                //TO DO SUCCESS TOASTR
+	                resolve();
+	            }, function () {
+	                //TO DO ERROR TOASTR
+	                reject();
+	            });
+	        });
+	    };
+
 	    function getList() {
 	        return $q(function (resolve, reject) {
-	            if (list) {
-	                resolve(list);
-	            } else {
-	                updateList().then(function () {
-	                    resolve(list);
-	                });
-	            }
+                updateList().then(function () {
+                    resolve(list);
+                });
+	        });
+	    };
+
+	    function getCurrentNextList(year) {
+	        return $q(function (resolve, reject) {
+                updateCurrentNextList(year).then(function () {
+                    resolve(list);
+                });
 	        });
 	    };
 
@@ -82,6 +103,10 @@ webApp.factory("classesService",
 	        updateList: updateList,
 
 	        getList: getList,
+
+	        updateCurrentNextList: updateCurrentNextList,
+
+	        getCurrentNextList: getCurrentNextList,
 
 	        getOne: getOne,
 
