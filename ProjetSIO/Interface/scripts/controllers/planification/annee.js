@@ -15,9 +15,15 @@ webApp.controller("PlanAnneeController",
 		$scope.year = "";
 		$scope.nextyear = "";
 		$scope.week = [];
-		weekService.getList().then(function (week) {
+		weekService.getList('current').then(function (week) {
 			$scope.week = week;
 			$scope.weekView = [].concat($scope.week);
+		})
+
+		$scope.nextweek = [];
+		weekService.getList('next').then(function (week) {
+			$scope.nextweek = week;
+			$scope.nextweekView = [].concat($scope.nextweek);
 		})
 
 		$http({

@@ -33,7 +33,7 @@
                         <th>Semaine</th>
                         <th ng-repeat="classe in next_classesView">{{ classe.nom }}</th>
                     </tr>
-                    <tr ng-repeat="week in weekView">
+                    <tr ng-repeat="week in nextweekView">
                         <td>{{ week.number }}</td>
                         <td ng-repeat="classe in next_classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="http://localhost/ProjetSIO/ProjetSIO/Backend/semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</td>
                     </tr>

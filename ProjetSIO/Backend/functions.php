@@ -126,12 +126,31 @@ function getDateList($week, $year) {
 
 
 function getStartAndEndDate($week, $year) {
-    $time = strtotime("1 January $year", time());
-    $day = date('w', $time);
-    $time += ((7*$week)+1-$day)*24*3600;
-    $return[0] = date('Y-n-j', $time);
-    $time += 6*24*3600;
-    $return[1] = date('Y-n-j', $time);
+    $date = new DateTime();
+    $date->setISODate($year,$week);
+    $return[0] = $date->format('Y-m-d'); 
+    $return[1] = $date->add(new DateInterval('P6D'))->format('Y-m-d'); 
     return $return;
+}
+
+function getStartEndByYear($current_next) {
+    if ($current_next == 'current') {
+        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of august"))) {
+            $date['start'] = date('Y-m-d', strtotime("first day of august"));
+            $date['end'] = date('Y-m-d', strtotime("last day of july next year"));
+        } else {
+            $date['start'] = date('Y-m-d', strtotime("first day of august last year"));
+            $date['end'] = date('Y-m-d', strtotime("last day of july"));
+        }
+    } else {
+        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of august"))) {
+            $date['start'] = date('Y-m-d', strtotime("first day of august next year"));
+            $date['end'] = date('Y-m-d', strtotime("last day of july +2 years"));
+        } else {
+            $date['start'] = date('Y-m-d', strtotime("first day of august"));
+            $date['end'] = date('Y-m-d', strtotime("last day of july next year"));
+        }
+    }
+    return $date;
 }
 ?>

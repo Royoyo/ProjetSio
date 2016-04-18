@@ -2,10 +2,10 @@ webApp.factory("weekService",
 	function($q, notifService, Restangular){
 	    var list = [];
 
-	    function updateList() {
+	    function updateList(year) {
 	        return $q(function (resolve, reject) {
 	            //TO DO Lancer toastr chargement
-	            Restangular.all("plan/weeks").getList().then(function (data) {
+	            Restangular.one("plan/weeks", year).getList().then(function (data) {
 	                list = [].concat(data.plain());
 	                //TO DO SUCCESS TOASTR
 	                resolve();
@@ -16,17 +16,11 @@ webApp.factory("weekService",
 	        });
 	    };
 
-	    function getList() {
+	    function getList(year) {
 	        return $q(function (resolve, reject) {
-	            if (list) {
-	                updateList().then(function () {
-	                    resolve(list);
-	                });
-	            } else {
-	                updateList().then(function () {
-	                    resolve(list);
-	                });
-	            }
+                updateList(year).then(function () {
+                    resolve(list);
+                });
 	        });
 	    };
 

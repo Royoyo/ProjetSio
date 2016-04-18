@@ -109,13 +109,13 @@ $app->get('/semaine/:year/:week/:classe', function ($year, $week, $classe) use (
 
 $app->get('/plan/years/:current_next', function($current_next) use ($app) {
     if ($current_next == 'current') {
-        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of september"))) {
+        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of august"))) {
             $year = date("Y", strtotime("now")) . "/" . date("Y", strtotime("next year"));
         } else {
             $year = date("Y", strtotime("last year")) . "/" . date("Y", strtotime("now"));
         }
     } else {
-        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of september"))) {
+        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of august"))) {
             $year = date("Y", strtotime("next year")) . "/" . date("Y", strtotime("+2 year"));
         } else {
             $year = date("Y", strtotime("now")) . "/" . date("Y", strtotime("next year"));
@@ -125,10 +125,9 @@ $app->get('/plan/years/:current_next', function($current_next) use ($app) {
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody(json_encode($year));
 });
-$app->get('/plan/weeks', function() use ($app) {
-    $start = date('Y-m-d', strtotime("first day of september last year"));
-    $end = date('Y-m-d', strtotime("last day of july"));
-    $cours = Cours::whereRaw('(start >= ? AND end <= ?)', [$start, $end])->orderBy('start', 'ASC')->get();
+$app->get('/plan/weeks/:current_next', function($current_next) use ($app) {
+    $date = getStartEndByYear($current_next);
+    $cours = Cours::whereRaw('(start >= ? AND end <= ?)', [$date['start'], $date['end']])->orderBy('start', 'ASC')->get();
     $weeks = array();
     $week_list = array();
     foreach ($cours as $cour) {
@@ -138,8 +137,8 @@ $app->get('/plan/weeks', function() use ($app) {
         $year = $date->format("Y");
         $date = getStartAndEndDate($week, $year);
         $classes = Classes::whereHas('cours', function($q) use($date) {
-                            $q->whereRaw('(start >= ? AND end <= ?)', [$date[0], $date[1]]);
-                        })->get();
+            $q->whereRaw('(start >= ? AND end <= ?)', [$date[0], $date[1]]);
+        })->get();
         foreach ($classes as $classe) {
             array_push($classe_list, $classe->id);
         }
@@ -352,39 +351,18 @@ $app->put('/plan/enseignant/:id', $authenticateWithRole('planificateur'), functi
 
 //Classes
 $app->get('/plan/classe', $authenticateWithRole('planificateur'), function() use ($app) {
-    if (date('Y-d-m', strtotime("now")) >= date('Y-d-m', strtotime("first day of september"))) {
-        $start = date('Y-m-d', strtotime("first day of september"));
+    if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of august"))) {
+        $start = date('Y-m-d', strtotime("first day of august"));
     } else {
-        $start = date('Y-m-d', strtotime("first day of september last year"));
+        $start = date('Y-m-d', strtotime("first day of august last year"));
     }
     $classes = Classes::with('user')->whereRaw('(end >= ?)', [$start])->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody($classes->toJson());
 });
-
-$app->get('/plan/current_next_classe/:year', $authenticateWithRole('planificateur'), function($year) use ($app) {
-    if ($year == 'current') {
-        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of september"))) {
-            $year = date("Y", strtotime("now")) . "/" . date("Y", strtotime("next year"));
-            $start = date('Y-m-d', strtotime("first day of september"));
-            $end = date('Y-m-d', strtotime("last day of july next year"));
-        } else {
-            $year = date("Y", strtotime("last year")) . "/" . date("Y", strtotime("now"));
-            $start = date('Y-m-d', strtotime("first day of september last year"));
-            $end = date('Y-m-d', strtotime("last day of july"));
-        }
-    } else {
-        if (date('Y-m-d', strtotime("now")) >= date('Y-m-d', strtotime("first day of september"))) {
-            $year = date("Y", strtotime("next year")) . "/" . date("Y", strtotime("+2 year"));
-            $start = date('Y-m-d', strtotime("first day of september next year"));
-            $end = date('Y-m-d', strtotime("last day of july +2 years"));
-        } else {
-            $year = date("Y", strtotime("now")) . "/" . date("Y", strtotime("next year"));
-            $start = date('Y-m-d', strtotime("first day of september"));
-            $end = date('Y-m-d', strtotime("last day of july next year"));
-        }
-    }
-    $classes = Classes::with('user')->whereRaw('(start <= ? and end >= ?)', [$start, $end])->get();
+$app->get('/plan/current_next_classe/:current_next', function($current_next) use ($app) {
+    $date = getStartEndByYear($current_next);
+    $classes = Classes::with('user')->whereRaw('(start >= ? and start <= ?) or (end >= ? and end <= ? )', [$date['start'], $date['end'], $date['start'], $date['end']])->get();
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setBody($classes->toJson());
 });
