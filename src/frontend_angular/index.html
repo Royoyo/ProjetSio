@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr" ng-app="webApp" ng-controller="mainController">
+<head>
+    <title>GPCI - Gestion des Planning</title>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" ng-href="{{ theme }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+    <link rel="stylesheet" href="css/custom.css">    
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                Ifide
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" uib-collapse="navCollapsed">
+            <ul class="nav navbar-nav">
+                <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="administration" ng-show="(currentUser.roles.indexOf('administrateur') > -1)">
+                    <a>Administration</a>
+                </li>
+                <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="planification" ng-show="(currentUser.roles.indexOf('planificateur') > -1)">
+                    <a>Planification</a>
+                </li>
+                <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="enseignement" ng-show="(currentUser.roles.indexOf('enseignant') > -1)">
+                    <a>Enseignement</a>
+                </li>
+            </ul>
+            <div class="navbar-right">
+                <!-- la ligne horizontale s'affiche mais peut rester dans la vue desktop si l'utilisateur change la taille de la fenetre - NIVEAU BUG : faible -->
+                <hr ng-show="!navCollapsed">
+                <p class="navbar-text" ng-show="(currentUser.roles.indexOf('enseignant') > -1)">
+                    Bonjour <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
+                </p>
+                <ul class="nav navbar-nav" ng-show="(currentUser.roles.indexOf('enseignant') > -1)">
+                    <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="profil">
+                        <a>Gérer vos informations</a>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-default navbar-btn" ng-show="currentUser == null" ng-click="login()">Se connecter</button>
+                <button type="button" class="btn btn-default navbar-btn" ng-hide="currentUser == null" ng-click="logout()">Se déconnecter</button>
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div ui-view class="container-fluid"></div>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <p class="navbar-text navbar-right">Application réalisée par <a href="http://guillaumehaag.fr" target="_blank">Guillaume Haag</a> et <a href="http://spielmannromain.fr" target="_blank">Romain Spielmann</a></p>
+    </div>
+</nav>
+<!-- librairies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
+<script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap-tpls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.7/smart-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular-animate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/lang/fr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/gcal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-calendar/1.0.0/calendar.min.js"></script>
+
+<!-- inject:js -->
+<script src="app.js"></script>
+<!-- endinject -->
+</body>
+</html>

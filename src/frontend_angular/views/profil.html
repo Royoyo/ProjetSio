@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Bonjour {{ user.firstName }} {{ user.lastName }}</h3>
+        <p>Vous pouvez changer certaines de vos informations personnelles sur cette page</p>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form name="passwordForm" ng-submit="savePassword()">
+            <div class="form-group">
+                <label>Changement de mot de passe</label>
+                <input type="password" name="password" class="form-control" ng-model="passwords.newPassword" required/>
+            </div>
+            <div class="form-group">
+                <input type="password" name="passwordConfirm" class="form-control" ng-model="passwords.newPasswordConfirm" required />
+            </div>
+            <span class="text-danger" ng-show="!(passwords.newPassword == passwords.newPasswordConfirm)">Il faut que les deux mots de passes soient identiques.</span>
+            <div class="form-group">
+                <input type="submit" value="Sauvegarder" class="btn btn-success" ng-disabled="passwordForm.$invalid || !(passwords.newPassword == passwords.newPasswordConfirm)"/>
+                <span ng-show="isSavingPassword"><i class="fa fa-spinner fa-spin"></i>Saving...</span>
+                <span class="text-success" ng-show="isSavedPassword">Votre mot de passe a été mis à jour avec succès</span>
+                <span class="text-danger" ng-show="errorPassword">{{ errorPassword }}</span>
+            </div>
+        </form>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form name="emailForm" ng-submit="saveEmail()">
+            <p>Email actuel : {{ user.email }}</p>
+            <div class="form-group">
+                <label>Changement d'adresse mail</label>
+                <input type="email" name="email" class="form-control" ng-model="emails.newEmail" required/>
+            </div>
+            <div class="form-group">
+                <input type="email" name="emailConfirm" class="form-control" ng-model="emails.newEmailConfirm" required/>
+            </div>
+            <span class="text-danger" ng-show="!(emails.newEmail == emails.newEmailConfirm)">Il faut que les deux adresses soient identiques.</span>
+            <div class="form-group">
+                <input type="submit" value="Sauvegarder" class="btn btn-success" ng-disabled="emailForm.$invalid || !(emails.newEmail == emails.newEmailConfirm)"/>
+                <span ng-show="isSavingEmail"><i class="fa fa-spinner fa-spin"></i>Saving...</span>
+                <span class="text-success" ng-show="isSavedEmail">Votre adresse mail a été mise à jour avec succès</span>
+                <span class="text-danger" ng-show="errorEmail">{{ errorEmail }}</span>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+            <div class="form-group">
+                <label>Choix du thème</label>
+                <select class="form-control" ng-model="theme" ng-options="value for (value,key) in themes" ng-change="changeTheme(theme)"></select>
+            </div>
+    </div>
+</div>

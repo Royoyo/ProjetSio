@@ -1,0 +1,9 @@
+{
+  "require": {
+    "slim/slim": "2.*",
+    "illuminate/database": "*",
+    "slim/views": "*",
+    "swiftmailer/swiftmailer": "^5.4",
+    "dompdf/dompdf": "0.7.x@beta"
+  }
+}
