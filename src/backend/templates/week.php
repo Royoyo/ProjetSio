@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <style type="text/css">
 	table.agenda {
 	  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;

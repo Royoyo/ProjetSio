@@ -13,7 +13,7 @@
 <tr>
 <td>
 <h1>Bonjour {{ user_firstname }} {{ user_lastname }}</h1>
-<p class="lead">Votre compte a été créé sur le site GPCI.</p>
+<p class="lead">Votre compte a été créé sur le Gestionnaire des Planning des Cours de l'IFIDE.</p>
 </td>
 <td class="expander"></td>
 </tr>
@@ -27,16 +27,18 @@
 <table class="twelve columns">
 <tr>
 <td class="panel">
-<p>Pour activer votre compte cliquez sur le lien suivant :<a href="http://10.0.0.5/#/activation/{{ user_id }}/{{ user_token }}"> Lien </a></p>
+<p>Voici vos informations de connexion :</p>
+<ul>
+	<li>Nom d'utilisateur : {{ user_login }}</li>
+	<li>Mot de passe : A créer lors de l'activation</li>
+</ul>
+<p>Pour activer votre compte et séléctionner votre mot de passe cliquez sur le lien suivant :<a href="http://ifide.net/gpci/#/activation/{{ user_id }}/{{ user_token }}"> Lien </a></p>
 </td>
 <td class="expander"></td>
 </tr>
 </table>
 <table class="twelve columns">
 <tr>
-<td>
-<p>Une fois votre compte activé un mot de passe sera généré aléatoirement et envoyé à votre boite mail.</p>
-</td>
 <td class="expander"></td>
 </tr>
 </table>
@@ -50,7 +52,7 @@
 <tr>
 <td align="center">
 <center>
-<p style="text-align:center;"><a href="#">Ifide</a> | <a href="#">Contact</a></p>
+<p style="text-align:center;"><a href="http://ifide.net">Ifide</a> | <a href="mailto:supformation@ifide.net">Contact</a></p>
 </center>
 </td>
 <td class="expander"></td>
