@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Création de l'emploi du temps</h2>
+    </div>
+</div>
+<div class="row top10">
+    <div class="col-md-12">
+        <div ui-calendar="config.calendar" ng-model="feed" calendar="planCalendar"></div>
+    </div>
+</div>
+<div class="row top10">
+    <div class="col-md-6">
+        <ul class="list-unstyled">
+            <li>
+                <p>
+                    <strong>Légende:</strong>
+                </p>
+            </li>
+            <li><i class="fa fa-square" style="color: #FF851B"></i> : Cours avec mail d'assignation non envoyé</li>
+            <li><i class="fa fa-square" style="color: green"></i> : Cours avec mail d'assignation envoyé</li>
+        </ul>
+        <div class="form-group">
+            <label><a target="_blank" href="./#/annee">Lien</a> vers calendrier public</label>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <strong>Aide à l'utilisation:</strong>
+        </p>
+        <p>Ce calendrier s'utilise en deux temps :</p>
+        <ul>
+            <li>Vous assignez des cours aux professeurs concernés</li>
+            <li>Vous envoyez les assignations en utilisant le bouton au dessus du calendrier</li>
+        </ul>
+        <p><strong>Remarque :</strong> Quand vous changez le professeur d'un cours dont l'assignation a déjà été envoyé un mail lui sera envoyé pour le prévenir de la suppression de son cours.
+        </p>
+    </div>
+</div>
