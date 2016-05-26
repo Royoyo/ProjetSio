@@ -20,9 +20,9 @@ gulp.task("injectScripts", function() {
 
 
 gulp.task("deployProd", function() {
-    return gulp.src("./wwwroot/scripts/**/*.js")
+    return gulp.src("./webApp/scripts/**/*.js")
     .pipe(concat("app.js"))
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(gulp.dest("./wwwroot"));
+    //.pipe(ngAnnotate())
+    //.pipe(uglify())
+    .pipe(gulp.dest("./webApp"));
 });

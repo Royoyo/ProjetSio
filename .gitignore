@@ -23,3 +23,6 @@ $RECYCLE.BIN/
 
 # Folder to ignore
 node_modules/
+
+# .env file with ENV variables
+*.env

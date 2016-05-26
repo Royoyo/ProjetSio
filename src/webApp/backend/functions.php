@@ -10,34 +10,6 @@
  * \details     this file contains all the functions and some global variables for the backend
  */
 
-/// Create Transport
-/*$transport = Swift_SmtpTransport::newInstance('localhost', 25);
-
-/// Create Mailer with our Transport.
-$mailer = Swift_Mailer::newInstance($transport);*/
-
-/*
-// Send email
-$app->get('/send_inscription_mail/:id', function($id) use ($app, $mailer){
-    // Get user & mail
-    $user = Users::where('id', $id)->with('roles')->firstOrFail();
-    // Here I'm fetching my email template from my template directory.
-    $welcomeEmail = "SAMARCHE";
-    // Setting all needed info and passing in my email template.
-    $message = Swift_Message::newInstance('Votre compte a été créer')
-                    ->setFrom(array('spielmann.romain@orange.fr' => 'Ifide SupFormation'))
-                    ->setTo(array($user->email => $user->lastName . ' ' . $user->firstName))
-                    ->setBody($welcomeEmail)
-                    ->setContentType("text/html");
-
-    // Send the message
-    $results = $mailer->send($message);
-
-    // Print the results, 1 = message sent!
-    print($message);
-});  
-*/
-
 function getDateList($week, $year) {
     $date = array();
     for($day=1; $day<=5; $day++)

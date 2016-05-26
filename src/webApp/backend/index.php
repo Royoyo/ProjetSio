@@ -9,13 +9,13 @@
  *
  * \details     this file contains the includes for the backend
  */
-
-require 'vendor/autoload.php';
-$app = new \Slim\Slim();
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
-require_once 'model.php';
+
+require 'vendor/autoload.php';
+$app = new \Slim\Slim();
+
 require_once 'functions.php';
 require_once 'mailing.php';
 require_once 'login.php';

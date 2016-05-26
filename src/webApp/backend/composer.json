@@ -4,6 +4,11 @@
     "illuminate/database": "*",
     "slim/views": "*",
     "swiftmailer/swiftmailer": "^5.4",
-    "dompdf/dompdf": "0.7.x@beta"
-  }
+    "dompdf/dompdf": "0.7.x@beta",
+    "vlucas/phpdotenv": "*"
+  },
+  "autoload": {
+        "files": [ "app/config.php" ],
+        "classmap": [ "app/models" ]
+    }
 }

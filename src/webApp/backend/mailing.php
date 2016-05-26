@@ -1,8 +1,8 @@
 <?php
 // Create Transport
-$transport = Swift_SmtpTransport::newInstance('10.0.0.3', 465, 'ssl')
-    ->setUsername('')
-    ->setPassword('');
+$transport = Swift_SmtpTransport::newInstance(getenv('SMTP_ADDRESS'), 465, 'ssl')
+    ->setUsername(getenv('SMTP_USER'))
+    ->setPassword(getenv('SMTP_PASSWORD'));
 
 // Create Mailer with our Transport.
 $mailer = Swift_Mailer::newInstance($transport);
