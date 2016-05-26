@@ -42,4 +42,8 @@ Une fois que les informations nécessaires sont inscrites dans le fichier change
 ````
 php migration migrate 
 php migration seed
-```` 
+````
+
+6/ Voilà, l'application est prête à l'emploi
+
+Un premier utilisateur nommé "admin" avec "abc" est créé automatiquement.
