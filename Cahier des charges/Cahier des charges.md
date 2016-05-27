@@ -9,11 +9,11 @@ Le but est de réaliser une application web en PHP permettant de faciliter la r�
 * les planificateurs accèdent à une page web pour semaine de cours et pour chaque demi-journée disposent d'une liste déroulante permettant de choisir quel enseignant affecter à ce cours en fonction de leurs indisponibilités,
 * les administrateurs ont la possibilité d'ouvrir et fermer les périodes de cours année scolaire par année scolaire, de définir les semaines de cours, les jours fériés, de créer/modifier/supprimer les utilisateurs et de leur attribuer des rôles.
 
-Lorsque la planification d'une semaine de cours est finalisée, alors des exports vers plusieurs formats sont à prévoir : Excel, CSV, iCal.+PDF
+Lorsque la planification d'une semaine de cours est finalisée, alors des exports vers plusieurs formats sont à prévoir : iCal, PDF
 
 ## Définitions
 
-* mailing: envoi automatique de messages électroniques individuels ou en masse.
+* mailing: envoi de messages électroniques individuels ou en masse.
 * template: fichier modèle, le plus souvent en HTML, contenant une mise en forme avec des variables permettant d'affecter un contenu destiné à l'affichage.
 * zone de travail de la page: partie principale de la page web qui correspond aux tâches que l'utilisateurs souhaite réaliser, ce qui exlu les éléments se trouvant sur toutes les pages (en-têtes et pieds de page, menu de navigation...).
 
@@ -40,7 +40,6 @@ Ces objets sont :
 * des [semaines d'enseignement](#semaines-denseignement)
 * des [demi-journée](#demi-journée)
 * des [demi-journées de cours](#demi-journées-de-cours)
-* des [jours de fermeture](#jours-de-fermeture) (jours fériés par exemple)
 * des [demi-journées d'indisponibilités d'enseignants](#demi-journées-dindisponibilité-denseignants)
 * des [affectations d'enseignant à une classe](#affectation-denseignant-à-une-classe)
 * des [affectations d'enseignant à une classe sur une demi-journée de cours](#affectations-denseignant-à-une-classe-sur-une-demi-journée-de-cours)
@@ -77,10 +76,6 @@ Une demi-journée est une date comprise entre les dates bornes d'une année scol
 
 Une demi-journée de cours est une demi-journée appartenant à une semaine de cours.
 
-#### Jours de fermeture
-
-Un jour de fermeture est défini par une date. Aucune indisponibilité d'enseignant ne peut être indiquée à cette date, et donc aucune affectation d'enseignant ne peut être faite sur les demi-journées à cette date.
-
 #### Indisponibilités d'enseignants
 
 Une indisponibilité d'enseignant est une demi-journée sur laquelle un enseignant ne peut être affecté à aucune classe.
@@ -108,14 +103,13 @@ Il s'agit des objets métier du client qui ne préexistaient pas à l'applicatio
 Ces objets sont:
 
 * les utilisateurs
-* les rôles
 
 ### Rôles
 
 L'application prévoit aujourd'hui trois rôles :
 
-* `administrateur` : créer, modifier, suspend, supprimer les utilisateurs,
-* `planificateur` : créer, modifie, supprime, met à jour, lie les classes d'élèves, les enseignants, les années scolaires, les semaines d'enseignement, les demi-journée de cours, les deux types d'affectations,
+* `administrateur` : créer, modifier, activer/désactiver les utilisateurs,
+* `planificateur` : créer, modifier, supprimer, metre à jour, lier les classes d'élèves, les enseignants, les années scolaires, les cours,
 * `enseignant` : crée et supprime ses indisponibilités.
  
 Un utilisateur _doit pouvoir cumuler_ les rôles si nécessaire.
@@ -125,7 +119,7 @@ Le code source comme le HTML produit par l'application devront utiliser l'encoda
 
 ## Organisation et communication
 
-GitHub est utilisé pour ses fonctions de versionnage de code, de gestion de tickets et, éventuellement, de documentation (Wiki) si cette solution était retenue par les développeurs.
+GitHub est utilisé pour ses fonctions de versionnage de code et de gestion de tickets.
 Toute tâche doit faire l'objet d'un ticket qui en documente la réalisation.
 Tout bug doit faire l'objet d'un ticket qui en documente la nature et la solution.
 Toute question au client doit faire l'objet d'un ticket.
@@ -139,7 +133,7 @@ Le prestataire est libre d'utiliser l'environnement de développement qu'il lui 
 
 Toutefois, le code source produit devra être versionné et pouvoir être consulté par le client à tout moment. Pour ce faire, un projet est créé sur le site GitHub auquel le prestataire et le client ont accès en lecture comme en écriture. Si le client estime que le code produit est confidentiel, le projet GitHub pourra devenir privé pour un coût qui sera à la charge du client.
 
-L'application devra fonctionner avec une base de données MySQL 5 en utilisant la librairie [MySQLi](http://fr2.php.net/manual/fr/book.mysqli.php) et en aucun cas la librairie [MySQL](http://fr2.php.net/manual/fr/book.mysql.php) qui est dépréciée.
+L'application devra fonctionner avec une base de données MySQL 5 en utilisant le framework [Eloquent](https://laravel.com/docs/5.2/eloquent)
 
 ### Environnement de production
 
@@ -164,7 +158,6 @@ Voici quelques détails techniques concernant cette plateforme :
 * OS: Linux Ubuntu
 * Serveur web : Apache 2.2.17
 * PHP 5.3.5
-* extensions à PHP : mysqli
 
 
 ## Sécurité
@@ -172,8 +165,6 @@ Voici quelques détails techniques concernant cette plateforme :
 ### Cryptage des communications
 
 L'environnement de production n'étant pas entièrement défini au moment de la rédaction de ce cahier des charges, l'application devra pouvoir fonctionner indifférement avec ou sans cryptage des communications, c'est-à-dire en utilisant les protocoles `http` ou `https`.
-
-Une option de la configuration devra permettre, si elle est activée, de détecter si les communications ont lieu selon le protocole `http` et dans ce cas de forcer un basculement vers `https`.
 
 ### Processus d'initialisation de compte
 
@@ -189,13 +180,9 @@ L'environnement de test ne permettant pas à ce jour l'utilisation de cette API 
 * si PHP est en version inférieure à 5.5 mais supérieure à 5.3.7, alors la nouvelle API est utilisée en [version "espace utilisateur"](https://github.com/ircmaxell/password_compat), sauf si la directive de configuration indiquée au point précédent est active,
 * si PHP est en version 5.5 ou supérieure et que la directive de configuration du premier point n'est pas active, alors on utilisera la version de l'API du noyau de PHP.
 
-La directive de configuration est à positionner au moment de l'installation, en fonction de la version de PHP dans l'environnement d'installation. Une fois cette configuration établie, seul l'administrateur du serveur pourra la modifier. En effet, il faut prendre soin qu'une mise à jour de version ne vienne pas invalider tous les mots de passe stockés. Une procédure de migration de la méthode dépréciée vers la méthode recommandée devra être fournie.
-
-L'utilisation de la nouvelle API se fera à partir de la version en espace utilisateur ou du coeur de PHP par détection de présence de fonction et sera transparente pour les utilisateurs.
-
 ### Mailings
 
-L'application est succeptible d'envoyer des mailings. Pour chaque type de mailing, le prestataire développera un template sous la forme d'un fichier [Markdown](http://fr.wikipedia.org/wiki/Markdown) pouvant inclure du HTML. Des champs sous forme de mots-clés seront utilisés pour personnaliser et contextualiser les messages envoyés.Le prestataire est libre d'utiliser la syntaxe de son choix pour ces mots-clés, mais ceux-ci devront être documentés dans la documentation Administrateur.
+L'application est succeptible d'envoyer des mailings. Pour chaque type de mailing, le prestataire développera un template sous la forme d'un fichier HTML. Des champs sous forme de mots-clés seront utilisés pour personnaliser et contextualiser les messages envoyés.Le prestataire est libre d'utiliser la syntaxe de son choix pour ces mots-clés, mais ceux-ci devront être documentés dans la documentation Administrateur.
 
 Le prestataire aura recours à la méthode de son choix pour la conversion de Markdown vers HTML. Pour l'envoi des mails, une solution utilisant la librairie [SwiftMailer](http://swiftmailer.org/) est recommandée.
 
@@ -208,16 +195,11 @@ Le prestataire devra produire une documentation complète comportant plusieurs v
 * idem pour les planificateur,
 * idem pour les enseignants.
 
-Cette documentation devra être rédigée en HTML et des liens jusdicieusement placés dans l'application permettront de la consulter ponctuellement en fonction du contexte dans une fenêtre externe à l'application, mais en ouvrant une nouvelle fenêtre que si plus aucune fenêtre destinée à consulter la documentation n'est ouverte.
-
-### Documentation Administrateur
-Cette documentation comprendra une procédure décrivant la migration permettant de passer de la méthode de cryptage de mots de passe dépréciée à la méthode recommandée.
-
 ## Fonctionnalités de l'application
 
 ### Fonctionnalités communes à chaque rôle
 
-Les fonctionnalités communes sont celles qui sont liées à la gestion de son compte pas l'utilisateur.
+Les fonctionnalités communes sont celles qui sont liées à la gestion de son compte par l'utilisateur.
 
 #### Activation du compte
 
@@ -227,17 +209,9 @@ Voir [Sécurité/Procédure d'activation du compte](#processus-dinitialisation-d
 
 L'accès à l'application est sécurisé par un formulaire d'identification. L'utilisateur y indique son identifiant ainsi que son mot de passe, connu de lui seul. Le champ destiné à recevoir le mot de passe ne doit pas avoir de contenu visuellement lisible.
 
-Deux textes HTML, un en dessus et un dessous du formulaire sont affichés. Leurs contenus contenus ne sont pas encore définis, mais doivent pouvoir être aisément modifié éventuellement en modifiant un fichier HTML de [template](http://fr.wikipedia.org/wiki/Gabarit_%28mise_en_page%29#Utilisation_dans_les_syst.C3.A8mes_de_gestion_de_contenu_web) ou une directive de configuration.
-
-Un lien est présent permettant d'accéder à la fonctionnalité de réinitialisation du mot de passe.
-
-#### Réinitialisation du mot de passe
-
-Une page affiche un champ dans lequel l'utilisateur est invité à saisir son email. Une fois le formulaire validé, le compte est réinitialisé et doit être à nouveau activé. Voir [Sécurité/Procédure d'activation du compte](#processus-dinitialisation-de-compte). Bien que la procédure soit fonctionnellement identique, le mail envoyé à l'utilisateur et les pages affichées doivent être adaptés.
-
 #### Changement de mot de passe
 
-Le mot de passe peut être modifié à tout moment par l'utilisateur à l'aide d'un formulaire de trois champs dont le contenu ne doit pas être lisible. Le premier champ reçoit le mot de passe actuel de l'utilisateur, et il doit être valide pour que le mot de passe puisse être changé. Le second et le troisième champs sont destinés à contenir le nouveau mot de passe. Celui-ci ne sera pris en compte que si les valeurs saisies dans les deuxième et troisième champs sont identitiques.
+Le mot de passe peut être modifié à tout moment par l'utilisateur à l'aide d'un formulaire de deux champs dont le contenu ne doit pas être lisible. Les champs sont destinés à contenir le nouveau mot de passe. Celui-ci ne sera pris en compte que si les valeurs saisies dans les deux champs sont identiques.
 
 #### Mise à jour du profil
 
@@ -247,7 +221,7 @@ L'utilisateur doit pouvoir changer son adresse email.
 
 #### Listage d'utilisateurs
 
-L'administrateur a accès à la liste de tous les utilisateurs de l'application. La page affichant cette liste doit permettre de créer, consulter, modifier, suspendre et supprimer ces utilisateurs.
+L'administrateur a accès à la liste de tous les utilisateurs de l'application. La page affichant cette liste doit permettre de créer, consulter, modifier, activer/désactiver ces utilisateurs.
 
 Il s'agit de la page par défaut d'un administrateur une fois qu'il est connecté.
 
@@ -275,12 +249,6 @@ Affiche les informations saisies lors de la création de l'utilisateur.
 
 La suspension d'un utilisateur permet d'interdire l'accès à l'application à cet utilisateur sans pour autant supprimer son compte. Naturellement, une fonction de réactivation doit également être prévue.
 
-#### Suppression d'utilisateur(s)
-
-Permet de supprimer un utilisateur de l'application. En base de données, il ne doit pas y avoir de suppression de l'enregistrement correspondant, un champ devant être utilisé pour indiquer que l'utilisateur a été supprimé.
-
-Une confirmation est demandée à l'utilisateur avant que la suppression soit effective.
-
 #### Renvoi de mails d'initialisation de compte d'utilisateur(s)
 
 L'administrateur doit pouvoir envoyer un mail de réinitialisation de mot de passe à l'utilisateur.
@@ -289,13 +257,7 @@ L'administrateur doit pouvoir envoyer un mail de réinitialisation de mot de pas
 
 Accès en mode édition des renseignements indiqués lors de la création de l'utilisateur.
 
-#### Actions en masse
-
-La liste des utilisateurs doit permettre d'exécuter une même action sur plusieurs utilisateurs rapidement lorque cela est approprié, c'est-à-dire lorsque l'action peut être achevée d'un seul clic (suspension, création, réinitialisation...)
-
 ### Fonctionnalités du rôle Planificateur
-
-Lorsqu'un utilisateur est à la fois Admnistrateur et Planificateur, le prestataire veillera à ce que des fonctionnalités proches soient regroupées sur la même page.
 
 Le Planificateur gère l'ensemble des tâches relatives à la planification :
 * gestion des classes d'élèves
@@ -307,7 +269,7 @@ Par gestion, il faut entendre création, suppression, consultation, mise à jour
 
 #### Gestion de classes d'élèves
 
-Le Planificateur a la possibilité de créer, modifier et supprimer une classe d'élèves. Celle-ci doit pourvoir avoir un nom, des matières enseignées, des enseignants affectés, ainsi que des années scolaire. Lors de la création, seul le nom est obligatoire.
+Le Planificateur a la possibilité de créer, modifier et supprimer une classe d'élèves. Celle-ci doit pouvoir avoir un nom ainsi qu'ne date de début et de fin.
 
 #### Gestion des matières enseignées
 
@@ -315,21 +277,7 @@ Le Planificateur a la possibilité de créer, modifier et supprimer une matière
 
 #### Gestion des enseignants
 
-Le Planificateur a la possibilité de modifier, créer, supprimer les affectations d'un enseignant à des classes et à des matières.
-
-#### Gestion des années scolaires
-
-Le Planificateur a la possibilité de créer, modifier, supprimer une années scolaire. Lors de la création, un nom est obligatoire, ainsi qu'une date de début et une date de fin, ainsi que de sélectionner des classes d'élèves affectées à cette années scolaire. Les champs en modification sont les mêmes.
-
-Une année scolaire peut être rendue inactive, ce qui permet de ne plus la faire apparaître dans le reste de l'application et simplifier les saisies.
-
-Une fois l'année scolaire créée, le Planificateur doit pouvoir accéder une représentation de l'année sous la forme d'un tableau dans lequel il pourra indiquer des jours de fermeture (une case cochées indiquant un jour de fermeture), les samedis et les dimanches apparaissant grisés et non-modifiables.
-
-#### Gestion de la relation année scolaire - classe d'élèves
-
-Lorsqu'une classe d'élèves est affectée sur une année scolaire, par défaut, il devient possible d'effectuer la planification des cours de cette classe pour les dates de début et de fin indiquées dans l'années scolaire. Toutefois, les dates pour lesquelles la planification d'une classe est possible ne pas correspondre exactement aux dates de l'année scolaire, bien qu'elles doivent y être incluses (les deuxièmes années commencent plus tôt, et finissent plus tôt que les premières années de BTS par exemple).
-
-Il faut donc que le planificateur puisse éditer les dates extrêmes de la planification pour une classe, mais en restant dans les dates de l'année scolaire.
+Le Planificateur a la possibilité de modifier, créer, supprimer les affectations d'un enseignant à des matières.
 
 #### Gestion des semaines d'enseignements
 
@@ -356,12 +304,11 @@ Si l'enseignant indiquait une indisponibilité de cours sur une date pour laquel
 #### Consultation de sa planification
 
 L'enseignant a la possibilité de prendre connaissance de sa planification (par défaut, uniquement la semaine en cours et les semaines à venir) des cours pour lesquels il est planifié à travers un tableau récapitulatif :
-* une ligne par semaine
-* colone 1: numéro de la semaine
-* colone 2: date de début et de fin de la semaine
-* colone 3: premier cours (jour, heures de début et de fin, classe, matière)
-* colone 4: deuxième cours (idem)
-* colone 5: et ainsi de suite tant qu'il y en a
+* une ligne par cours
+* colone 1: Date
+* colone 2: Periode ( matin ou après-midi)
+* colone 3: Matière
+* colone 4: Classes
  
 #### Consultation des semaines planifiées
 
