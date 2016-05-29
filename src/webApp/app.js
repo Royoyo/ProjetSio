@@ -17,6 +17,9 @@ webApp.constant("AUTH_EVENTS", {
     notAuthorized: "auth-notAuthorized"
 });
 
+// Constante pour lien backend
+webApp.constant("BACKEND_URL", "./backend/");
+
 //Config de toastr
 webApp.config(function (toastrConfig) {
     angular.extend(toastrConfig, {
@@ -35,46 +38,11 @@ webApp.config(function($httpProvider) {
         }
     ]);
 });
-
 // test : function checkant le statut de la session à chaque changement de state
 webApp.run(function($rootScope, $state, Authentification, AUTH_EVENTS) {
 
 	$rootScope.$on("$stateChangeStart", function (event, next) {
-        if(next.name !== "activation"){
-            var authorizedRoles = next.data.authorizedRoles;
-            if (!Authentification.isAuthorized(authorizedRoles)) {
-                event.preventDefault();
-                if (Authentification.isAuthenticated()) {
-                    // user non autorisé
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-                } 
-                else {
-                    // user pas connecté
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-                }
-            }
-        }
-	  });
-	
-	// test pour navbar, à revoir
-	$rootScope.getClass = function(path) {
-		if ($state.current.name === path) {
-			return "actif";
-		} else {
-			return "";
-		}
-	}
-	
-	$rootScope.logout = function(){
-		Authentification.logout();
-	};
-
-});
-// test : function checkant le statut de la session à chaque changement de state
-webApp.run(function($rootScope, $state, Authentification, AUTH_EVENTS) {
-
-	$rootScope.$on("$stateChangeStart", function (event, next) {
-        if(next.name != "activation" || next.name != "annee"){
+        if(next.name != "activation" && next.name != "annee"){
             var authorizedRoles = next.data.authorizedRoles;
             if (!Authentification.isAuthorized(authorizedRoles)) {
                 event.preventDefault();
@@ -105,10 +73,10 @@ webApp.run(function($rootScope, $state, Authentification, AUTH_EVENTS) {
 
 });
 //Ici on utilise la méthode config pour déclarer le routage de l'application
-webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES) {
+webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES, BACKEND_URL) {
 
 //Mise en place de l'url de base pour restangular
-    RestangularProvider.setBaseUrl("./backend");
+    RestangularProvider.setBaseUrl(BACKEND_URL);
 
 
 //Cette ligne force toute les routes autres que celles déclarées vers "/"
@@ -786,10 +754,11 @@ webApp.controller("EnsCalendarController",
 	    $scope.eventSources = ensCalendarService.eventSources;
 });
 webApp.controller("EnsCoursController",
-	function ($scope, $window, Session, ensCours, Restangular) {
+	function ($scope, $window, Session, ensCours, Restangular, BACKEND_URL) {
 
 	    $scope.id = Session.id;
 		$scope.host = $window.location.hostname;
+		$scope.BACKEND_URL = BACKEND_URL;
 		$scope.cours = [];
 
 		updateTable();
@@ -889,10 +858,16 @@ webApp.controller("periodeModal",
             $uibModalInstance.dimiss("cancel");
         };
     });
+webApp.controller("planificationController", function (initializers) {
+    initializers.planification();
+});
 webApp.controller("PlanAnneeController",
-	function ($scope, $uibModal, $http, classesService, weekService) {
+	function ($scope, $uibModal, $http, classesService, weekService, BACKEND_URL) {
+		
+		$scope.BACKEND_URL = BACKEND_URL;
 	    $scope.current_classes = [];
 	    $scope.next_classes = [];
+		
 	    classesService.getCurrentNextList('current').then(function (classes) {
 	        $scope.current_classes = classes;
 	        $scope.classesView = [].concat($scope.current_classes);
@@ -919,25 +894,112 @@ webApp.controller("PlanAnneeController",
 
 	    $http({
 	        method: 'GET',
-	        url: './backend/plan/years/current'
+	        url: BACKEND_URL + 'plan/years/current'
 	    }).then(function successCallback(response) {
 	        $scope.year = response.data.year;
 	    }, function errorCallback(response) {
 	    });
 	    $http({
 	        method: 'GET',
-	        url: './backend/plan/years/next'
+	        url: BACKEND_URL + 'plan/years/next'
 	    }).then(function successCallback(response) {
 	        $scope.nextyear = response.data.year;
 	    }, function errorCallback(response) {
 
 	    });
 	});
-webApp.controller("planificationController", function (initializers) {
-    initializers.planification();
-});
+webApp.factory("adminService",
+    function($q, notifService, Restangular) {
+
+        var list = [];
+
+        function updateList() {
+            return $q(function(resolve, reject) {
+                //TO DO Lancer toastr chargement
+                Restangular.all("admin/personnes").getList().then(function(data) {
+                    list = [].concat(data);
+                    //TO DO SUCCESS TOASTR
+                    resolve();
+                }, function() {
+                    //TO DO ERROR TOASTR
+                    reject();
+                });
+            });
+        };
+
+        function getList() {
+            return $q(function(resolve, reject) {
+                if (list) {
+                    resolve(list);
+                } else {
+                    console.log(list);
+                    updateList().then(function() {
+                        resolve(list);
+                    });
+                }
+            });
+        };
+
+        function getOne(id) {
+            return $q(function(resolve, reject) {
+                //TO DO Lancer toastr chargement
+                Restangular.one("admin/personnes", id).get().then(function(data) {
+                    //TO DO SUCCESS TOASTR
+                    resolve(data);
+                }, function() {
+                    //TO DO ERROR TOASTR
+                    reject();
+                });
+            });
+        };
+
+        function getNew() {
+            return Restangular.one("admin/personnes");
+        };
+
+        function save(personne) {
+            return $q(function(resolve, reject) {
+                notifService.saving();
+                personne.save().then(function() {
+                    notifService.saved();
+                    resolve();
+                }, function(response) {
+                    notifService.error(response.data.message);
+                    reject();
+                });
+            });
+        };
+
+        function remove(personne) {
+            return $q(function(resolve, reject) {
+                notifService.deleting();
+                personne.remove().then(function() {
+                    notifService.deleted();
+                    resolve();
+                }, function(response) {
+                    notifService.error(response.data.message);
+                    reject();
+                });
+            });
+        }
+
+        return {
+
+            updateList: updateList,
+
+            getList: getList,
+
+            getOne: getOne,
+
+            getNew: getNew,
+
+            save: save,
+
+            remove: remove
+        }
+    })
 webApp.factory("ensCalendarService",
-    function(uiCalendarConfig, indispoService) {
+    function(uiCalendarConfig, indispoService, BACKEND_URL) {
 
         //Partie pour calendar indispos
         var dayRender = function (date, cell) {
@@ -996,7 +1058,7 @@ webApp.factory("ensCalendarService",
         };
 
         var events = {
-            url: "./backend/public/cours",
+            url: BACKEND_URL + "public/cours",
             color: "green",
             className: "coursEvent",
             eventDataTransform: function (rawEventData) {
@@ -1242,96 +1304,6 @@ webApp.factory("indispoService",
             openPeriodeModal: openPeriodeModal
         }
     })
-webApp.factory("adminService",
-    function($q, notifService, Restangular) {
-
-        var list = [];
-
-        function updateList() {
-            return $q(function(resolve, reject) {
-                //TO DO Lancer toastr chargement
-                Restangular.all("admin/personnes").getList().then(function(data) {
-                    list = [].concat(data);
-                    //TO DO SUCCESS TOASTR
-                    resolve();
-                }, function() {
-                    //TO DO ERROR TOASTR
-                    reject();
-                });
-            });
-        };
-
-        function getList() {
-            return $q(function(resolve, reject) {
-                if (list) {
-                    resolve(list);
-                } else {
-                    console.log(list);
-                    updateList().then(function() {
-                        resolve(list);
-                    });
-                }
-            });
-        };
-
-        function getOne(id) {
-            return $q(function(resolve, reject) {
-                //TO DO Lancer toastr chargement
-                Restangular.one("admin/personnes", id).get().then(function(data) {
-                    //TO DO SUCCESS TOASTR
-                    resolve(data);
-                }, function() {
-                    //TO DO ERROR TOASTR
-                    reject();
-                });
-            });
-        };
-
-        function getNew() {
-            return Restangular.one("admin/personnes");
-        };
-
-        function save(personne) {
-            return $q(function(resolve, reject) {
-                notifService.saving();
-                personne.save().then(function() {
-                    notifService.saved();
-                    resolve();
-                }, function(response) {
-                    notifService.error(response.data.message);
-                    reject();
-                });
-            });
-        };
-
-        function remove(personne) {
-            return $q(function(resolve, reject) {
-                notifService.deleting();
-                personne.remove().then(function() {
-                    notifService.deleted();
-                    resolve();
-                }, function(response) {
-                    notifService.error(response.data.message);
-                    reject();
-                });
-            });
-        }
-
-        return {
-
-            updateList: updateList,
-
-            getList: getList,
-
-            getOne: getOne,
-
-            getNew: getNew,
-
-            save: save,
-
-            remove: remove
-        }
-    })
 webApp.factory("Authentification",function($rootScope, $window, Session, AUTH_EVENTS, Restangular) {
 	var authService = {};		
 	
@@ -1404,7 +1376,7 @@ webApp.factory("AuthInterceptor",function($rootScope, $q, Session, AUTH_EVENTS) 
 	};
 });
 webApp.factory("planCalendarService",
-    function(uiCalendarConfig, $uibModal, coursService, enseignantsService) {
+    function(uiCalendarConfig, $uibModal, coursService, enseignantsService, BACKEND_URL) {
 
         var eventRender = function(event, element, view) {
 
@@ -1501,7 +1473,7 @@ webApp.factory("planCalendarService",
         //Données du calendrier
 
         var events = {
-            url: "./backend/plan/cours",
+            url: BACKEND_URL + "plan/cours",
             color: "green",
             className: "coursEvent",
             eventDataTransform: function(rawEventData) {

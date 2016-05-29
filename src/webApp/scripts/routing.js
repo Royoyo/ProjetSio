@@ -1,8 +1,8 @@
 ﻿//Ici on utilise la méthode config pour déclarer le routage de l'application
-webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES) {
+webApp.config(function($stateProvider, $urlRouterProvider, RestangularProvider, USERS_ROLES, BACKEND_URL) {
 
 //Mise en place de l'url de base pour restangular
-    RestangularProvider.setBaseUrl("./backend");
+    RestangularProvider.setBaseUrl(BACKEND_URL);
 
 
 //Cette ligne force toute les routes autres que celles déclarées vers "/"

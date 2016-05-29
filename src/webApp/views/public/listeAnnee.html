@@ -14,7 +14,7 @@
                     </tr>
                     <tr ng-repeat="week in weekView">
                         <td>{{ week.number }}</td>
-                        <td ng-repeat="classe in classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="./backend/semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
+                        <td ng-repeat="classe in classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="{{ BACKEND_URL }}/semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
                     </tr>
                 </thead>
             </table>
@@ -35,7 +35,7 @@
                     </tr>
                     <tr ng-repeat="week in nextweekView">
                         <td>{{ week.number }}</td>
-                        <td ng-repeat="classe in next_classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="./backend/semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
+                        <td ng-repeat="classe in next_classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="{{ BACKEND_URL }}semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
                     </tr>
                 </thead>
             </table>

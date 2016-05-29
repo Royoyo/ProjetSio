@@ -1,7 +1,10 @@
 ﻿webApp.controller("PlanAnneeController",
-	function ($scope, $uibModal, $http, classesService, weekService) {
+	function ($scope, $uibModal, $http, classesService, weekService, BACKEND_URL) {
+		
+		$scope.BACKEND_URL = BACKEND_URL;
 	    $scope.current_classes = [];
 	    $scope.next_classes = [];
+		
 	    classesService.getCurrentNextList('current').then(function (classes) {
 	        $scope.current_classes = classes;
 	        $scope.classesView = [].concat($scope.current_classes);
@@ -28,14 +31,14 @@
 
 	    $http({
 	        method: 'GET',
-	        url: './backend/plan/years/current'
+	        url: BACKEND_URL + 'plan/years/current'
 	    }).then(function successCallback(response) {
 	        $scope.year = response.data.year;
 	    }, function errorCallback(response) {
 	    });
 	    $http({
 	        method: 'GET',
-	        url: './backend/plan/years/next'
+	        url: BACKEND_URL + 'plan/years/next'
 	    }).then(function successCallback(response) {
 	        $scope.nextyear = response.data.year;
 	    }, function errorCallback(response) {

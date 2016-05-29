@@ -1,5 +1,5 @@
 webApp.factory("ensCalendarService",
-    function(uiCalendarConfig, indispoService) {
+    function(uiCalendarConfig, indispoService, BACKEND_URL) {
 
         //Partie pour calendar indispos
         var dayRender = function (date, cell) {
@@ -58,7 +58,7 @@ webApp.factory("ensCalendarService",
         };
 
         var events = {
-            url: "./backend/public/cours",
+            url: BACKEND_URL + "public/cours",
             color: "green",
             className: "coursEvent",
             eventDataTransform: function (rawEventData) {

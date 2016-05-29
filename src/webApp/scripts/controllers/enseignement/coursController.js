@@ -1,8 +1,9 @@
 ﻿webApp.controller("EnsCoursController",
-	function ($scope, $window, Session, ensCours, Restangular) {
+	function ($scope, $window, Session, ensCours, Restangular, BACKEND_URL) {
 
 	    $scope.id = Session.id;
 		$scope.host = $window.location.hostname;
+		$scope.BACKEND_URL = BACKEND_URL;
 		$scope.cours = [];
 
 		updateTable();

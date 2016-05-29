@@ -1,5 +1,5 @@
 webApp.factory("planCalendarService",
-    function(uiCalendarConfig, $uibModal, coursService, enseignantsService) {
+    function(uiCalendarConfig, $uibModal, coursService, enseignantsService, BACKEND_URL) {
 
         var eventRender = function(event, element, view) {
 
@@ -96,7 +96,7 @@ webApp.factory("planCalendarService",
         //Données du calendrier
 
         var events = {
-            url: "./backend/plan/cours",
+            url: BACKEND_URL + "plan/cours",
             color: "green",
             className: "coursEvent",
             eventDataTransform: function(rawEventData) {
