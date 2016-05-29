@@ -1,0 +1,6 @@
+<h2>Gestion des périodes</h2>
+<ul class="nav nav-tabs">
+  <li role="presentation" ui-sref-active="active"><a ui-sref="planification.periodes.calendar({id:-1})">Global</a></li>
+  <li role="presentation" ui-sref-active="active" ng-repeat="classe in classes"><a ui-sref="planification.periodes.calendar({id:classe.id})">{{ classe.nom }} {{ classe.annee }}</a></li>
+</ul>
+<div ui_view></div>

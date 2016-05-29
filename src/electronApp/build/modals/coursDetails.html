@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails cours {{ cours.title }}</div>
+    <div class="panel-heading" ng-show="creation">Création de cours</div>
+    <form novalidate name="form" ng-submit="save()">
+        <div class="panel-body">
+            <div class="form-group">
+                <label>Matière</label>
+                <select class="form-control" name="nom" ng-model="cours.id_Matieres" ng-options="matiere.id as matiere.nom for matiere in matieres" required></select>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser une matière.</span>
+            </div>
+            <div class="form-group" ng-show="cours.id_Matieres">
+                <label>Enseignant</label>
+                <select class="form-control" name="enseignant" ng-model="cours.id_Users" ng-options="enseignant.id as enseignant.viewName disable when enseignant.indisponible for enseignant in enseignants"></select>
+            </div>
+            <div class="form-group">
+                <label>Classes :</label>
+                <label data-ng-repeat="classe in classes" class="checkbox-inline">
+                    <input type="checkbox" ng-model="formClasses[classe.id]" id="{{ classe.id }}"> {{ classe.nom }} {{ classe.annee }}
+                </label>
+            </div>
+            <span class="text-danger" ng-show="cours.classes.length==0">Veuillez préciser au moins une classe.</span>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2">
+                <input type="submit" class="btn btn-success" value="Enregistrer" ng-disabled="form.$invalid || cours.classes.length==0" />
+                <button type="button" class="btn btn-default" ng-click="delete()" ng-hide="creation">Supprimer</button>
+                <button type="button" class="btn btn-default" ng-click="cancel()">Annuler</button>
+            </div>
+        </div>
+    </form>
+</div>

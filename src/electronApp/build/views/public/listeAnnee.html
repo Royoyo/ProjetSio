@@ -1,0 +1,44 @@
+<uib-tabset active="active">
+    <uib-tab index="0" heading="{{ year }}">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Planning {{ year }}
+                </h3>
+            </div>
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>Semaine</th>
+                        <th ng-repeat="classe in classesView">{{ classe.nom }}</th>
+                    </tr>
+                    <tr ng-repeat="week in weekView">
+                        <td>{{ week.number }}</td>
+                        <td ng-repeat="classe in classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="{{ BACKEND_URL }}/semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </uib-tab>
+    <uib-tab index="1" heading="{{ nextyear }}">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Planning {{ nextyear }}
+                </h3>
+            </div>
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>Semaine</th>
+                        <th ng-repeat="classe in next_classesView">{{ classe.nom }}</th>
+                    </tr>
+                    <tr ng-repeat="week in nextweekView">
+                        <td>{{ week.number }}</td>
+                        <td ng-repeat="classe in next_classesView"><a ng-show="week.classes.indexOf(classe.id) != -1" href="{{ BACKEND_URL }}semaine/{{week.year}}/{{week.number}}/{{ classe.id }}">Semaine {{week.number}}</a></td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </uib-tab>
+</uib-tabset>

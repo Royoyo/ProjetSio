@@ -1,0 +1,48 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Gestion des classes
+		</h3>
+	</div>
+	<table st-table="classesView" st-safe-src="classes"  class="table table-responsive table-hover">
+		<thead>
+			<tr>
+				<th st-sort="annee">Année</th>
+				<th st-sort="nom">Classe</th>
+				<th st-sort="ProfPrincipal">Professeur principal</th>
+				<th>Actions</th>
+			</tr>
+			<tr>
+				<th>
+					<input st-search="annee" placeholder="recherche Annee" class="input-sm form-control" type="search"/>
+				</th>
+				<th>
+					<input st-search="nom" placeholder="recherche Classe" class="input-sm form-control" type="search"/>
+				</th>
+				<th>
+					<input st-search="user.firstName" placeholder="recherche ProfPrincipal" class="input-sm form-control" type="search"/>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="classe in classesView">
+				<td>{{ classe.annee }}</td>
+				<td>{{ classe.nom }}</td>
+				<td>{{ classe.user.firstName }} {{ classe.user.lastName }}</td>
+			    <td>
+			        <button type="button" class="btn btn-default" ng-click="openClasse(classe)">Editer</button>
+			    </td>
+			</tr>				
+		</tbody>
+	    <tfoot>
+            <tr>
+                <td colspan="4" class="text-center">
+                    <div st-pagination st-items-by-page="15" st-displayed-pages="7"></div>
+                </td>
+            </tr>
+	        <tr>
+	            <td colspan="4"><button type="submit" class="btn btn-default" ng-click="openClasse()">Créer une Classe</button></td>
+	        </tr>
+	    </tfoot>
+	</table>
+</div>

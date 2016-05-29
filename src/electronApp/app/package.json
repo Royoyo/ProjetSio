@@ -1,0 +1,13 @@
+{
+  "name": "gpci",
+  "productName": "Gestion du planning de l'Ifide",
+  "description": "Cette application est un solution applicative de gestion de planning",
+  "version": "1.0.1",
+  "author": "HAAG & SPIELMANN",
+  "copyright": "© 2016, HAAG Guillaume",
+  "main": "background.js",
+  "dependencies": {
+     "fs-jetpack": "^0.9.0"
+  },
+  "packageNameTemplate": "{{name}}-v{{version}}-{{platform}}-{{arch}}"
+}

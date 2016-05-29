@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails {{ matiere.nom }}</div>
+	<div class="panel-heading" ng-show="creation">Création de matière</div>
+	<div class="panel-body">
+		<form novalidate name="form" ng-submit="save()">
+			<div class="form-group">
+				<label>Code</label>
+				<input type="text" class="form-control" name="code" ng-model="matiere.code" required>
+                <span class="text-danger" ng-show="form.code.$error.required">Veuillez préciser un code.</span>
+			</div>
+			<div class="form-group">
+				<label>Nom</label>
+				<input type="text" class="form-control" name="nom" ng-model="matiere.nom" required>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser un nom.</span>
+			</div>
+			<div class="form-group">
+			<div class="col-sm-offset-2">
+				<input type="submit" class="btn btn-success" value="Enregistrer" ng-disabled="form.$invalid"/>
+				<button type="button" class="btn btn-default" ng-click="remove()" ng-hide="creation">Supprimer</button>
+                <button type="button" class="btn btn-default" ng-click="cancel()">Annuler</button>
+			</div>
+		  </div>
+		</form>
+	</div>
+</div>

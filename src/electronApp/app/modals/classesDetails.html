@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+	<div class="panel-heading" ng-hide="creation">Détails {{ classe.nom }} {{ classe.annee }}</div>
+	<div class="panel-heading" ng-show="creation">Création de classe</div>
+	<div class="panel-body">
+		<form novalidate name="form" ng-submit="save()">
+			<div class="form-group">
+				<label>Nom</label>
+				<input type="text" class="form-control" name="nom" ng-model="classe.nom" required>
+                <span class="text-danger" ng-show="form.nom.$error.required">Veuillez préciser un nom.</span>
+			</div>
+			<div class="form-group">
+				<label>Date début</label>
+				<div class="input-group">
+					<input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy"
+                           is-open="pickerDateDebut.opened" ng-model="classe.start"
+                           name="start" required/>	
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default" ng-click="openPickerDebut()"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+                <span class="text-danger" ng-show="form.start.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.start.$valid && !form.start.$error.required">Veuillez préciser une date correcte.</span>
+			</div>
+			<div class="form-group">
+				<label>Date fin</label>
+				<div class="input-group">
+					<input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy"
+                           is-open="pickerDateFin.opened" ng-model="classe.end"
+                           name="end" required />	
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default" ng-click="openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+                <span class="text-danger" ng-show="form.end.$error.required">Veuillez préciser une date.</span>
+                <span class="text-danger" ng-show="!form.end.$valid && !form.end.$error.required">Veuillez préciser une date correcte.</span>
+                <span class="text-danger" ng-show="classe.start > classe.end">La date de fin ne peut pas être antérieure à la date de début.</span>
+			</div>
+            <div class="form-group">
+                <label>Enseignant principal</label>
+                <select class="form-control" name="enseignant" ng-model="classe.id_Users" ng-options="enseignant.id as enseignant.fullName for enseignant in enseignants" required>
+                </select>
+                <span class="text-danger" ng-show="form.enseignant.$error.required">Veuillez préciser un enseignant principal.</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2">
+                    <input type="submit" class="btn btn-success" value="Enregistrer" ng-disabled="form.$invalid || classe.start > classe.end"/>
+                    <button type="button" class="btn btn-danger" ng-click="remove()">Supprimer</button>
+                    <button type="button" class="btn btn-default" ng-click="cancel()">Annuler</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>

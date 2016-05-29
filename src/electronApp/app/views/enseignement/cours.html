@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Lien ical :</label>
+            <input class="form-control" readonly value="{{'http://' + host + BACKEND_URL + 'ical/' + id}}"/>
+            <small>Si vous utilisez un calendrier applicatif, vous pouvez utiliser cet URL pour ajouter vos cours à celui-ci.</small>
+        </div>
+    </div>
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Liste des cours
+		</h3>
+	</div>
+	<table st-table="coursView" st-safe-src="cours"  class="table table-responsive table-hover">
+		<thead>
+			<tr>
+				<th st-sort="date">Date</th>
+				<th st-sort="periode">Periode</th>
+                <th st-sort="matiere.nom">Matière</th>
+                <th st-sort="classes">Classes</th>
+			</tr>
+			<tr>
+				<th>
+					<input st-search="date" placeholder="recherche date" class="input-sm form-control" type="search"/>
+				</th>
+				<th>
+					<input st-search="periode" placeholder="recherche periode" class="input-sm form-control" type="search"/>
+				</th>
+                <th>
+					<input st-search="matiere.nom" placeholder="recherche nom" class="input-sm form-control" type="search"/>
+				</th>
+                <th>
+					<input st-search="classes.nom" placeholder="recherche classes" class="input-sm form-control" type="search"/>
+				</th>
+			</tr>
+		</thead>
+	    <tbody>
+	    <tr ng-repeat="cour in coursView">
+	        <td>{{ cour.date }}</td>
+	        <td>{{ cour.periode }}</td>
+	        <td>{{ cour.matiere.nom }}</td>
+	        <td><span data-ng-repeat="classe in cour.classes"> {{ classe.nom }}{{$last ? '' : ' / '}} </span></td>
+	    </tr>
+	    </tbody>
+	    <tfoot>
+            <tr>
+                <td colspan="4" class="text-center">
+                    <div st-pagination st-items-by-page="15" st-displayed-pages="7"></div>
+                </td>
+            </tr>
+	    </tfoot>
+	</table>
+</div>
