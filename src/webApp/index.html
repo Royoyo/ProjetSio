@@ -38,6 +38,9 @@
                 <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="enseignement" ng-show="(currentUser.roles.indexOf('enseignant') > -1)">
                     <a>Enseignement</a>
                 </li>
+                <li ng-click="navCollapsed = true" class="clickable" ui-sref-active="active" ui-sref="annee">
+                    <a>Calendrier annuel</a>
+                </li>
             </ul>
             <div class="navbar-right">
                 <!-- la ligne horizontale s'affiche mais peut rester dans la vue desktop si l'utilisateur change la taille de la fenetre - NIVEAU BUG : faible -->
