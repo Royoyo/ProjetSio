@@ -67,6 +67,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
                 'user_firstname' => $personne->firstName,
                 'user_lastname' => $personne->lastName,
                 'user_login' => $personne->login,
+                'website' => getenv('WEBSITE_URL')
             );
 
         $template = file_get_contents("templates/new_user.html", FILE_TEXT);
@@ -78,7 +79,7 @@ $app->post('/admin/personnes', $authenticateWithRole('administrateur'), function
         $template = file_get_contents("templates/header.html", FILE_TEXT) . $template; 
         // creation du mail
         $message = Swift_Message::newInstance('Création de votre compte GPCI')
-            ->setFrom(array('' => 'IFIDE SupFormation'))
+            ->setFrom(array(getenv('SMTP_USER') => 'IFIDE SupFormation'))
             ->setTo(array($data['email'] => $data['firstName'] + '' + $data['lastName']))
             ->setBody($template, "text/html")
             ->setContentType("text/html");

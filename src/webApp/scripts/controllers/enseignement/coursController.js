@@ -3,7 +3,8 @@
 
 	    $scope.id = Session.id;
 		$scope.host = $window.location.hostname;
-		$scope.BACKEND_URL = BACKEND_URL;
+		//J'utilise substring pour enlever le "." dans l'url de la view
+		$scope.BACKEND_URL = BACKEND_URL.substring(1);
 		$scope.cours = [];
 
 		updateTable();

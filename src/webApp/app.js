@@ -506,7 +506,7 @@ webApp.factory("profilService", function ($q, Restangular) {
                 Restangular.one("changePassword").doPOST(passwords).then(function() {
                     resolve("ok");
                 },function() {
-                    reject("Il y a eu un problème sur le serveur");
+                    reject("Il y a eu un problï¿½me sur le serveur");
                 });
             });
         },
@@ -515,7 +515,7 @@ webApp.factory("profilService", function ($q, Restangular) {
                 Restangular.one("changeEmail").doPOST(emails).then(function () {
                     resolve("ok");
                 }, function () {
-                    reject("Il y a eu un problème sur le serveur");
+                    reject("Il y a eu un problï¿½me sur le serveur");
                 });
             });
         }
@@ -758,7 +758,8 @@ webApp.controller("EnsCoursController",
 
 	    $scope.id = Session.id;
 		$scope.host = $window.location.hostname;
-		$scope.BACKEND_URL = BACKEND_URL;
+		//J'utilise substring pour enlever le "." dans l'url de la view
+		$scope.BACKEND_URL = BACKEND_URL.substring(1);
 		$scope.cours = [];
 
 		updateTable();

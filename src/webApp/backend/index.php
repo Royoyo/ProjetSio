@@ -45,16 +45,21 @@ $app->get('/matieres', $authenticateWithRole('planificateur'), function () use (
 //Partie de l'API accessible sans identification
 
 $app->get('/activation/:id/token/:token', function($id, $token) use ($app) {
-    $user = Users::where('id', $id)->firstOrFail();
-    if ($user->token == $token){
-        $user->enabled = 1;
-        $user->save();
-        $app->response->setBody(true);
-    }
-    else{
-        $app->response->setBody(false);
+    try {
+        $user = Users::where('id', $id)->firstOrFail();
+        if ($user->token == $token){
+            $user->enabled = 1;
+            $user->save();
+            $app->response->setBody(true);
+        }
+        else{
+            $app->response->setBody(false);
+            $app->response->setStatus(400);
+        } 
+    } catch (Exception $e){
+        $app->response->setBody($e);
 		$app->response->setStatus(400);
-    }
+    }    
 });
 
 //Cours
