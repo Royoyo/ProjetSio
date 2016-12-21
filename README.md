@@ -26,7 +26,7 @@ php composer.phar install
 
 #####4/ Rajouter les variables d'environnements nécessaires :
 
-Pour cela, il faut modifier le fichier .env.exemple dans le dossier PathVersDossierWeb/backend/app :
+Pour cela, il faut modifier le fichier .env.exemple dans le dossier `PathVersDossierWeb/backend/app` :
 ````
 DATABASE_NAME=""
 DATABASE_USER=""
@@ -39,10 +39,12 @@ Une fois que les informations nécessaires sont inscrites dans le fichier change
 
 #####5/ Utiliser le script php migration dans le dossier backend :
 
+Dans le dossier dans le dossier `PathVersDossierWeb/backend/app/database`, executer les commandes :
 ````
 php migration migrate 
 php migration seed
 ````
+La première crée la structure de la base de données, la seconde l'alimente avec les premières données, en particulier avec la création d'un compte administrateur.
 
 #####6/ Voilà, l'application est prête à l'emploi
 
